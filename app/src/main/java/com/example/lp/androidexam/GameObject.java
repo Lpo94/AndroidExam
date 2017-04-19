@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -12,15 +13,13 @@ import java.util.LinkedList;
 
 public abstract class GameObject {
 
-    private Rect rect;
-    private Point pos;
-    private LinkedList<GameObject> colliders;
+    protected Rect rect;
+    protected Point pos;
+    protected ArrayList<GameObject> colliders;
 
-    public GameObject(Point _pos, Rect _rect)
+    public GameObject()
     {
-        colliders = new LinkedList<>();
-        pos = _pos;
-        rect = _rect;
+        colliders = new ArrayList<>();
     }
 
     public Point GetPos()

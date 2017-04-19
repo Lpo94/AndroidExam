@@ -1,18 +1,34 @@
 package com.example.lp.androidexam;
 
-import java.util.LinkedList;
+import android.content.Context;
+
+import java.util.ArrayList;
 
 /**
  * Created by LP on 19-04-2017.
  */
 
 public class StaticValues {
-    public static LinkedList<GameObject> Colliders = new LinkedList<>();
 
-    public static LinkedList<GameObject> GameObjects = new LinkedList<>();
+    //Lists
+    public static ArrayList<GameObject> Colliders;
 
-    public static LinkedList<GameObject> TempObjects = new LinkedList<>();
+    public static ArrayList<GameObject> GameObjects;
 
-    public static LinkedList<GameObject> ObjectsToRemove = new LinkedList<>();
+    public static ArrayList<GameObject> TempObjects;
+
+    public static ArrayList<GameObject> ObjectsToRemove;
+
+
+    // Ints
+    public static int SCREEN_WIDTH;
+
+    public static int SCREEN_HEIGHT;
+
+
+
+
+    // Smaller things such as Contexts and similar
+    public static Context StaticContext;
 
 }
