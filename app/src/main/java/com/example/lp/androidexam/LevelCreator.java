@@ -10,17 +10,26 @@ import java.util.ArrayList;
  */
 
 public class LevelCreator {
-    private ArrayList<GameObject> currentLevel;
-    private ArrayList<GameObject> testLevel;
+    private ArrayList<GameObject> currentLevel= new ArrayList<>();
+    private ArrayList<GameObject> testLevel = new ArrayList<>();
 
     public LevelCreator(int LevelIndex)
     {
-        StaticValues.GameObjects.clear();
+        if(StaticValues.GameObjects.size() != 0) {
+            StaticValues.GameObjects.clear();
+        }
+
+        if(currentLevel.size() != 0) {
+            currentLevel.clear();
+        }
 
         switch(LevelIndex)
         {
             case 0:
-                testLevel.add(new Player(new Point(200,200),new Rect(100,100,200,200)));
+                Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
+                testLevel.add(player);
+
+                currentLevel = testLevel;
         }
 
 

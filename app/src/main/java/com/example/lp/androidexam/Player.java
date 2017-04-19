@@ -14,8 +14,11 @@ public class Player extends GameObject {
     private int colour;
 
 
-    public Player(Point _pos, Rect _rect) {
-        super(_pos, _rect);
+    public Player(Point _pos) {
+        super();
+        pos = _pos;
+        rect = new Rect(100,100,200,200);
+
         colour = new Color().RED;
     }
 

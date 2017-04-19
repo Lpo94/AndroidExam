@@ -24,9 +24,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super(_context);
         getHolder().addCallback(this);
         gameThreadThread = new GameThread(getHolder(), this);
-
         setFocusable(true);
         StaticValues.StaticContext = _context;
+
+        NewGame();
     }
 
     @Override
