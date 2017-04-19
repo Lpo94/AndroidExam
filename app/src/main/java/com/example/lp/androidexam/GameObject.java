@@ -12,9 +12,9 @@ import java.util.LinkedList;
 
 public abstract class GameObject {
 
-    private Rect rect;
-    private Point pos;
-    private LinkedList<GameObject> colliders;
+    protected Rect rect;
+    protected Point pos;
+    protected LinkedList<GameObject> colliders;
 
     public GameObject(Point _pos, Rect _rect)
     {
