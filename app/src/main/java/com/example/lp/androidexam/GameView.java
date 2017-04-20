@@ -3,7 +3,6 @@ package com.example.lp.androidexam;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.support.annotation.ColorRes;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -34,7 +33,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         gestureDetector.setIsLongpressEnabled(true);
 
 
-        NewGame();
+        newGame();
     }
 
     @Override
@@ -74,7 +73,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         for(GameObject go: StaticValues.tempObjects)
         {
-            go.Draw(_canvas);
+            go.draw(_canvas);
         }
     }
 
@@ -87,9 +86,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 //            case MotionEvent.ACTION_DOWN:
 //                if(gestureDetector.onTouchEvent(event)) {
 //                    if (x < StaticValues.SCREEN_WIDTH / 2) {
-//                        StaticValues.tempObjects.get(0).GetPos().x -= 20;
+//                        StaticValues.tempObjects.get(0).getPos().x -= 20;
 //                    } else if (x > StaticValues.SCREEN_WIDTH / 2) {
-//                        StaticValues.tempObjects.get(0).GetPos().x += 20;
+//                        StaticValues.tempObjects.get(0).getPos().x += 20;
 //                    }
 //                }
 //                break;
@@ -101,7 +100,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 //        }
     }
 
-    public void Update()
+    public void update()
     {
         StaticValues.tempObjects = StaticValues.gameObjects;
 
@@ -118,14 +117,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         for(GameObject go: StaticValues.tempObjects)
         {
-            go.Update();
+            go.update();
         }
 
 
         StaticValues.objectsToRemove.clear();
     }
 
-    public void NewGame()
+    public void newGame()
     {
         StaticValues.colliders = new ArrayList<>();
         StaticValues.gameObjects = new ArrayList<>();

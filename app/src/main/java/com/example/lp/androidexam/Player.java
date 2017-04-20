@@ -23,20 +23,20 @@ public class Player extends GameObject {
     }
 
     @Override
-    public void Update() {
-        super.Update();
+    public void update() {
+        super.update();
 
         rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2,
                 pos.x+rect.width()/2,pos.y+rect.height()/2);
     }
 
     @Override
-    protected void DoCollision(GameObject _other) {
-        super.DoCollision(_other);
+    protected void doCollision(GameObject _other) {
+        super.doCollision(_other);
     }
 
     @Override
-    public void Draw(Canvas _canvas) {
+    public void draw(Canvas _canvas) {
         Paint paint = new Paint();
         paint.setColor(colour);
         _canvas.drawRect(rect,paint);

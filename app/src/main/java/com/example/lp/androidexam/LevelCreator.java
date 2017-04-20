@@ -28,6 +28,9 @@ public class LevelCreator {
         switch(LevelIndex)
         {
             case 0:
+                FireObject fire = new FireObject(StaticValues.staticContext, new Point(100, 100), 1, 3);
+                testLevel.add(fire);
+
                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                 testLevel.add(player);
                 playerList.add(0,player);
