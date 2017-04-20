@@ -26,7 +26,7 @@ public class GameThread extends Thread {
 
     public void setRunning(boolean _running)
     {
-        this.running = _running;
+        running = _running;
     }
 
     @Override

@@ -11,7 +11,7 @@ import android.graphics.Rect;
  */
 
 public class Player extends GameObject {
-    private int colour;
+    public int colour;
 
 
     public Player(Point _pos) {
@@ -19,7 +19,7 @@ public class Player extends GameObject {
         pos = _pos;
         rect = new Rect(100,100,200,200);
 
-        colour = new Color().RED;
+        colour = new Color().GREEN;
     }
 
     @Override
@@ -37,7 +37,10 @@ public class Player extends GameObject {
 
     @Override
     public void Draw(Canvas _canvas) {
-        Paint paint = new Paint(colour);
+        Paint paint = new Paint();
+        paint.setColor(colour);
         _canvas.drawRect(rect,paint);
     }
+
+
 }

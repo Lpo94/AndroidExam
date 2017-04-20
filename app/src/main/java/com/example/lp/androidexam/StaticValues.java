@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class StaticValues {
 
     //Lists
-    public static ArrayList<GameObject> Colliders;
+    public static ArrayList<GameObject> colliders;
 
-    public static ArrayList<GameObject> GameObjects;
+    public static ArrayList<GameObject> gameObjects;
 
-    public static ArrayList<GameObject> TempObjects;
+    public static ArrayList<GameObject> tempObjects;
 
-    public static ArrayList<GameObject> ObjectsToRemove;
+    public static ArrayList<GameObject> objectsToRemove;
 
 
     // Ints
@@ -25,10 +25,12 @@ public class StaticValues {
 
     public static int SCREEN_HEIGHT;
 
+    // boolean
 
+    public static boolean gameRunning = false;
 
 
     // Smaller things such as Contexts and similar
-    public static Context StaticContext;
+    public static Context staticContext;
 
 }

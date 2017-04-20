@@ -1,6 +1,7 @@
 package com.example.lp.androidexam;
 
 import android.content.Intent;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +16,6 @@ public class Menu extends AppCompatActivity {
 
     public void Start(View v)
     {
-        finish();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

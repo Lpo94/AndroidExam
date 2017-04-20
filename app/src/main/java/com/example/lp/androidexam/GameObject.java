@@ -1,6 +1,8 @@
 package com.example.lp.androidexam;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
@@ -49,6 +51,7 @@ public abstract class GameObject {
 
     public void Draw(Canvas _canvas)
     {
+
 
     }
 

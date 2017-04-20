@@ -1,5 +1,6 @@
 package com.example.lp.androidexam;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
+    private ArrayList<GameObject> playerList = new ArrayList<>();
 
     public LevelCreator(int LevelIndex)
     {
-        if(StaticValues.GameObjects.size() != 0) {
-            StaticValues.GameObjects.clear();
+        if(StaticValues.gameObjects.size() != 0) {
+            StaticValues.gameObjects.clear();
         }
 
         if(currentLevel.size() != 0) {
@@ -28,15 +30,20 @@ public class LevelCreator {
             case 0:
                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                 testLevel.add(player);
-
+                playerList.add(0,player);
                 currentLevel = testLevel;
         }
 
 
         for(GameObject go: currentLevel)
         {
-            StaticValues.GameObjects.add(go);
+            StaticValues.gameObjects.add(go);
         }
+    }
+
+    public ArrayList<GameObject> GetPlayers()
+    {
+        return playerList;
     }
 
 

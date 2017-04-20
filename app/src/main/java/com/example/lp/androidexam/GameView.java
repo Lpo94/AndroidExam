@@ -3,6 +3,9 @@ package com.example.lp.androidexam;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.annotation.ColorRes;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -15,17 +18,21 @@ import java.util.ArrayList;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private GameThread gameThreadThread;
+    private GestureDetector gestureDetector;
     private long frameTime;
     private LevelCreator levelCreator;
 
 
 
-    public GameView(Context _context) {
-        super(_context);
+    public GameView(Context context) {
+        super(context);
         getHolder().addCallback(this);
         gameThreadThread = new GameThread(getHolder(), this);
         setFocusable(true);
-        StaticValues.StaticContext = _context;
+        StaticValues.staticContext = context;
+        gestureDetector = new GestureDetector(context, new GestureListener());
+        gestureDetector.setIsLongpressEnabled(true);
+
 
         NewGame();
     }
@@ -47,12 +54,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceDestroyed(SurfaceHolder holder) {
         while(true)
         {
-            try
-            {
-                gameThreadThread.setRunning(false);
-                gameThreadThread.join();
+            boolean retry = true;
+
+            while(retry) {
+                try {
+                    gameThreadThread.setRunning(false);
+                    gameThreadThread.join();
+                } catch (Exception e) {e.printStackTrace();}
+                retry = false;
             }
-            catch (Exception e) {e.printStackTrace();}
         }
 
     }
@@ -62,42 +72,66 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
-        for(GameObject go: StaticValues.TempObjects)
+        for(GameObject go: StaticValues.tempObjects)
         {
             go.Draw(_canvas);
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+//        int x = (int)event.getX();
+//        int y = (int)event.getY();
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                if(gestureDetector.onTouchEvent(event)) {
+//                    if (x < StaticValues.SCREEN_WIDTH / 2) {
+//                        StaticValues.tempObjects.get(0).GetPos().x -= 20;
+//                    } else if (x > StaticValues.SCREEN_WIDTH / 2) {
+//                        StaticValues.tempObjects.get(0).GetPos().x += 20;
+//                    }
+//                }
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                break;
+//        }
+    }
+
     public void Update()
     {
-        StaticValues.TempObjects = StaticValues.GameObjects;
+        StaticValues.tempObjects = StaticValues.gameObjects;
 
-        for(GameObject go: StaticValues.ObjectsToRemove)
+        int elapsedTime = (int) (System.currentTimeMillis() - frameTime);
+        frameTime = System.currentTimeMillis();
+
+        for(GameObject go: StaticValues.objectsToRemove)
         {
-            if(StaticValues.GameObjects.contains(go))
+            if(StaticValues.gameObjects.contains(go))
             {
-                StaticValues.GameObjects.remove(go);
+                StaticValues.gameObjects.remove(go);
             }
         }
 
-        for(GameObject go: StaticValues.TempObjects)
+        for(GameObject go: StaticValues.tempObjects)
         {
             go.Update();
         }
 
 
-
-        StaticValues.ObjectsToRemove.clear();
+        StaticValues.objectsToRemove.clear();
     }
 
     public void NewGame()
     {
-        StaticValues.Colliders = new ArrayList<>();
-        StaticValues.GameObjects = new ArrayList<>();
-        StaticValues.ObjectsToRemove = new ArrayList<>();
-        StaticValues.TempObjects = new ArrayList<>();
+        StaticValues.colliders = new ArrayList<>();
+        StaticValues.gameObjects = new ArrayList<>();
+        StaticValues.objectsToRemove = new ArrayList<>();
+        StaticValues.tempObjects = new ArrayList<>();
         levelCreator = new LevelCreator(0);
-
     }
 
 
