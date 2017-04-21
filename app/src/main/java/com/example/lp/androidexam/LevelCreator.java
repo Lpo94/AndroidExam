@@ -1,8 +1,6 @@
 package com.example.lp.androidexam;
 
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.Rect;
 
 import java.util.ArrayList;
 
@@ -28,8 +26,11 @@ public class LevelCreator {
         switch(LevelIndex)
         {
             case 0:
-                FireObject fire = new FireObject(StaticValues.staticContext, new Point(100, 100), 1, 3);
+                AnimatedObject fire = new AnimatedObject(new Point(100, 100), 1, 3, R.drawable.fire, true);
                 testLevel.add(fire);
+
+                AnimatedObject counter = new AnimatedObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2) ,1, 6, R.drawable.countdown, true);
+                testLevel.add(counter);
 
                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                 testLevel.add(player);

@@ -25,10 +25,15 @@ public abstract class GameObject {
     protected int direction = 0;
     protected int rowsInSheet;
     protected int columnsInSheet;
+    protected long animationDelay;
 
     public void setUsesAnimation(boolean _value)
     {
         usesAnimation = _value;
+    }
+    public void setAnimationDelay(long _value)
+    {
+        animationDelay = _value;
     }
 
     public GameObject()

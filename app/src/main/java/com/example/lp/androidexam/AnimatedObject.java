@@ -9,17 +9,17 @@ import android.graphics.Point;
  * Created by SharkGaming on 20/04/2017.
  */
 
-public class FireObject extends GameObject
+public class AnimatedObject extends GameObject
 {
 
 
-    public FireObject(Context _context, Point _pos, int _rows, int _columns)
+    public AnimatedObject(Point _pos, int _rows, int _columns, int _bitmapId, boolean _usesAnimation)
     {
-        setUsesAnimation(true);
+        setUsesAnimation(_usesAnimation);
         pos = _pos;
         rowsInSheet = _rows;
         columnsInSheet = _columns;
-        bitmap = BitmapFactory.decodeResource(_context.getResources(), R.drawable.fire);
+        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
     }
