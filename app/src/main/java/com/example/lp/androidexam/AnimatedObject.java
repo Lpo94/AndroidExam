@@ -1,7 +1,5 @@
 package com.example.lp.androidexam;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 
@@ -13,14 +11,16 @@ public class AnimatedObject extends GameObject
 {
 
 
-    public AnimatedObject(Point _pos, int _rows, int _columns, int _bitmapId, boolean _usesAnimation)
+    public AnimatedObject(Point _pos, int _rows, int _columns, int _bitmapId, boolean _isAnimated, long _animationSpeed, int _frameCount)
     {
-        setUsesAnimation(_usesAnimation);
         pos = _pos;
         rowsInSheet = _rows;
         columnsInSheet = _columns;
         bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
+        setAnimated(_isAnimated);
+        setAnimationDelay(_animationSpeed);
+        frameCount = _frameCount;
     }
 }

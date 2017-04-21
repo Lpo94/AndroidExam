@@ -26,10 +26,10 @@ public class LevelCreator {
         switch(LevelIndex)
         {
             case 0:
-                AnimatedObject fire = new AnimatedObject(new Point(100, 100), 1, 3, R.drawable.fire, true);
+                AnimatedObject fire = new AnimatedObject(new Point(100, 100), 1, 3, R.drawable.fire, true, 100, 3);
                 testLevel.add(fire);
 
-                AnimatedObject counter = new AnimatedObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2) ,1, 6, R.drawable.countdown, true);
+                AnimatedObject counter = new AnimatedObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2) ,1, 6, R.drawable.countdown, true, 1000, 6);
                 testLevel.add(counter);
 
                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));

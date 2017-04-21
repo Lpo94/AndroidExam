@@ -18,18 +18,20 @@ public abstract class GameObject {
     protected ArrayList<GameObject> colliders;
 
 // Animations relaterede variabler
-    protected boolean usesAnimation;
+    protected boolean isAnimated;
     protected int bitmapHeight, bitmapWidth;
     protected Bitmap bitmap;
     protected int currentFrame = 0;
     protected int direction = 0;
     protected int rowsInSheet;
     protected int columnsInSheet;
+    protected long startTime;
     protected long animationDelay;
+    protected int frameCount;
 
-    public void setUsesAnimation(boolean _value)
+    public void setAnimated(boolean _value)
     {
-        usesAnimation = _value;
+        isAnimated = _value;
     }
     public void setAnimationDelay(long _value)
     {
@@ -61,15 +63,32 @@ public abstract class GameObject {
 
     public void update()
     {
-        if(usesAnimation)
+        if(isAnimated)
         {
-            currentFrame = ++ currentFrame % columnsInSheet;
+            // Hvis der bare er 1 frame til animationen skip herunder
+            if(animationDelay == 0)
+            {
+                return;
+            }
+
+            long elapsedTime = (System.nanoTime() -startTime) / 1000000;
+
+            if(elapsedTime > animationDelay)
+            {
+                currentFrame++;
+                startTime = System.nanoTime();
+
+                if(currentFrame > frameCount)
+                {
+                    currentFrame = 0;
+                }
+            }
         }
     }
 
     public void draw(Canvas _canvas)
     {
-        if(usesAnimation)
+        if(isAnimated)
         {
             int sourceY = direction * bitmapHeight;
             int sourceX = currentFrame * bitmapWidth;
