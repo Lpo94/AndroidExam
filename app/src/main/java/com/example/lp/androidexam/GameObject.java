@@ -20,7 +20,7 @@ public abstract class GameObject {
 // Animations relaterede variabler
     protected int bitmapHeight, bitmapWidth;
     protected Bitmap bitmap;
-    private int currentFrame = 0;
+    protected int currentFrame = 0;
     protected int direction = 0;
     protected int rowsInSheet;
     protected int columnsInSheet;

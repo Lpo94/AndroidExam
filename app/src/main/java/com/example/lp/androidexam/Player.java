@@ -12,7 +12,12 @@ import android.graphics.Rect;
 
 public class Player extends GameObject {
     public int colour;
+    private boolean canMove;
 
+    public void setCanmove(boolean _value)
+    {
+        canMove = _value;
+    }
 
     public Player(Point _pos) {
         super();
@@ -26,8 +31,11 @@ public class Player extends GameObject {
     public void update() {
         super.update();
 
-        rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2,
-                pos.x+rect.width()/2,pos.y+rect.height()/2);
+        if(canMove)
+        {
+            rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2,
+                    pos.x+rect.width()/2,pos.y+rect.height()/2);
+        }
     }
 
     @Override

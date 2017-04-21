@@ -9,8 +9,12 @@ import android.graphics.Point;
 
 public class RaceCountdownTimer extends GameObject
 {
-    public RaceCountdownTimer(Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
+    // Player _player skal senere laves til at tage en liste med players så vi i multiplayer kan sørge for at dette sker for dem alle
+    private Player player;
+
+    public RaceCountdownTimer(Player _player, Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
     {
+        player = _player;
         pos = _pos;
         rowsInSheet = _rows;
         columnsInSheet = _columns;
@@ -19,5 +23,27 @@ public class RaceCountdownTimer extends GameObject
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         setAnimationDelay(_animationSpeed);
         frameCount = _frameCount;
+    }
+
+    @Override
+    public void update()
+    {
+        if(frameCount > 1)
+        {
+
+            long elapsedTime = (System.nanoTime() -startTime) / 1000000;
+
+            if(elapsedTime > animationDelay)
+            {
+                currentFrame++;
+                startTime = System.nanoTime();
+
+                if(currentFrame > frameCount)
+                {
+                    player.setCanmove(true);
+                    StaticValues.gameObjects.remove(this);
+                }
+            }
+        }
     }
 }
