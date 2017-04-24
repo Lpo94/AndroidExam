@@ -16,6 +16,7 @@ public abstract class GameObject {
     protected Rect rect;
     protected Point pos;
     protected ArrayList<GameObject> colliders;
+    protected float speed;
 
 // Animations relaterede variabler
     protected int bitmapHeight, bitmapWidth;

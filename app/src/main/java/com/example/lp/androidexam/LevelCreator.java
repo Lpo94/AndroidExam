@@ -1,6 +1,7 @@
 package com.example.lp.androidexam;
 
 import android.graphics.Point;
+import android.provider.Settings;
 
 import java.util.ArrayList;
 
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
-    private ArrayList<GameObject> playerList = new ArrayList<>();
 
     public LevelCreator(int LevelIndex)
     {
@@ -27,17 +27,18 @@ public class LevelCreator {
         {
             case 0:
                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
-                testLevel.add(player);
-                playerList.add(0,player);
+//                testLevel.add(player);
+                StaticValues.globalPlayer = player;
+
 
                 FireObject fire = new FireObject(new Point(100, 100), 1, 3, R.drawable.fire, 100, 2);
                 testLevel.add(fire);
 
                 FireObject fire2 = new FireObject(new Point(400, 400), 1, 3, R.drawable.fire, 300, 1);
                 testLevel.add(fire2);
-
-                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
-                testLevel.add(counter);
+//
+//                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
+//                testLevel.add(counter);
 
 
                 currentLevel = testLevel;
@@ -50,10 +51,6 @@ public class LevelCreator {
         }
     }
 
-    public ArrayList<GameObject> GetPlayers()
-    {
-        return playerList;
-    }
 
 
 }

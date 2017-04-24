@@ -20,10 +20,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private GestureDetector gestureDetector;
     private long frameTime;
     private LevelCreator levelCreator;
+    private static GameView instance;
+
+    public static GameView Instance(Context context)
+    {
+        if(instance == null)
+        {
+            instance = new GameView(context);
+        }
+        return instance;
+    }
 
 
 
-    public GameView(Context context) {
+    private GameView(Context context) {
         super(context);
         getHolder().addCallback(this);
         gameThreadThread = new GameThread(getHolder(), this);
@@ -75,36 +85,44 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         {
             go.draw(_canvas);
         }
+        if(StaticValues.globalPlayer != null) {
+            StaticValues.globalPlayer.draw(_canvas);
+        }
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-//        int x = (int)event.getX();
-//        int y = (int)event.getY();
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                if(gestureDetector.onTouchEvent(event)) {
-//                    if (x < StaticValues.SCREEN_WIDTH / 2) {
-//                        StaticValues.tempObjects.get(0).getPos().x -= 20;
-//                    } else if (x > StaticValues.SCREEN_WIDTH / 2) {
-//                        StaticValues.tempObjects.get(0).getPos().x += 20;
-//                    }
-//                }
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                break;
-//        }
+        int x = (int)event.getX();
+        int y = (int)event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if(gestureDetector.onTouchEvent(event)) {
+                    if(StaticValues.globalPlayer != null) {
+                        if (x < StaticValues.SCREEN_WIDTH / 2) {
+                            StaticValues.globalPlayer.setDirection(-1);
+                        } else if (x > StaticValues.SCREEN_WIDTH / 2) {
+                            StaticValues.globalPlayer.setDirection(1);
+                        }
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+                StaticValues.globalPlayer.setDirection(0);
+                break;
+        }
+     //   return true;
+     return gestureDetector.onTouchEvent(event);
     }
 
     public void update()
     {
         StaticValues.tempObjects = StaticValues.gameObjects;
 
-        int elapsedTime = (int) (System.currentTimeMillis() - frameTime);
+        StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
         for(GameObject go: StaticValues.objectsToRemove)
@@ -119,7 +137,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         {
             go.update();
         }
-
+        if(StaticValues.globalPlayer != null) {
+            StaticValues.globalPlayer.update();
+        }
 
         StaticValues.objectsToRemove.clear();
     }
@@ -131,6 +151,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         StaticValues.objectsToRemove = new ArrayList<>();
         StaticValues.tempObjects = new ArrayList<>();
         levelCreator = new LevelCreator(0);
+    }
+
+    public void moveObjectX(int x)
+    {
+        for(GameObject go: StaticValues.tempObjects)
+        {
+            go.pos.x = go.pos.x + x;
+        }
+    }
+
+    public void moveObjectY(int y)
+    {
+        for(GameObject go: StaticValues.tempObjects)
+        {
+            go.pos.y = go.pos.y + y;
+        }
     }
 
 

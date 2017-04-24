@@ -9,6 +9,8 @@ import java.util.ArrayList;
  */
 
 public class StaticValues {
+    //Player
+    public static Player globalPlayer;
 
     //Lists
     public static ArrayList<GameObject> colliders;
@@ -25,8 +27,14 @@ public class StaticValues {
 
     public static int SCREEN_HEIGHT;
 
-    // boolean
+    public static int deltaTime;
 
+    //Floats
+    public static float WORLD_SPEED;
+
+    public static float WORLD_GRAVITY = 0.02f;
+
+    // boolean
     public static boolean gameRunning = false;
 
 

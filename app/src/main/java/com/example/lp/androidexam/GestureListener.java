@@ -13,37 +13,11 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener{
     public boolean onDown(MotionEvent e) {
         return true;
     }
-//
-//    @Override
-//    public boolean onSingleTapConfirmed(MotionEvent e) {
-//
-//        float x = e.getX();
-//        float y = e.getY();
-//        if (x < StaticValues.SCREEN_WIDTH / 2) {
-//            StaticValues.tempObjects.get(0).getPos().x -= 20;
-//        }
-//        else if (x > StaticValues.SCREEN_WIDTH / 2) {
-//            StaticValues.tempObjects.get(0).getPos().x += 20;
-//        }
-//
-//        return true;
-//    }
 
-    @Override
-    public void onLongPress(MotionEvent e) {
-        float x = e.getX();
-        float y = e.getY();
-        if (x < StaticValues.SCREEN_WIDTH / 2) {
-            StaticValues.tempObjects.get(0).getPos().x -= 20;
-        }
-        else if (x > StaticValues.SCREEN_WIDTH / 2) {
-            StaticValues.tempObjects.get(0).getPos().x += 20;
-        }
-    }
 
     @Override
     public boolean onDoubleTap(MotionEvent e) {
-        StaticValues.tempObjects.get(0).getPos().y -= 20;
+        StaticValues.globalPlayer.playerJump();
         return true;
     }
 
