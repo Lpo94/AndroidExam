@@ -59,7 +59,7 @@ public class Player extends GameObject {
                         break;
                 }
             }
-            int valueCheck = Math.round(pos.y + StaticValues.WORLD_GRAVITY * StaticValues.deltaTime);
+            int valueCheck = Math.round(rect.bottom + StaticValues.WORLD_GRAVITY * StaticValues.deltaTime);
 
             if(isObjectSolid(new Point(pos.x,valueCheck)))
             {
@@ -132,7 +132,7 @@ public class Player extends GameObject {
         {
             if(go.isSolid) {
                 if (go.getRect() != null) {
-                    Rect r = new Rect(_p.x, _p.y, _p.x + 100, _p.y + 100);
+                    Rect r = new Rect(_p.x, _p.y, _p.x + 50, _p.y + 50);
                     if (Rect.intersects(go.getRect(),r)) {
                         return true;
                     }

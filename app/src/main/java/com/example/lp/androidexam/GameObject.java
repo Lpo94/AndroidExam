@@ -94,9 +94,9 @@ public abstract class GameObject {
             int sourceX = currentFrame * bitmapWidth;
 
             Rect sourceRect = new Rect(sourceX, sourceY, sourceX + bitmapWidth, sourceY + bitmapHeight);
-            Rect dstRect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);
+            rect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);
 
-            _canvas.drawBitmap(bitmap, sourceRect, dstRect, null);
+            _canvas.drawBitmap(bitmap, sourceRect, rect, null);
 
 
         }

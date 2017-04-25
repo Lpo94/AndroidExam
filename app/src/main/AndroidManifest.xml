@@ -16,12 +16,12 @@
         <activity android:name=".Menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                android:screenOrientation="sensorLandscape"
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" >
-
+            android:screenOrientation="sensorLandscape"
         </activity>
         <activity android:name=".HowTo">
 
