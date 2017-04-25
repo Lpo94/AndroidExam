@@ -11,32 +11,32 @@
         android:id="@+id/Start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp"
+        android:layout_marginTop="53dp"
         android:background="@drawable/buttons"
         android:onClick="Start"
-        android:text="Start Game" />
+        android:text="Start Game"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/HTP_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Start_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp"
         android:background="@drawable/buttons"
         android:onClick="HowTo"
-        android:text="How to play" />
+        android:text="How to play"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/Start_button"
+        android:layout_alignStart="@+id/Start_button" />
 
     <Button
         android:id="@+id/Exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/HTP_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
         android:background="@drawable/buttons"
         android:onClick="Exit"
-        android:text="Exit Game" />
+        android:text="Exit Game"
+        android:layout_marginTop="51dp"
+        android:layout_below="@+id/HTP_button"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

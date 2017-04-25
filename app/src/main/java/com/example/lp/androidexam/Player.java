@@ -16,6 +16,8 @@ public class Player extends GameObject {
     private boolean canMove;
     private boolean falling;
     private boolean jumping = false;
+    private boolean slowed = false;
+    private float timer = 0;
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
@@ -39,6 +41,17 @@ public class Player extends GameObject {
     @Override
     public void update() {
         super.update();
+
+        if(timer >= 0 && slowed == true)
+        {
+            timer --;
+        }
+
+        else if(timer <= 0 && slowed == true)
+        {
+            speed = 2;
+            slowed = false;
+        }
 
         if(pos.y < 0)
         {
@@ -99,7 +112,13 @@ public class Player extends GameObject {
         }
        if (_other instanceof Power) {
            speed += 5;
+       }
 
+       if(_other instanceof Mud)
+       {
+           speed = 1;
+           slowed = true;
+           timer = 10;
        }
     }
 

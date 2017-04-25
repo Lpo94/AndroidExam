@@ -33,14 +33,17 @@ public class LevelCreator {
                 StaticValues.globalPlayer = player;
 
 
-                FireObject fire = new FireObject(new Point(100, 100), 1, 3, R.drawable.fire, 100, 2);
+/*                FireObject fire = new FireObject(new Point(100, 100), 1, 3, R.drawable.fire, 100, 2);
                 testLevel.add(fire);
 
                 FireObject fire2 = new FireObject(new Point(400, 400), 1, 3, R.drawable.fire, 300, 1);
                 testLevel.add(fire2);
 
                Power powerspeed = new Power (new Point (300, 300),1, 4, R.drawable.powerupcoin, 100, 2);
-                testLevel.add(powerspeed);
+                testLevel.add(powerspeed);*/
+
+                Mud mud= new Mud (new Point (300, 450),1, 12, R.drawable.mud, 150, 11);
+                testLevel.add(mud);
 
 
                 RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
