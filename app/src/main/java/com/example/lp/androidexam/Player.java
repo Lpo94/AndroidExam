@@ -97,6 +97,10 @@ public class Player extends GameObject {
         {
             colour = new Color().BLUE;
         }
+       if (_other instanceof Power) {
+           speed += 5;
+
+       }
     }
 
     @Override

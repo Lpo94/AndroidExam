@@ -22,6 +22,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private LevelCreator levelCreator;
     private static GameView instance;
 
+    public static int globalxSpeed = 1;
+
     public static GameView Instance(Context context)
     {
         if(instance == null)
@@ -88,6 +90,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.draw(_canvas);
         }
+
     }
 
     @Override
