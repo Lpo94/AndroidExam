@@ -36,9 +36,12 @@ public class LevelCreator {
 
                 FireObject fire2 = new FireObject(new Point(400, 400), 1, 3, R.drawable.fire, 300, 1);
                 testLevel.add(fire2);
-//
-//                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
-//                testLevel.add(counter);
+
+                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
+                testLevel.add(counter);
+
+                Ground ground = new Ground(new Point(0,900));
+                testLevel.add(ground);
 
 
                 currentLevel = testLevel;

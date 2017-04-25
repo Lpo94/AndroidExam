@@ -13,8 +13,8 @@ import android.graphics.Rect;
 public class Player extends GameObject {
 
     public int colour;
-    private boolean canMove = true;
-    private boolean falling = false;
+    private boolean canMove;
+    private boolean falling;
     private boolean jumping = false;
     private float velocity = 4;
     private float defaultVelocity;
@@ -32,28 +32,18 @@ public class Player extends GameObject {
         speed = 2;
         defaultVelocity = velocity;
         colour = new Color().GREEN;
+        canMove = false;
+        falling = true;
     }
 
     @Override
     public void update() {
         super.update();
 
-
-        if(pos.y >= StaticValues.SCREEN_HEIGHT/2)
+        if(pos.y < 0)
         {
-            falling = false;
-            if(velocity < 0) {
-                jumping = false;
-                velocity = defaultVelocity ;
-            }
-            pos.y = StaticValues.SCREEN_HEIGHT/2;
+            pos.y = 0;
         }
-        else
-        {
-            falling = true;
-        }
-
-
 
         if(canMove)
         {
@@ -69,30 +59,49 @@ public class Player extends GameObject {
                         break;
                 }
             }
+            int valueCheck = Math.round(pos.y + StaticValues.WORLD_GRAVITY * StaticValues.deltaTime);
+
+            if(isObjectSolid(new Point(pos.x,valueCheck)))
+            {
+                falling = false;
+                if(velocity < 0) {
+                    jumping = false;
+                    velocity = defaultVelocity ;
+                }
+            }
+            else
+            {
+                falling = true;
+            }
 
             if(falling && !jumping)
             {
-                pos.y += StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
+                GameView.Instance(null).moveObjectY((int)(StaticValues.WORLD_GRAVITY * StaticValues.deltaTime));
+//                pos.y += StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }
 
             if(jumping)
             {
-                pos.y -= velocity * StaticValues.deltaTime;
+                GameView.Instance(null).moveObjectY((int)+(velocity * StaticValues.deltaTime));
+//                pos.y -= velocity * StaticValues.deltaTime;
                 velocity -= StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }
         }
 
-        rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2,
-                pos.x+rect.width()/2,pos.y+rect.height()/2);
     }
 
     @Override
     protected void doCollision(GameObject _other) {
         super.doCollision(_other);
+        if(_other instanceof FireObject)
+        {
+            colour = new Color().BLUE;
+        }
     }
 
     @Override
     public void draw(Canvas _canvas) {
+        super.draw(_canvas);
         Paint paint = new Paint();
         paint.setColor(colour);
         _canvas.drawRect(rect,paint);
@@ -100,6 +109,7 @@ public class Player extends GameObject {
         paint.setColor(Color.BLACK);
         paint.setTextSize(48);
         _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);
+
     }
 
     //-1 = left, 1 = right;
@@ -116,6 +126,23 @@ public class Player extends GameObject {
     }
 
 
+    private boolean isObjectSolid(Point _p)
+    {
+        for(GameObject go: StaticValues.tempObjects)
+        {
+            if(go.isSolid) {
+                if (go.getRect() != null) {
+                    Rect r = new Rect(_p.x, _p.y, _p.x + 100, _p.y + 100);
+                    if (Rect.intersects(go.getRect(),r)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return  false;
+    }
 
 
+
+//go.getRect().contains(r)
 }

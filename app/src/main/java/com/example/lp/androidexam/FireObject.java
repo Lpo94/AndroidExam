@@ -2,6 +2,7 @@ package com.example.lp.androidexam;
 
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.Rect;
 
 /**
  * Created by SharkGaming on 20/04/2017.
@@ -21,5 +22,7 @@ public class FireObject extends GameObject
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         setAnimationDelay(_animationSpeed);
         frameCount = _frameCount;
+//        rect = new Rect(100,100,200,200);
+
     }
 }

@@ -137,11 +137,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         {
             go.update();
         }
+
+
         if(StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.update();
+            for(GameObject go: StaticValues.tempObjects)
+            {
+                StaticValues.globalPlayer.onCollisionStay(go);
+                StaticValues.globalPlayer.onCollisionEnter(go);
+
+            }
+            StaticValues.globalPlayer.onCollisionExit();
+
         }
 
         StaticValues.objectsToRemove.clear();
+
+
     }
 
     public void newGame()
