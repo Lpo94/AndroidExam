@@ -1,5 +1,6 @@
 package com.example.lp.androidexam;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -36,6 +37,8 @@ public class Player extends GameObject {
         colour = new Color().GREEN;
         canMove = false;
         falling = true;
+
+        setPlayerSprite(getPlayerNumber());
     }
 
     @Override
@@ -125,13 +128,13 @@ public class Player extends GameObject {
     @Override
     public void draw(Canvas _canvas) {
         super.draw(_canvas);
-        Paint paint = new Paint();
+/*        Paint paint = new Paint();
         paint.setColor(colour);
         _canvas.drawRect(rect,paint);
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(48);
-        _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);
+        _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);*/
 
     }
 
@@ -166,6 +169,53 @@ public class Player extends GameObject {
     }
 
 
+// Skal implementeres færdigt når multiplayer er færdigt og added.
+    private int getPlayerNumber()
+    {
+ /*       for (int i = 0; i < rooom.participants.lenght; i++)
+        {
+            if(i = waiting rooom.participants[this])
+            {
+                return i;
+            }
+        }*/
+
+        return 1;
+    }
+
+    private void setPlayerSprite(int _playerNumber)
+    {
+
+
+        switch (_playerNumber)
+        {
+            case 1:
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_cow);
+                break;
+
+            case 2:
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_dino);
+                break;
+
+            case 3:
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_giraf);
+                break;
+
+            case 4:
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_parrot);
+                break;
+        }
+
+        rowsInSheet = 1;
+        columnsInSheet = 1;
+        bitmapHeight = bitmap.getHeight() / rowsInSheet;
+        bitmapWidth = bitmap.getWidth() / columnsInSheet;
+        setAnimationDelay(0);
+        frameCount = 1;
+    }
 
 //go.getRect().contains(r)
 }
+
+
+
