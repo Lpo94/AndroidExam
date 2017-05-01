@@ -1,12 +1,17 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -30,29 +35,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         {
             instance = new GameView(context);
         }
-        return instance;
+
+            return instance;
     }
-
-
 
     private GameView(Context context) {
         super(context);
-        getHolder().addCallback(this);
-        gameThreadThread = new GameThread(getHolder(), this);
-        setFocusable(true);
-        StaticValues.staticContext = context;
-        gestureDetector = new GestureDetector(context, new GestureListener());
-        gestureDetector.setIsLongpressEnabled(true);
+            getHolder().addCallback(this);
+            gameThreadThread = new GameThread(getHolder(), this);
+            setFocusable(true);
+            StaticValues.staticContext = context;
+            gestureDetector = new GestureDetector(context, new GestureListener());
+            gestureDetector.setIsLongpressEnabled(true);
 
-
-        newGame();
+            newGame();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        gameThreadThread = new GameThread(getHolder(), this);
-        gameThreadThread.setRunning(true);
-        gameThreadThread.start();
+            gameThreadThread = new GameThread(getHolder(), this);
+            gameThreadThread.setRunning(true);
+            gameThreadThread.start();
 
     }
 
@@ -97,28 +100,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int)event.getX();
         int y = (int)event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if(gestureDetector.onTouchEvent(event)) {
-                    if(StaticValues.globalPlayer != null) {
-                        if (x < StaticValues.SCREEN_WIDTH / 2) {
-                            StaticValues.globalPlayer.setDirection(-1);
-                        } else if (x > StaticValues.SCREEN_WIDTH / 2) {
-                            StaticValues.globalPlayer.setDirection(1);
+        if(StaticValues.endgame == false) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (gestureDetector.onTouchEvent(event)) {
+                        if (StaticValues.globalPlayer != null) {
+                            if (x < StaticValues.SCREEN_WIDTH / 2) {
+                                StaticValues.globalPlayer.setDirection(-1);
+                            } else if (x > StaticValues.SCREEN_WIDTH / 2) {
+                                StaticValues.globalPlayer.setDirection(1);
+                            }
                         }
                     }
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
+                    break;
+                case MotionEvent.ACTION_MOVE:
 
-                break;
+                    break;
 
-            case MotionEvent.ACTION_UP:
-                StaticValues.globalPlayer.setDirection(0);
-                break;
+                case MotionEvent.ACTION_UP:
+                    StaticValues.globalPlayer.setDirection(0);
+                    break;
+            }
         }
-     //   return true;
-     return gestureDetector.onTouchEvent(event);
+        else if(StaticValues.endgame == true)
+        {
+            if(event.getAction() == MotionEvent.ACTION_UP)
+            {
+
+            }
+        }
+        //   return true;
+        return gestureDetector.onTouchEvent(event);
     }
 
     public void update()
@@ -161,11 +173,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void newGame()
     {
-        StaticValues.colliders = new ArrayList<>();
-        StaticValues.gameObjects = new ArrayList<>();
-        StaticValues.objectsToRemove = new ArrayList<>();
-        StaticValues.tempObjects = new ArrayList<>();
-        levelCreator = new LevelCreator(0);
+            StaticValues.colliders = new ArrayList<>();
+            StaticValues.gameObjects = new ArrayList<>();
+            StaticValues.objectsToRemove = new ArrayList<>();
+            StaticValues.tempObjects = new ArrayList<>();
+            levelCreator = new LevelCreator(0, getContext());
+
     }
 
     public void moveObjectX(int x)

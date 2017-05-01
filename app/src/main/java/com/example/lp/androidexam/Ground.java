@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.widget.Button;
 
 /**
  * Created by LP on 25-04-2017.
@@ -12,14 +13,26 @@ import android.graphics.Rect;
 
 public class Ground extends GameObject {
 
-
-    public Ground(Point _pos)
+    public Ground(Point _pos, Rect _rect)
     {
         isSolid = true;
-        rect = new Rect(1000,100,20000,200);
+        rect = _rect;
+        //rect = new Rect(1000,100,20000,200);
         pos = _pos;
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        if(pos.x > 2000 && pos.y < 0 && StaticValues.endgame == false)
+        {
+            //player.canMove = false;
+            //StaticValues.gameObjects = StaticValues.objectsToRemove;
+            //mainActivity.back();
+            //StaticValues.globalPlayer = null;
+        }
+    }
 
     @Override
     public void draw(Canvas _canvas) {
@@ -31,6 +44,5 @@ public class Ground extends GameObject {
         paint.setColor(Color.BLACK);
         paint.setTextSize(48);
         _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);
-
     }
 }

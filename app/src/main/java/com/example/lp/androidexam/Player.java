@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Created by LP on 19-04-2017.
@@ -14,7 +16,7 @@ import android.graphics.Rect;
 public class Player extends GameObject {
 
     public int colour;
-    private boolean canMove;
+    public boolean canMove;
     private boolean falling;
     private boolean jumping = false;
     private boolean slowed = false;
@@ -50,6 +52,7 @@ public class Player extends GameObject {
             timer --;
         }
 
+
         else if(timer <= 0 && slowed == true)
         {
             speed = 2;
@@ -60,6 +63,7 @@ public class Player extends GameObject {
         {
             pos.y = 0;
         }
+
 
         if(canMove)
         {
@@ -114,7 +118,7 @@ public class Player extends GameObject {
             colour = new Color().BLUE;
         }
        if (_other instanceof Power) {
-           speed += 5;
+           speed += 4;
        }
 
        if(_other instanceof Mud)
@@ -122,6 +126,11 @@ public class Player extends GameObject {
            speed = 1;
            slowed = true;
            timer = 10;
+       }
+
+       if(_other instanceof Goal)
+       {
+           canMove = false;
        }
     }
 
@@ -150,6 +159,7 @@ public class Player extends GameObject {
             jumping = true;
         }
     }
+
 
 
     private boolean isObjectSolid(Point _p)
@@ -213,6 +223,8 @@ public class Player extends GameObject {
         setAnimationDelay(0);
         frameCount = 1;
     }
+
+
 
 //go.getRect().contains(r)
 }
