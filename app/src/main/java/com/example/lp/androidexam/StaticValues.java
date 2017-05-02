@@ -37,6 +37,8 @@ public class StaticValues {
     // boolean
     public static boolean gameRunning = false;
 
+    public static boolean endgame;
+
 
     // Smaller things such as Contexts and similar
     public static Context staticContext;

@@ -52,13 +52,14 @@
         android:id="@+id/textView"
         android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_marginTop="68dp"
         android:textSize="20dp"
         android:textColor="#00FF00"
         android:text="Dette er en lang text som skal meget gerne skulle kunne være på hele skærmen"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignRight="@+id/Next_button"
+        android:layout_alignEnd="@+id/Next_button" />
 
     <TextView
         android:id="@+id/textView2"
@@ -67,8 +68,9 @@
         android:text="Tutorial is gonna be fun to make with all this text"
         android:textSize="20dp"
         android:textColor="#00FF00"
-        android:layout_alignTop="@+id/textView"
+        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginTop="31dp" />
 
 </RelativeLayout>
