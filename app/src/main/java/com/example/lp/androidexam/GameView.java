@@ -140,13 +140,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
-        for(GameObject go: StaticValues.objectsToRemove)
-        {
-            if(StaticValues.gameObjects.contains(go))
-            {
-                StaticValues.gameObjects.remove(go);
-            }
-        }
 
         for(GameObject go: StaticValues.tempObjects)
         {
@@ -164,6 +157,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
             StaticValues.globalPlayer.onCollisionExit();
 
+        }
+
+        for(GameObject go: StaticValues.objectsToRemove)
+        {
+            if(StaticValues.gameObjects.contains(go))
+            {
+                StaticValues.gameObjects.remove(go);
+            }
         }
 
         StaticValues.objectsToRemove.clear();

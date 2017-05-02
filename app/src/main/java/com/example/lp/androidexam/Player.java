@@ -52,7 +52,6 @@ public class Player extends GameObject {
             timer --;
         }
 
-
         else if(timer <= 0 && slowed == true)
         {
             speed = 2;
@@ -64,17 +63,16 @@ public class Player extends GameObject {
             pos.y = 0;
         }
 
-
         if(canMove)
         {
             if(direction != 0) {
                 switch (direction) {
                     case -1:
-                        GameView.Instance(null).moveObjectX((int)-(speed * StaticValues.deltaTime));
+                        GameView.Instance(null).moveObjectX((int)(speed * StaticValues.deltaTime));
 //                        pos.x -= speed * StaticValues.deltaTime;
                         break;
                     case 1:
-                        GameView.Instance(null).moveObjectX((int)(speed * StaticValues.deltaTime));
+                        GameView.Instance(null).moveObjectX((int)-(speed * StaticValues.deltaTime));
 //                        pos.x += speed * StaticValues.deltaTime;
                         break;
                 }
@@ -118,7 +116,7 @@ public class Player extends GameObject {
             colour = new Color().BLUE;
         }
        if (_other instanceof Power) {
-           speed += 4;
+           //speed += 4;
        }
 
        if(_other instanceof Mud)
@@ -137,13 +135,7 @@ public class Player extends GameObject {
     @Override
     public void draw(Canvas _canvas) {
         super.draw(_canvas);
-/*        Paint paint = new Paint();
-        paint.setColor(colour);
-        _canvas.drawRect(rect,paint);
 
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(48);
-        _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);*/
 
     }
 
@@ -161,14 +153,13 @@ public class Player extends GameObject {
     }
 
 
-
     private boolean isObjectSolid(Point _p)
     {
         for(GameObject go: StaticValues.tempObjects)
         {
             if(go.isSolid) {
                 if (go.getRect() != null) {
-                    Rect r = new Rect(_p.x, _p.y, _p.x + 50, _p.y + 50);
+                    Rect r = new Rect(_p.x, _p.y, _p.x + 100, _p.y + 100);
                     if (Rect.intersects(go.getRect(),r)) {
                         return true;
                     }
@@ -228,6 +219,3 @@ public class Player extends GameObject {
 
 //go.getRect().contains(r)
 }
-
-
-
