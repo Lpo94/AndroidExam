@@ -179,7 +179,7 @@ public class Player extends GameObject {
             colour = new Color().BLUE;
         }
        if (_other instanceof Power) {
-           //speed += 4;
+           PowerUpClick.Clickable=true;
        }
 
        if(_other instanceof Mud)

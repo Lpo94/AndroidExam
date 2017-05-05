@@ -85,7 +85,7 @@ public class LevelCreator {
                                 break;
                             case "D":
                                 if(_i == 7) {
-                                    Power powerspeed = new Power(new Point(23000, 750), 1, 4, R.drawable.powerupcoin, 100, 2);
+                                    Power powerspeed = new Power(new Point(23000, 500), 1, 4, R.drawable.powerupcoin, 100, 2);
                                     testLevel.add(powerspeed);
                                 }
 

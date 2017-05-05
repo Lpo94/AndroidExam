@@ -1,6 +1,8 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.GestureDetector;
@@ -84,6 +86,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
+        Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen2);
+        Bitmap  powerScreenDefeault= BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen1);
+
         for(GameObject go: StaticValues.tempObjects)
                 {
             go.draw(_canvas);
@@ -91,6 +96,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(StaticValues.globalPlayer != null)
         {
             StaticValues.globalPlayer.draw(_canvas);
+        }
+        if (PowerUpClick.Clickable == true)
+        {
+
+            _canvas.drawBitmap(powerScreenSpeed,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+            powerScreenDefeault.recycle();
+
+        }
+        if (PowerUpClick.Clickable == false)
+        {
+            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH/2 -50, 150, null);
+            powerScreenSpeed.recycle();
         }
 
     }
@@ -108,6 +125,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                                 StaticValues.globalPlayer.setDirection(-1);
                             } else if (x > StaticValues.SCREEN_WIDTH / 2) {
                                 StaticValues.globalPlayer.setDirection(1);
+                            }
+                            if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
+                            {
+
+                                StaticValues.globalPlayer.speed += 0.5;
+                                PowerUpClick.Clickable = false;
+
+
+
                             }
                         }
                     }
