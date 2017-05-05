@@ -31,6 +31,7 @@ public abstract class GameObject {
     protected long startTime;
     protected long animationDelay;
     protected int frameCount;
+    protected long elapsedTime;
 
     public void setAnimationDelay(long _value)
     {
@@ -65,7 +66,7 @@ public abstract class GameObject {
         if(frameCount > 1)
         {
 
-            long elapsedTime = (System.nanoTime() -startTime) / 1000000;
+            elapsedTime = (System.nanoTime() -startTime) / 1000000;
 
             if(elapsedTime > animationDelay)
             {
@@ -96,11 +97,10 @@ public abstract class GameObject {
             rect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);
 
             _canvas.drawBitmap(bitmap, sourceRect, rect, null);
-
-
         }
         if(rect != null)
         {
+            // Er det her kode herunder ikke overflødigt? - Kasper
             Paint paint = new Paint();
             paint.setColor(Color.MAGENTA);
             paint.setStyle(Paint.Style.STROKE);

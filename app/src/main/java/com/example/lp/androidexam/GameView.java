@@ -1,17 +1,12 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -26,6 +21,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private long frameTime;
     private LevelCreator levelCreator;
     private static GameView instance;
+    private SoundManager soundManager;
 
     public static int globalxSpeed = 1;
 
@@ -47,7 +43,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             StaticValues.staticContext = context;
             gestureDetector = new GestureDetector(context, new GestureListener());
             gestureDetector.setIsLongpressEnabled(true);
-
+            soundManager = SoundManager.getInstance();
+            soundManager.loadSounds(context);
             newGame();
     }
 
@@ -82,15 +79,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void draw(Canvas _canvas) {
+    public void draw(Canvas _canvas)
+    {
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
         for(GameObject go: StaticValues.tempObjects)
-        {
+                {
             go.draw(_canvas);
         }
-        if(StaticValues.globalPlayer != null) {
+        if(StaticValues.globalPlayer != null)
+        {
             StaticValues.globalPlayer.draw(_canvas);
         }
 

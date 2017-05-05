@@ -21,18 +21,18 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
-    // Til animationer
+    // Til bevægelses anim
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
     private Point newPoint, oldPoint;
-    private long elapsedTime;
     private boolean isStunned; // skal sættes hvis stunned sakl være længere tid en stun animationen for at få den til at loope.
     private boolean isFalling; // skal sættes det øjeblik spilleren bliver stunned, den kører selv automatisk videre til stunned efter.
-
     public void setCanmove(boolean _value)
     {
         canMove = _value;
     }
+    private boolean isShooting;
+
 
     public Player(Point _pos) {
         super();
@@ -46,10 +46,19 @@ public class Player extends GameObject {
 
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
+
+        isShooting = true;
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
+        if(isShooting)
+        {
+            Projectile projectile = new Projectile(this);
+            StaticValues.tempObjects.add(projectile);
+            isShooting = false;
+        }
 
         // Add så animationDelay falder når man har speedboost for at simulere sprint
         if(canMove && newPoint == pos && !isStunned) curAnim = Animations.idle;
@@ -58,59 +67,42 @@ public class Player extends GameObject {
         if(isStunned) curAnim = Animations.stunned;
         newPoint = pos;
 
-        switch (curAnim)
+        elapsedTime = (System.nanoTime() -startTime) / 1000000;
+        if(elapsedTime > animationDelay)
         {
-            case idle:
-            currentFrame = 0;
-            break;
+            currentFrame++;
+            startTime = System.nanoTime();
 
-            case walking:
-                elapsedTime = (System.nanoTime() -startTime) / 1000000;
+            switch (curAnim)
+            {
 
-                if(elapsedTime > animationDelay)
-                {
-                    currentFrame++;
-                    startTime = System.nanoTime();
+                case idle:
+                    currentFrame = 0;
+                    break;
 
-                    if(currentFrame > 6)
+                case walking:
+                    if (currentFrame > 6)
                     {
                         currentFrame = 1;
                     }
-                }
-                break;
+                    break;
 
-            case falling:
-                elapsedTime = (System.nanoTime() -startTime) / 1000000;
-
-                if(elapsedTime > animationDelay)
-                {
-                    currentFrame++;
-                    startTime = System.nanoTime();
-
-                    if(currentFrame > 10)
+                case falling:
+                    if (currentFrame > 10)
                     {
                         isFalling = false;
                         isStunned = true;
                     }
-                }
-                break;
+                    break;
 
-            case stunned:
-                elapsedTime = (System.nanoTime() -startTime) / 1000000;
-
-                if(elapsedTime > animationDelay)
-                {
-                    currentFrame++;
-                    startTime = System.nanoTime();
-
-                    if(currentFrame > 13)
+                case stunned:
+                    if (currentFrame > 13)
                     {
                         currentFrame = 10;
                     }
-                }
-                break;
+                    break;
+            }
         }
-
 
 
         if(rect != null)
@@ -135,7 +127,7 @@ public class Player extends GameObject {
             pos.y = 0;
         }
 
-        if(canMove)
+        if(canMove && !isStunned)
         {
             if(direction != 0) {
                 switch (direction) {
@@ -177,7 +169,6 @@ public class Player extends GameObject {
                 velocity -= StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }
         }
-
     }
 
     @Override
@@ -202,6 +193,14 @@ public class Player extends GameObject {
        {
            canMove = false;
        }
+
+        if(_other instanceof Projectile)
+        {
+            if(((Projectile)_other).owner != this)
+            {
+                isStunned = true;
+            }
+        }
     }
 
     @Override
@@ -229,10 +228,13 @@ public class Player extends GameObject {
     {
         for(GameObject go: StaticValues.tempObjects)
         {
-            if(go.isSolid) {
-                if (go.getRect() != null) {
+            if(go.isSolid)
+            {
+                if (go.getRect() != null)
+                {
                     Rect r = new Rect(_p.x, _p.y, _p.x + 100, _p.y + 100);
-                    if (Rect.intersects(go.getRect(),r)) {
+                    if (Rect.intersects(go.getRect(),r))
+                    {
                         return true;
                     }
                 }
