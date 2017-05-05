@@ -3,6 +3,7 @@ package com.example.lp.androidexam;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
@@ -17,7 +18,8 @@ public class SoundManager implements Runnable
 {
     private static final SoundManager instance = new SoundManager();
     private SoundPool soundPool;
-    int shoot = -1;
+
+    private int shoot = -1;
 
     public static SoundManager getInstance()
     {
@@ -60,6 +62,7 @@ public class SoundManager implements Runnable
         switch (_sound)
         {
             case "shoot":
+                // id, leftVol, rightVol, priority(0 = lavest), loopmode(0=no loop, -1 = loop), playback rate
                 soundPool.play(shoot, 1, 1, 0, 0, 1);
                 break;
         }

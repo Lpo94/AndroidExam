@@ -33,7 +33,7 @@ public class Projectile extends GameObject
         frameCount = 28;
 
         soundManager = SoundManager.getInstance();
-        soundManager.playSound("firework");
+        soundManager.playSound("shoot");
 
         removeDelay = (System.nanoTime()) + 2000000000;
         curAnim = Animations.fadeIn;
