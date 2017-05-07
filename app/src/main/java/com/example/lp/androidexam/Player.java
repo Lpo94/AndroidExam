@@ -152,6 +152,7 @@ public class Player extends GameObject {
                     jumping = false;
                     velocity = defaultVelocity ;
                 }
+
             }
             else
             {

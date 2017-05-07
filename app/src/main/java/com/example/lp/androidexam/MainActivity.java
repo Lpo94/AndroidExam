@@ -42,5 +42,7 @@ public class MainActivity extends Activity {
         Intent i = new Intent(this, Menu.class);
         startActivity(i);
         setContentView(R.layout.activity_menu);
+        finish();
+
     }
 }

@@ -24,9 +24,6 @@ public class PowerUpClick extends GameObject {
         frameCount = _frameCount;
         rect = new Rect(100,100,100,100);
 
-
-
-
     }
 
 

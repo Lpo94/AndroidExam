@@ -2,11 +2,14 @@ package com.example.lp.androidexam;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,24 +19,61 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.UUID;
+import java.util.logging.LogRecord;
+
+import static android.content.ContentValues.TAG;
 
 public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
+    static Context _context;
     ArrayAdapter<String> listAdapter;
     ListView listView;
     Set<BluetoothDevice> devicesArray;
-    BluetoothAdapter btAdapter;
+    public static BluetoothAdapter btAdapter;
     ArrayList<String> pairedDevices;
+    ArrayList<BluetoothDevice> devices;
+    public static final int SUCCES_CONNECT = 3;
+    public static final int MESSAGE_READ = 0;
+    public static final int MESSAGE_WRITE = 1;
+    public static final int MESSAGE_TOAST = 2;
+    public static final String TAG = "MY_APP_DEBUG_TAG";
     IntentFilter filter;
     BroadcastReceiver receiver;
+    public static Handler mHandler = new Handler(){
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what)
+            {
+                case SUCCES_CONNECT:
+                    ConnectedThread connectThread = new ConnectedThread((BluetoothSocket)msg.obj);
+                    connectThread.start();
+                    String s = "Succefully connected";
+                    Toast.makeText(_context, s, Toast.LENGTH_SHORT).show();
+
+                    connectThread.write(s.getBytes());
+                    break;
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[])msg.obj;
+                    String st = new String(readBuf);
+                    Toast.makeText(_context, st, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_blue_tooth_menu);
+           setContentView(R.layout.activity_blue_tooth_menu);
         init();
         if(btAdapter == null)
         {
@@ -51,20 +91,22 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
     }
 
     private void init(){
-//        listView =(ListView)findViewById(R.id.listView);
+        _context = this;
+        listView =(ListView)findViewById(R.id.listView);
 //        listView.setOnClickListener();
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,0);
         listView.setAdapter(listAdapter);
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         pairedDevices = new ArrayList<>();
         filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        devices = new ArrayList<>();
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 if(BluetoothDevice.ACTION_FOUND.equals(action)){
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
+                    devices.add(device);
 
                     String s = "";
 
@@ -131,7 +173,7 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         {
             for(BluetoothDevice device:devicesArray)
             {
-                pairedDevices.add(device.getName());
+//                pairedDevices.add(device.getName());
             }
         }
     }
@@ -156,7 +198,9 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         }
         if(listAdapter.getItem(position).contains("(Paired)"))
         {
-//            ConnectThread connect = new ConnectThrea
+            BluetoothDevice selectedDevice =devices.get(position);
+            ConnectThread connect = new ConnectThread(selectedDevice);
+            connect.start();
         }
         else
         {
@@ -164,4 +208,8 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         }
 
     }
+
 }
+
+
+

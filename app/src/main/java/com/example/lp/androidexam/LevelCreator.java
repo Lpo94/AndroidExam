@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
-    public static Context staticContext;
+//    public static Context staticContext;
     private int x;
     private int y;
     private int _i;
@@ -27,7 +27,7 @@ public class LevelCreator {
 
     public LevelCreator(int LevelIndex, Context _context)
     {
-        staticContext = _context;
+//        staticContext = _context;
         if(StaticValues.gameObjects.size() != 0) {
             StaticValues.gameObjects.clear();
         }
@@ -41,7 +41,7 @@ public class LevelCreator {
         {
             case 0:
                 try {
-                    AssetManager mngr = staticContext.getAssets();
+                    AssetManager mngr = StaticValues.staticContext.getAssets();
                     InputStream is = mngr.open("map1.txt");
                     int size = is.available();
                     byte[] buffer = new byte[size];
