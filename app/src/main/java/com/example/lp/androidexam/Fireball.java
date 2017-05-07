@@ -8,7 +8,7 @@ import android.graphics.Point;
  * Created by SharkGaming on 03/05/2017.
  */
 
-public class Projectile extends GameObject
+public class Fireball extends GameObject
 {
     private enum Animations { fadeIn, continous, connecting}
     private Animations curAnim;
@@ -18,7 +18,7 @@ public class Projectile extends GameObject
     private long removeTimer;
     private SoundManager soundManager;
 
-    public Projectile(Player _player)
+    public Fireball(Player _player)
     {
         owner = _player;
         pos = new Point(_player.pos.x + bitmapWidth, _player.pos.y);
@@ -37,7 +37,7 @@ public class Projectile extends GameObject
 
         removeDelay = (System.nanoTime()) + 2000000000;
         curAnim = Animations.fadeIn;
-        setSpeed(10);
+        setSpeed(15);
     }
 
     @Override
@@ -103,9 +103,4 @@ public class Projectile extends GameObject
         StaticValues.tempObjects.remove(this);
     }
 
-    @Override
-    public void draw(Canvas _canvas)
-    {
-        super.draw(_canvas);
-    }
 }

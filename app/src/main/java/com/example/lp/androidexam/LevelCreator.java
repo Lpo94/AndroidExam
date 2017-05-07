@@ -1,16 +1,10 @@
 package com.example.lp.androidexam;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.provider.Settings;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,6 +60,10 @@ public class LevelCreator {
                                 StaticValues.globalPlayer = player;
                                 RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
                                 testLevel.add(counter);
+
+                                PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                                StaticValues.tempObjects.add(test);
+
                                 break;
                             case "B":
                                 if(_i == 3)
@@ -85,13 +83,13 @@ public class LevelCreator {
                                 break;
                             case "D":
                                 if(_i == 7) {
-                                    Power powerspeed = new Power(new Point(23000, 500), 1, 4, R.drawable.powerupcoin, 100, 2);
+                                    PowerupSpeed powerspeed = new PowerupSpeed(new Point(23000, 500), 1, 4, R.drawable.powerupcoin, 100, 2);
                                     testLevel.add(powerspeed);
                                 }
 
                                 else if(_i == 8)
                                 {
-                                    Power powerspeed = new Power (new Point (12700, -100),1, 4, R.drawable.powerupcoin, 100, 2);
+                                    PowerupSpeed powerspeed = new PowerupSpeed(new Point (12700, -100),1, 4, R.drawable.powerupcoin, 100, 2);
                                     testLevel.add(powerspeed);
                                 }
 
@@ -156,6 +154,12 @@ public class LevelCreator {
                                 Goal goal = new Goal (new Point(29000, -1300), 1, 1, R.drawable.goal, 100, 1);
                                 testLevel.add(goal);
                                 break;
+
+                            case "M":
+                                PowerupFireball powerupFireball = new PowerupFireball(new Point(100, 100));
+                                testLevel.add(powerupFireball);
+                                break;
+
 
                             default:
                                 break;

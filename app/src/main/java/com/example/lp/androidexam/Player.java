@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by LP on 19-04-2017.
  */
@@ -21,7 +24,7 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
-    // Til bevægelses anim
+
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
     private Point newPoint, oldPoint;
@@ -31,7 +34,9 @@ public class Player extends GameObject {
     {
         canMove = _value;
     }
-    private boolean isShooting;
+
+    private boolean canShoot, canSprint;
+
 
 
     public Player(Point _pos) {
@@ -47,19 +52,16 @@ public class Player extends GameObject {
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
 
-        isShooting = true;
+/*        isShooting = true; *//*for at skyde*/
+
+// Fjern de 2 herunder og put i LevelCreatoren når vi har fixet hvorfor de ik blir tegnet der
+        PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 3, StaticValues.SCREEN_HEIGHT / 4));
+        StaticValues.tempObjects.add(test);
     }
 
     @Override
     public void update()
     {
-        if(isShooting)
-        {
-            Projectile projectile = new Projectile(this);
-            StaticValues.tempObjects.add(projectile);
-            isShooting = false;
-        }
-
         // Add så animationDelay falder når man har speedboost for at simulere sprint
         if(canMove && newPoint == pos && !isStunned) curAnim = Animations.idle;
         if(canMove && newPoint != pos) curAnim = Animations.walking;
@@ -178,7 +180,11 @@ public class Player extends GameObject {
         {
             colour = new Color().BLUE;
         }
-       if (_other instanceof Power) {
+       if (_other instanceof PowerupSpeed)
+       {
+           canSprint = true;
+           canShoot = false;
+
            PowerUpClick.Clickable=true;
        }
 
@@ -194,11 +200,23 @@ public class Player extends GameObject {
            canMove = false;
        }
 
-        if(_other instanceof Projectile)
+        if(_other instanceof Fireball)
         {
-            if(((Projectile)_other).owner != this)
+            if(((Fireball)_other).owner != this)
             {
                 isStunned = true;
+            }
+        }
+
+        if(_other instanceof PowerupFireball)
+        {
+            if(((PowerupFireball)_other).canPlayerCollect(this))
+            {
+                canShoot = true;
+                canSprint = false;
+
+                // Gør så spilleren kan bruge den
+                PowerUpClick.Clickable=true;
             }
         }
     }
@@ -289,6 +307,21 @@ public class Player extends GameObject {
         frameCount = 14;
     }
 
+    private void usePowerup()
+    {
+        if(canSprint)
+        {
+            // Do sprint
+            canSprint = false;
+        }
+
+        if (canShoot)
+        {
+            Fireball fireball = new Fireball(this);
+            StaticValues.tempObjects.add(fireball);
+            canShoot = false;
+        }
+    }
 
 
 //go.getRect().contains(r)
