@@ -52,16 +52,21 @@ public class Player extends GameObject {
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
 
-/*        isShooting = true; *//*for at skyde*/
-
-// Fjern de 2 herunder og put i LevelCreatoren når vi har fixet hvorfor de ik blir tegnet der
-        PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 3, StaticValues.SCREEN_HEIGHT / 4));
-        StaticValues.tempObjects.add(test);
+        canShoot = true; /*for at skyde*/
     }
 
     @Override
     public void update()
     {
+        if(canShoot)
+        {
+            // Fjern de 2 herunder og put i LevelCreatoren når vi har fixet hvorfor de ik blir tegnet der
+            PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 3, StaticValues.SCREEN_HEIGHT / 4));
+            StaticValues.tempObjects.add(test);
+
+            canShoot = false;
+        }
+
         // Add så animationDelay falder når man har speedboost for at simulere sprint
         if(canMove && newPoint == pos && !isStunned) curAnim = Animations.idle;
         if(canMove && newPoint != pos) curAnim = Animations.walking;
