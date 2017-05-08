@@ -39,7 +39,9 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
     public static final int MESSAGE_READ = 0;
     public static final int MESSAGE_WRITE = 1;
     public static final int MESSAGE_TOAST = 2;
+
     public static final String TAG = "MY_APP_DEBUG_TAG";
+
     IntentFilter filter;
     BroadcastReceiver receiver;
     public static Handler mHandler = new Handler(){
@@ -100,6 +102,12 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         pairedDevices = new ArrayList<>();
         filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         devices = new ArrayList<>();
+
+        Intent discoverableIntent =
+                new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+        startActivity(discoverableIntent);
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -119,7 +127,7 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
                             }
                         }
 
-                    listAdapter.add(device.getName()+" "+s+"\n"+device.getAddress());
+                    listAdapter.add(device.getName());
                 }
                 else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action))
                 {
@@ -173,8 +181,12 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         {
             for(BluetoothDevice device:devicesArray)
             {
-//                pairedDevices.add(device.getName());
+                pairedDevices.add(device.getName());
             }
+        }
+        else {
+            String noDevices = "No Devices Found";
+            pairedDevices.add(noDevices);
         }
     }
     private void turnOnBT()
@@ -185,7 +197,9 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
 
     private void startDiscovery()
     {
-        btAdapter.cancelDiscovery();
+        if(btAdapter.isDiscovering()) {
+            btAdapter.cancelDiscovery();
+        }
         btAdapter.startDiscovery();
     }
 

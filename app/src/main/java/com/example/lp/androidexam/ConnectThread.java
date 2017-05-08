@@ -15,7 +15,7 @@ import static android.content.ContentValues.TAG;
 
 //Found on https://developer.android.com/guide/topics/connectivity/bluetooth.html
 class ConnectThread extends Thread {
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
 
