@@ -18,38 +18,39 @@ import java.util.List;
  * Created by LP on 07-05-2017.
  */
 
-public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice>{
+
+
+public class DeviceListAdapter extends ArrayAdapter<BluetoothDevice> {
+
     private LayoutInflater mLayoutInflater;
     private ArrayList<BluetoothDevice> mDevices;
-    private int mViewReesourceId;
+    private int  mViewResourceId;
 
-
-    public DeviceListAdapter(Context _context, int _tvResourceId, ArrayList<BluetoothDevice> _devices)
-    {
-        super(_context,_tvResourceId,_devices);
-        mDevices = _devices;
-        mLayoutInflater =(LayoutInflater)_context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mViewReesourceId = _tvResourceId;
+    public DeviceListAdapter(Context context, int tvResourceId, ArrayList<BluetoothDevice> devices){
+        super(context, tvResourceId,devices);
+        this.mDevices = devices;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mViewResourceId = tvResourceId;
     }
 
-    public View getView(int _pos, View _convectView, ViewGroup Parent)
-    {
-        _convectView = mLayoutInflater.inflate(mViewReesourceId,null);
-        BluetoothDevice device = mDevices.get(_pos);
-        if(device != null)
-        {
-            TextView deviceName = (TextView)_convectView.findViewById(R.id.tvDeviceName);
-            TextView deviceAdress = (TextView)_convectView.findViewById(R.id.tvDeviceAddress);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = mLayoutInflater.inflate(mViewResourceId, null);
 
-            if(deviceName != null)
-            {
+        BluetoothDevice device = mDevices.get(position);
+
+        if (device != null) {
+            TextView deviceName = (TextView) convertView.findViewById(R.id.tvDeviceName);
+            TextView deviceAdress = (TextView) convertView.findViewById(R.id.tvDeviceAddress);
+
+            if (deviceName != null) {
                 deviceName.setText(device.getName());
             }
-            if(deviceAdress != null)
-            {
+            if (deviceAdress != null) {
                 deviceAdress.setText(device.getAddress());
             }
         }
-        return _convectView;
+
+        return convertView;
     }
+
 }
