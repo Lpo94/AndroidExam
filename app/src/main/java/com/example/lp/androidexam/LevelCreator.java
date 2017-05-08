@@ -58,11 +58,27 @@ public class LevelCreator {
                             case "A":
                                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                                 StaticValues.globalPlayer = player;
+
                                 RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
                                 testLevel.add(counter);
 
-                                PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
-                                StaticValues.tempObjects.add(test);
+                                PowerupFireball test = new PowerupFireball(new Point(111 , 111));
+                                testLevel.add(test);
+
+                                for (int j = 0; j < 30; j++)
+                                {
+                                    MapObject object  = new MapObject(new Point(0+(j*52), 650), MapObject.ObjectType.flat);
+                                    testLevel.add(object);
+                                }
+
+                                MapObject object  = new MapObject(new Point(900, 500), MapObject.ObjectType.box);
+                                MapObject object2  = new MapObject(new Point(952, 500), MapObject.ObjectType.slopingLeft);
+                                MapObject object3  = new MapObject(new Point(1004, 500), MapObject.ObjectType.slopingRight);
+                                MapObject object4 = new MapObject(new Point(1056, 500), MapObject.ObjectType.fence);
+                                testLevel.add(object);
+                                testLevel.add(object2);
+                                testLevel.add(object3);
+                                testLevel.add(object4);
 
                                 break;
                             case "B":
