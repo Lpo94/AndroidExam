@@ -31,19 +31,19 @@ public class Bluetoothv2 extends AppCompatActivity implements AdapterView.OnItem
     public DeviceListAdapter deviceListAdapter;
     ListView listViewDevices;
 
-    // Create a BroadcastReceiver for ACTION_FOUND.
-    private final BroadcastReceiver mReceiver1 = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Discovery has found a device. Get the BluetoothDevice
-                // object and its info from the Intent.
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-            }
-        }
-    };
+//    // Create a BroadcastReceiver for ACTION_FOUND.
+//    private final BroadcastReceiver mReceiver1 = new BroadcastReceiver() {
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+//                // Discovery has found a device. Get the BluetoothDevice
+//                // object and its info from the Intent.
+//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+//                String deviceName = device.getName();
+//                String deviceHardwareAddress = device.getAddress(); // MAC address
+//            }
+//        }
+//    };
 
     // Create a BroadcastReceiver for ACTION_FOUND.
     private final BroadcastReceiver mReceiver2 = new BroadcastReceiver() {
@@ -102,7 +102,6 @@ public class Bluetoothv2 extends AppCompatActivity implements AdapterView.OnItem
         super.onDestroy();
 
         // Don't forget to unregister the ACTION_FOUND receiver.
-        unregisterReceiver(mReceiver1);
         unregisterReceiver(mReceiver2);
         unregisterReceiver(mReceiver3);
         unregisterReceiver(mReceiver4);
@@ -116,7 +115,7 @@ public class Bluetoothv2 extends AppCompatActivity implements AdapterView.OnItem
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         listViewDevices = (ListView)findViewById(R.id.listView);
         btDevices = new ArrayList<>();
-        listViewDevices.setOnItemClickListener(this);
+        listViewDevices.setOnItemClickListener(Bluetoothv2.this);
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mReceiver4,filter);
@@ -130,10 +129,8 @@ public class Bluetoothv2 extends AppCompatActivity implements AdapterView.OnItem
             {
                 Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(intent,1);
-
-                IntentFilter BTItent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-                registerReceiver(mReceiver1,BTItent);
             }
+
         }
 
     }
