@@ -24,6 +24,7 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
+    MainActivity mainActivity;
 
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
@@ -123,6 +124,7 @@ public class Player extends GameObject {
             timer --;
         }
 
+
         else if(timer <= 0 && slowed == true)
         {
             speed = 2;
@@ -177,6 +179,7 @@ public class Player extends GameObject {
                 velocity -= StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }
         }
+
     }
 
     @Override
@@ -230,7 +233,13 @@ public class Player extends GameObject {
     @Override
     public void draw(Canvas _canvas) {
         super.draw(_canvas);
+/*        Paint paint = new Paint();
+        paint.setColor(colour);
+        _canvas.drawRect(rect,paint);
 
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(48);
+        _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);*/
 
     }
 
@@ -246,6 +255,7 @@ public class Player extends GameObject {
             jumping = true;
         }
     }
+
 
 
     private boolean isObjectSolid(Point _p)
@@ -332,3 +342,6 @@ public class Player extends GameObject {
 
 //go.getRect().contains(r)
 }
+
+
+

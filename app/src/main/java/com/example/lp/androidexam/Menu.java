@@ -16,7 +16,7 @@ public class Menu extends AppCompatActivity {
 
     public void Start(View v)
     {
-        Intent i = new Intent(this, Bluetoothv2.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 

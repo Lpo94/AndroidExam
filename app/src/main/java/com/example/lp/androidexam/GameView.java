@@ -1,14 +1,18 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -23,7 +27,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private long frameTime;
     private LevelCreator levelCreator;
     private static GameView instance;
-    private SoundManager soundManager;
+    MainActivity mainActivity;
 
     public static int globalxSpeed = 1;
 
@@ -45,8 +49,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             StaticValues.staticContext = context;
             gestureDetector = new GestureDetector(context, new GestureListener());
             gestureDetector.setIsLongpressEnabled(true);
-            soundManager = SoundManager.getInstance();
-            soundManager.loadSounds(context);
+
             newGame();
     }
 
@@ -81,33 +84,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void draw(Canvas _canvas)
-    {
+    public void draw(Canvas _canvas) {
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
-        Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen2);
-        Bitmap  powerScreenDefeault= BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen1);
-
         for(GameObject go: StaticValues.tempObjects)
-                {
+        {
             go.draw(_canvas);
         }
-        if(StaticValues.globalPlayer != null)
-        {
+        if(StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.draw(_canvas);
-        }
-        if (PowerUpClick.Clickable == true)
-        {
-
-            _canvas.drawBitmap(powerScreenSpeed,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
-            powerScreenDefeault.recycle();
-
-        }
-        if (PowerUpClick.Clickable == false)
-        {
-            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH/2 -50, 150, null);
-            powerScreenSpeed.recycle();
         }
 
     }
@@ -125,15 +111,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                                 StaticValues.globalPlayer.setDirection(-1);
                             } else if (x > StaticValues.SCREEN_WIDTH / 2) {
                                 StaticValues.globalPlayer.setDirection(1);
-                            }
-                            if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
-                            {
-
-                                StaticValues.globalPlayer.speed += 0.5;
-                                PowerUpClick.Clickable = false;
-
-
-
                             }
                         }
                     }
@@ -165,6 +142,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
+        for(GameObject go: StaticValues.objectsToRemove)
+        {
+            if(StaticValues.gameObjects.contains(go))
+            {
+                StaticValues.gameObjects.remove(go);
+            }
+        }
 
         for(GameObject go: StaticValues.tempObjects)
         {
@@ -182,14 +166,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
             StaticValues.globalPlayer.onCollisionExit();
 
-        }
-
-        for(GameObject go: StaticValues.objectsToRemove)
-        {
-            if(StaticValues.gameObjects.contains(go))
-            {
-                StaticValues.gameObjects.remove(go);
-            }
         }
 
         StaticValues.objectsToRemove.clear();

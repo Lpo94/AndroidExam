@@ -19,6 +19,7 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends Activity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +38,8 @@ public class MainActivity extends Activity {
     }
 
 
-    public void back()
+    public static void back()
     {
-        Intent i = new Intent(this, Menu.class);
-        startActivity(i);
-        setContentView(R.layout.activity_menu);
-        finish();
 
     }
 }
