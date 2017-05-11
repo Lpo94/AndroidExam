@@ -5,16 +5,14 @@ import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.Toast;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by LP on 19-04-2017.
  */
@@ -22,7 +20,7 @@ import java.util.List;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
-    private int x = 2;
+private int x = 2;
     private int y = 24;
     private int xPos;
     private int yPos;
@@ -73,7 +71,7 @@ public class LevelCreator {
                             map[i][j] = object;
                         }
                     }
-                    
+
 
 /*                    int size = is.available();
                     byte[] buffer = new byte[size];
@@ -98,25 +96,45 @@ public class LevelCreator {
                         _i++;
                         switch (map[x][y]) {
                             case "A":
-                                Player player = new Player(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                                Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                                 StaticValues.globalPlayer = player;
-                                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
+
+                                RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
                                 testLevel.add(counter);
 
-                                PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
-                                StaticValues.tempObjects.add(test);
+                                PowerUp fireballup = new PowerUp(new Point(111, 211), PowerUp.PowerUpType.fireball);
+                                testLevel.add(fireballup);
+
+                                PowerUp speedup = new PowerUp(new Point(333, 211), PowerUp.PowerUpType.speed);
+                                testLevel.add(speedup);
+
+                                for (int j = 0; j < 100; j++)
+                                {
+                                    MapObject object  = new MapObject(new Point(-500+(j*52), 650), MapObject.ObjectType.flat);
+                                    testLevel.add(object);
+                                }
+
+                                MapObject object  = new MapObject(new Point(900, 500), MapObject.ObjectType.box);
+                                testLevel.add(object);
+                                MapObject object2  = new MapObject(new Point(952, 500), MapObject.ObjectType.slopingLeft);
+                                testLevel.add(object2);
+                                MapObject object3  = new MapObject(new Point(1004, 500), MapObject.ObjectType.slopingRight);
+                                testLevel.add(object3);
+                                MapObject object4 = new MapObject(new Point(1056, 500), MapObject.ObjectType.fence);
+                                testLevel.add(object4);
 
 
                                 break;
                             case "B":
-                                if (_i == 3) {
-                                    xPos = 10500;
-                                    yPos = 800;
+                                if(_i == 3)
+                                {
+                                    x = 10500;
+                                    y = 800;
                                 }
-                                if (_i < 7) {
-                                    Mud mud = new Mud(new Point(xPos, yPos), 1, 12, R.drawable.mud, 150, 11);
+                                if(_i < 7) {
+                                    Mud mud = new Mud(new Point(x, y), 1, 12, R.drawable.mud, 150, 11);
                                     testLevel.add(mud);
-                                    xPos += 1200;
+                                    x += 1200;
                                 }
                                 break;
                             case "C":
@@ -124,12 +142,15 @@ public class LevelCreator {
                                 testLevel.add(ground);
                                 break;
                             case "D":
-                                if (_i == 7) {
-                                    PowerupSpeed powerspeed = new PowerupSpeed(new Point(23000, 500), 1, 4, R.drawable.powerupcoin, 100, 2);
-                                    testLevel.add(powerspeed);
-                                } else if (_i == 8) {
-                                    PowerupSpeed powerspeed = new PowerupSpeed(new Point(12700, -100), 1, 4, R.drawable.powerupcoin, 100, 2);
-                                    testLevel.add(powerspeed);
+                                if(_i == 7) {
+                                    PowerUp speed = new PowerUp(new Point(23000, 500), PowerUp.PowerUpType.speed);
+                                    testLevel.add(speed);
+                                }
+
+                                else if(_i == 8)
+                                {
+                                    PowerUp speed2 = new PowerUp(new Point(12700, -100), PowerUp.PowerUpType.speed);
+                                    testLevel.add(speed2);
                                 }
 
 
@@ -139,21 +160,24 @@ public class LevelCreator {
                                 testLevel.add(ground);
                                 break;
                             case "G":
-                                if (_i == 10) {
-                                    xPos = 8300;
-                                    yPos = 650;
+                                if(_i == 10)
+                                {
+                                    x = 8300;
+                                    y = 650;
                                 }
-                                if (_i < 12) {
-                                    ground = new Ground(new Point(xPos, yPos), new Rect(1, 1, 1900, 100));
+                                if(_i < 12) {
+                                    ground = new Ground(new Point(x, y), new Rect(1, 1, 1900, 100));
                                     testLevel.add(ground);
-                                    yPos -= 300;
-                                    xPos += 2200;
+                                    y -= 300;
+                                    x += 2200;
 
-                                } else if (_i >= 12) {
-                                    ground = new Ground(new Point(xPos, yPos), new Rect(1, 1, 1900, 100));
+                                }
+                                else if(_i >= 12)
+                                {
+                                    ground = new Ground(new Point(x, y), new Rect(1, 1, 1900, 100));
                                     testLevel.add(ground);
-                                    yPos += 300;
-                                    xPos += 2200;
+                                    y += 300;
+                                    x += 2200;
                                 }
                                 break;
                             case "H":
@@ -162,16 +186,18 @@ public class LevelCreator {
                                 break;
 
                             case "I":
-                                if (_i == 16) {
-                                    xPos = 21500;
-                                    yPos = 550;
+                                if(_i == 16)
+                                {
+                                    x = 21500;
+                                    y = 550;
                                 }
 
-                                if (_i < 22) {
-                                    ground = new Ground(new Point(xPos, yPos), new Rect(1, 1, 1100, 100));
+                                if(_i < 22)
+                                {
+                                    ground = new Ground(new Point(x, y), new Rect(1, 1, 1100, 100));
                                     testLevel.add(ground);
-                                    xPos += 1500;
-                                    yPos -= 300;
+                                    x += 1500;
+                                    y -= 300;
                                 }
                                 break;
 
@@ -185,21 +211,22 @@ public class LevelCreator {
                                 testLevel.add(ground);
                                 break;
                             case "L":
-                                Goal goal = new Goal(new Point(29000, -1300), 1, 1, R.drawable.goal, 100, 1);
+                                Goal goal = new Goal (new Point(29000, -1300), 1, 1, R.drawable.goal, 100, 1);
                                 testLevel.add(goal);
                                 break;
 
                             case "M":
-                                PowerupFireball powerupFireball = new PowerupFireball(new Point(100, 100));
-                                testLevel.add(powerupFireball);
+                                PowerUp pwUP = new PowerUp(new Point(100, 100), PowerUp.PowerUpType.fireball);
+                                testLevel.add(pwUP);
                                 break;
 
-/*                            case "P":
+
+                          /*  case "P":
                                 try {
                                     line = br.readLine();
 
                                     //split = line.split(",");
-                                    //lineNumber ++;*//*
+                                    //lineNumber ++;*//**//*
                                 } catch (IOException ex) {
                                     ex.printStackTrace();
                                 }
@@ -210,7 +237,6 @@ public class LevelCreator {
                                 break;
                         }
                     }
-                }
                 currentLevel = testLevel;
         }
 

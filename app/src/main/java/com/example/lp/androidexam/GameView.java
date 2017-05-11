@@ -1,19 +1,19 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-
 import java.util.ArrayList;
 
 /**
@@ -27,6 +27,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private long frameTime;
     private LevelCreator levelCreator;
     private static GameView instance;
+    private SoundManager soundManager;
     MainActivity mainActivity;
 
     public static int globalxSpeed = 1;
@@ -49,7 +50,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             StaticValues.staticContext = context;
             gestureDetector = new GestureDetector(context, new GestureListener());
             gestureDetector.setIsLongpressEnabled(true);
-
+            soundManager = SoundManager.getInstance();
+            soundManager.loadSounds(context);
             newGame();
     }
 
@@ -84,16 +86,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void draw(Canvas _canvas) {
+    public void draw(Canvas _canvas)
+    {
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
+        // De her bitmaps behøver ikke blive sat hver frame gør de?
+        Bitmap  powerScreenDefeault = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen1);
+        Bitmap  powerScreenSpeed = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen2);
+        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
+
         for(GameObject go: StaticValues.tempObjects)
-        {
+                {
             go.draw(_canvas);
         }
-        if(StaticValues.globalPlayer != null) {
+        if(StaticValues.globalPlayer != null)
+        {
             StaticValues.globalPlayer.draw(_canvas);
+        }
+        if (PowerUpClick.Clickable == true)
+        {
+            if(StaticValues.globalPlayer.canShoot)
+            {
+                _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+            }
+
+            if(StaticValues.globalPlayer.canSprint)
+            {
+                _canvas.drawBitmap(powerScreenSpeed,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+            }
+            powerScreenDefeault.recycle();
+        }
+        if (PowerUpClick.Clickable == false)
+        {
+            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH/2 -50, 150, null);
+            powerScreenSpeed.recycle();
         }
 
     }
@@ -104,6 +131,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         int y = (int)event.getY();
         if(StaticValues.endgame == false) {
             switch (event.getAction()) {
+
                 case MotionEvent.ACTION_DOWN:
                     if (gestureDetector.onTouchEvent(event)) {
                         if (StaticValues.globalPlayer != null) {
@@ -111,6 +139,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                                 StaticValues.globalPlayer.setDirection(-1);
                             } else if (x > StaticValues.SCREEN_WIDTH / 2) {
                                 StaticValues.globalPlayer.setDirection(1);
+                            }
+                            if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
+                            {
+                                StaticValues.globalPlayer.speed += 0.5;
+                /*                StaticValues.globalPlayer.usePowerup();*/
+                                PowerUpClick.Clickable = false;
                             }
                         }
                     }
@@ -138,17 +172,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public void update()
     {
         StaticValues.tempObjects = StaticValues.gameObjects;
+        StaticValues.currentTime = System.currentTimeMillis();
 
         StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
-        for(GameObject go: StaticValues.objectsToRemove)
-        {
-            if(StaticValues.gameObjects.contains(go))
-            {
-                StaticValues.gameObjects.remove(go);
-            }
-        }
 
         for(GameObject go: StaticValues.tempObjects)
         {
@@ -166,6 +194,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
             StaticValues.globalPlayer.onCollisionExit();
 
+        }
+
+        for(GameObject go: StaticValues.objectsToRemove)
+        {
+            if(StaticValues.gameObjects.contains(go))
+            {
+                StaticValues.gameObjects.remove(go);
+            }
         }
 
         StaticValues.objectsToRemove.clear();

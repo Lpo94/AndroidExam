@@ -39,6 +39,10 @@ public class StaticValues {
 
     public static boolean endgame;
 
+    // Longs
+
+    public static long currentTime;
+
 
     // Smaller things such as Contexts and similar
     public static Context staticContext;

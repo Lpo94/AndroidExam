@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Matrix;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  */
 
 public class Player extends GameObject {
-
+    // Generel
     public int colour;
     public boolean canMove;
     private boolean falling;
@@ -25,26 +27,31 @@ public class Player extends GameObject {
     private float defaultVelocity;
     private int direction = 0;
     MainActivity mainActivity;
-
+    // Animation
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
     private Point newPoint, oldPoint;
     private boolean isStunned; // skal sættes hvis stunned sakl være længere tid en stun animationen for at få den til at loope.
-    private boolean isFalling; // skal sættes det øjeblik spilleren bliver stunned, den kører selv automatisk videre til stunned efter.
+    private boolean startingStun; // skal sættes det øjeblik spilleren bliver stunned, den kører selv automatisk videre til stunned efter.
+    private long stunDelay;
+
+    // Powerup
+    public boolean canShoot, canSprint, isSprinting;
+    public PowerUp currentPowerup;
+    public long sprintTimer;
+
+
     public void setCanmove(boolean _value)
     {
         canMove = _value;
     }
-
-    private boolean canShoot, canSprint;
-
 
 
     public Player(Point _pos) {
         super();
         pos = _pos;
         rect = new Rect(100,100,200,200);
-        speed = 2;
+        speed = 0.5f;
         defaultVelocity = velocity;
         colour = new Color().GREEN;
         canMove = false;
@@ -53,64 +60,39 @@ public class Player extends GameObject {
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
 
-        /*canShoot = true; *//*for at skyde*/
+        currentPowerup = new PowerUp(new Point(0, 0), PowerUp.PowerUpType.none);
     }
 
     @Override
     public void update()
     {
-      /*  if(canShoot)
-        {
-            // Fjern de 2 herunder og put i LevelCreatoren når vi har fixet hvorfor de ik blir tegnet der
-            PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 3, StaticValues.SCREEN_HEIGHT / 4));
-            StaticValues.tempObjects.add(test);
+        manageAnimationStates();
 
-            canShoot = false;
-        }*/
+        oldPoint = pos;
 
         // Add så animationDelay falder når man har speedboost for at simulere sprint
-        if(canMove && newPoint == pos && !isStunned) curAnim = Animations.idle;
-        if(canMove && newPoint != pos) curAnim = Animations.walking;
-        if(isFalling) curAnim = Animations.falling;
-        if(isStunned) curAnim = Animations.stunned;
+        if(canMove && newPoint == oldPoint && !isStunned)
+        {
+            curAnim = Animations.idle;
+        }
+        if(canMove && newPoint != oldPoint)
+        {
+            curAnim = Animations.walking;
+        }
+
         newPoint = pos;
 
-        elapsedTime = (System.nanoTime() -startTime) / 1000000;
-        if(elapsedTime > animationDelay)
+        if(startingStun)
         {
-            currentFrame++;
-            startTime = System.nanoTime();
-
-            switch (curAnim)
-            {
-
-                case idle:
-                    currentFrame = 0;
-                    break;
-
-                case walking:
-                    if (currentFrame > 6)
-                    {
-                        currentFrame = 1;
-                    }
-                    break;
-
-                case falling:
-                    if (currentFrame > 10)
-                    {
-                        isFalling = false;
-                        isStunned = true;
-                    }
-                    break;
-
-                case stunned:
-                    if (currentFrame > 13)
-                    {
-                        currentFrame = 10;
-                    }
-                    break;
-            }
+            stunTimer();
+            canMove = false;
+            canShoot = false;
+            canSprint = false;
         }
+
+        if(isSprinting) sprint();
+
+
 
 
         if(rect != null)
@@ -123,7 +105,6 @@ public class Player extends GameObject {
         {
             timer --;
         }
-
 
         else if(timer <= 0 && slowed == true)
         {
@@ -182,65 +163,127 @@ public class Player extends GameObject {
 
     }
 
+    private void manageAnimationStates()
+    {
+        elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
+
+        if(elapsedTime > animationDelay)
+        {
+            currentFrame++;
+
+            switch (curAnim)
+            {
+                case idle:
+                    currentFrame = 0;
+                    break;
+
+                case walking:
+                    if (currentFrame > 6)
+                    {
+                        currentFrame = 1;
+                    }
+                    break;
+
+                case falling:
+                    if (currentFrame > 10)
+                    {
+                        startingStun = false;
+                        isStunned = true;
+                        curAnim = Animations.stunned;
+                        stunDelay = System.nanoTime() + 3000;
+                    }
+                    break;
+
+                case stunned:
+                    if (currentFrame > 13)
+                    {
+                        currentFrame = 10;
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void stunTimer()
+    {
+
+        if(StaticValues.currentTime > stunDelay)
+        {
+            isStunned = false;
+        }
+    }
+
+    public void sprint()
+    {
+        speed = 2;
+
+        if(StaticValues.currentTime > sprintTimer)
+        {
+            isSprinting = false;
+            speed = 0.5f;
+        }
+    }
+
     @Override
     protected void doCollision(GameObject _other) {
         super.doCollision(_other);
+
         if(_other instanceof FireObject)
         {
             colour = new Color().BLUE;
         }
-       if (_other instanceof PowerupSpeed)
-       {
-           canSprint = true;
-           canShoot = false;
 
-           PowerUpClick.Clickable=true;
-       }
+        if(_other instanceof Mud)
+        {
+            speed = 1;
+            slowed = true;
+            timer = 10;
+        }
 
-       if(_other instanceof Mud)
-       {
-           speed = 1;
-           slowed = true;
-           timer = 10;
-       }
-
-       if(_other instanceof Goal)
-       {
-           canMove = false;
-       }
+        if(_other instanceof Goal)
+        {
+            canMove = false;
+        }
 
         if(_other instanceof Fireball)
         {
             if(((Fireball)_other).owner != this)
             {
-                isStunned = true;
+                startingStun = true;
             }
         }
 
-        if(_other instanceof PowerupFireball)
+        if(_other instanceof PowerUp)
         {
-            if(((PowerupFireball)_other).canPlayerCollect(this))
+            if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball && ((PowerUp) _other).canPlayerCollect(this))
             {
-                canShoot = true;
-                canSprint = false;
+                currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
+                PowerUpClick.Clickable = true;
+            }
 
-                // Gør så spilleren kan bruge den
-                PowerUpClick.Clickable=true;
+            if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed && ((PowerUp) _other).canPlayerCollect(this))
+            {
+                currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
+                PowerUpClick.Clickable = true;
             }
         }
     }
 
     @Override
-    public void draw(Canvas _canvas) {
-        super.draw(_canvas);
-/*        Paint paint = new Paint();
-        paint.setColor(colour);
-        _canvas.drawRect(rect,paint);
+    public void draw(Canvas _canvas)
+    {
 
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(48);
-        _canvas.drawText("X:" + pos.x + " Y:" + pos.y,pos.x,pos.y,paint);*/
+        if(bitmap != null)
+        {
+            int sourceY = direction * bitmapHeight;
+            int sourceX = currentFrame * bitmapWidth;
 
+            Rect sourceRect = new Rect(sourceX, sourceY, sourceX + bitmapWidth, sourceY + bitmapHeight);
+            rect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);
+
+            _canvas.drawBitmap(bitmap, sourceRect, rect, null);
+
+        }
     }
 
     //-1 = left, 1 = right;
@@ -255,8 +298,6 @@ public class Player extends GameObject {
             jumping = true;
         }
     }
-
-
 
     private boolean isObjectSolid(Point _p)
     {
@@ -277,8 +318,7 @@ public class Player extends GameObject {
         return  false;
     }
 
-
-// Skal implementeres færdigt når multiplayer er færdigt og added.
+    // Skal implementeres færdigt når multiplayer er færdigt og added.
     private int getPlayerNumber()
     {
  /*       for (int i = 0; i < rooom.participants.lenght; i++)
@@ -323,25 +363,11 @@ public class Player extends GameObject {
         frameCount = 14;
     }
 
-    private void usePowerup()
+    public void usePowerup()
     {
-        if(canSprint)
-        {
-            // Do sprint
-            canSprint = false;
-        }
-
-        if (canShoot)
-        {
-            Fireball fireball = new Fireball(this);
-            StaticValues.tempObjects.add(fireball);
-            canShoot = false;
-        }
+        currentPowerup.use(this);
     }
 
 
 //go.getRect().contains(r)
 }
-
-
-
