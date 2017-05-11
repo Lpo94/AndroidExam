@@ -143,7 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                             if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
                             {
                                 StaticValues.globalPlayer.speed += 0.5;
-                /*                StaticValues.globalPlayer.usePowerup();*/
+                                StaticValues.globalPlayer.usePowerup();
                                 PowerUpClick.Clickable = false;
                             }
                         }

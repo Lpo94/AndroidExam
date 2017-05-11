@@ -269,22 +269,6 @@ public class Player extends GameObject {
         }
     }
 
-    @Override
-    public void draw(Canvas _canvas)
-    {
-
-        if(bitmap != null)
-        {
-            int sourceY = direction * bitmapHeight;
-            int sourceX = currentFrame * bitmapWidth;
-
-            Rect sourceRect = new Rect(sourceX, sourceY, sourceX + bitmapWidth, sourceY + bitmapHeight);
-            rect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);
-
-            _canvas.drawBitmap(bitmap, sourceRect, rect, null);
-
-        }
-    }
 
     //-1 = left, 1 = right;
     public void setDirection(int _direction)

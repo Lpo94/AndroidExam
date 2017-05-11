@@ -20,7 +20,7 @@ import java.util.List;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
-private int x = 2;
+    private int x = 2;
     private int y = 24;
     private int xPos;
     private int yPos;
@@ -245,4 +245,5 @@ private int x = 2;
             StaticValues.gameObjects.add(go);
         }
     }
+}
 }
