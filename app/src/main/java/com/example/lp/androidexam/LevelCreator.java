@@ -98,6 +98,7 @@ public class LevelCreator {
                             case "A":
                                 Player player = new Player(new Point(StaticValues.SCREEN_WIDTH/2,StaticValues.SCREEN_HEIGHT/2));
                                 StaticValues.globalPlayer = player;
+                                StaticValues.allPlayers.add(player);
 
                                 RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5) ,1, 6, R.drawable.countdown, 1000, 7);
                                 testLevel.add(counter);
@@ -123,6 +124,8 @@ public class LevelCreator {
                                 MapObject object4 = new MapObject(new Point(1056, 500), MapObject.ObjectType.fence);
                                 testLevel.add(object4);
 
+                                Goal testgoal = new Goal (new Point(500, 500), 1, 1, R.drawable.goal, 100, 1);
+                                testLevel.add(testgoal);
 
                                 break;
                             case "B":

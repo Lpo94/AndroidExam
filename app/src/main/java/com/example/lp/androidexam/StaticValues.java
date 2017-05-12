@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class StaticValues {
     //Player
     public static Player globalPlayer;
+    public static ArrayList<Player> allPlayers;
 
     //Lists
     public static ArrayList<GameObject> colliders;

@@ -32,6 +32,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public static int globalxSpeed = 1;
 
+    public GameThread getGameThreadThread()
+    {
+        return gameThreadThread;
+    }
+
     public static GameView Instance(Context context)
     {
         if(instance == null)
@@ -42,7 +47,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             return instance;
     }
 
-    private GameView(Context context) {
+    private GameView(Context context)
+    {
         super(context);
             getHolder().addCallback(this);
             gameThreadThread = new GameThread(getHolder(), this);
@@ -69,7 +75,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(SurfaceHolder holder)
+    {
         while(true)
         {
             boolean retry = true;
@@ -91,7 +98,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
-        // De her bitmaps behøver ikke blive sat hver frame gør de?
+        // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
         Bitmap  powerScreenDefeault = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen1);
         Bitmap  powerScreenSpeed = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen2);
         Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
@@ -129,15 +136,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int)event.getX();
         int y = (int)event.getY();
-        if(StaticValues.endgame == false) {
-            switch (event.getAction()) {
+        if(StaticValues.endgame == false)
+        {
+            switch (event.getAction())
+            {
 
                 case MotionEvent.ACTION_DOWN:
-                    if (gestureDetector.onTouchEvent(event)) {
-                        if (StaticValues.globalPlayer != null) {
-                            if (x < StaticValues.SCREEN_WIDTH / 2) {
+                    if (gestureDetector.onTouchEvent(event))
+                    {
+                        if (StaticValues.globalPlayer != null)
+                        {
+                            if (x < StaticValues.SCREEN_WIDTH / 2)
+                            {
                                 StaticValues.globalPlayer.setDirection(-1);
-                            } else if (x > StaticValues.SCREEN_WIDTH / 2) {
+                            } else if (x > StaticValues.SCREEN_WIDTH / 2)
+                            {
                                 StaticValues.globalPlayer.setDirection(1);
                             }
                             if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
@@ -234,6 +247,4 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             go.pos.y = go.pos.y + y;
         }
     }
-
-
 }

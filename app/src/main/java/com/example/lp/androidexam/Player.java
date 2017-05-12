@@ -243,6 +243,7 @@ public class Player extends GameObject {
         if(_other instanceof Goal)
         {
             canMove = false;
+            ((Goal) _other).addPlayerToList(this);
         }
 
         if(_other instanceof Fireball)
