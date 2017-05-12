@@ -29,6 +29,10 @@ public class StaticValues {
 
     public static int deltaTime;
 
+    public static int gridWidth = 60;
+
+    public static int gridHeight = 60;
+
     //Floats
     public static float WORLD_SPEED;
 

@@ -82,7 +82,8 @@ public abstract class GameObject {
 
         if(rect != null)
         {
-            rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2, pos.x+rect.width()/2,pos.y+rect.height()/2);
+            rect.set(pos.x,pos.y,pos.x+rect.width(),pos.y+rect.height());
+            //rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2, pos.x+rect.width()/2,pos.y+rect.height()/2);
         }
     }
 
