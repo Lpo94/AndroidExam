@@ -13,7 +13,7 @@ import android.graphics.Rect;
 public class Platform extends GameObject {
 
     private boolean direction = false;
-    private int timer = -10;
+    private int timer = -15;
     public Platform(Point _pos, Rect _rect, Boolean _direction)
     {
         isSolid = true;
@@ -49,8 +49,9 @@ public class Platform extends GameObject {
 
         if(timer >= 10)
         {
-            timer = -10;
+            timer = -15;
         }
+
 
     }
 
