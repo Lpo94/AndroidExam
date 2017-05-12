@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class StaticValues {
     //Player
     public static Player globalPlayer;
+    public static ArrayList<Player> allPlayers;
 
     //Lists
     public static ArrayList<GameObject> colliders;
@@ -42,6 +43,10 @@ public class StaticValues {
     public static boolean gameRunning = false;
 
     public static boolean endgame;
+
+    // Longs
+
+    public static long currentTime;
 
 
     // Smaller things such as Contexts and similar

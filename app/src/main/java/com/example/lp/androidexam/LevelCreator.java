@@ -5,19 +5,17 @@ import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.widget.Toast;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by LP on 19-04-2017.
  */
@@ -37,10 +35,7 @@ public class LevelCreator {
 
 
     String object;
-
     String line;
-    String prevObject = "";
-    String currentObject;
     String[] split;
     AssetManager mngr;
     InputStream is;

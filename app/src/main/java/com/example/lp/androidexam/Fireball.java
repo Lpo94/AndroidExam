@@ -37,7 +37,7 @@ public class Fireball extends GameObject
 
         removeDelay = (System.nanoTime()) + 2000000000;
         curAnim = Animations.fadeIn;
-        setSpeed(15);
+        setSpeed(50);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Fireball extends GameObject
         lifeTimer();
         if(curAnim == Animations.continous) pos.x += projectileSpeed;
 
-        elapsedTime = (System.nanoTime() -startTime) / 1000000;
+        elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
         if(rect != null)
         {
             rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2, pos.x+rect.width()/2,pos.y+rect.height()/2);
@@ -55,7 +55,6 @@ public class Fireball extends GameObject
         if(elapsedTime > animationDelay)
         {
             currentFrame++;
-            startTime = System.nanoTime();
 
             switch (curAnim)
             {

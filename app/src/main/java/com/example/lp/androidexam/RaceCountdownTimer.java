@@ -31,12 +31,12 @@ public class RaceCountdownTimer extends GameObject
         if(frameCount > 1)
         {
 
-            long elapsedTime = (System.nanoTime() -startTime) / 1000000;
+            long elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
 
             if(elapsedTime > animationDelay)
             {
                 currentFrame++;
-                startTime = System.nanoTime();
+                StaticValues.currentTime = System.nanoTime();
 
                 if(currentFrame > frameCount)
                 {

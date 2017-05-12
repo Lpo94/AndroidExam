@@ -1,6 +1,7 @@
 package com.example.lp.androidexam;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,31 +29,46 @@ public abstract class GameObject {
     protected int direction = 0;
     protected int rowsInSheet;
     protected int columnsInSheet;
-    protected long startTime;
     protected long animationDelay;
     protected int frameCount;
     protected long elapsedTime;
-
-    public void setAnimationDelay(long _value)
-    {
-        animationDelay = _value;
-    }
 
     public GameObject()
     {
         colliders = new ArrayList<>();
     }
-
     public Point getPos()
     {
         return pos;
     }
-
-    public Point setPos(Point _pos)
+    public void setPos(Point _pos)
     {
         pos = _pos;
-        return pos;
     }
+    public void setBitmap(int _bitmapId)
+    {
+        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
+    }
+    public void setRowsInSheet(int _rows)
+    {
+        rowsInSheet = _rows;
+    }
+    public void setColumnsInSheet(int _columns)
+    {
+        columnsInSheet = _columns;
+    }
+    public void setbitmapHeight()
+    {
+       bitmapHeight = bitmap.getHeight() / rowsInSheet;
+    }
+    public void setbitmapWidth() { bitmapWidth = bitmap.getWidth() / columnsInSheet;}
+    public void setAnimationDelay(long _delay)
+    {
+        animationDelay = _delay;
+    }
+    public void setFrameCount(int _frameCount) {frameCount = _frameCount;}
+
+
 
     public Rect getRect()
     {
@@ -66,12 +82,11 @@ public abstract class GameObject {
         if(frameCount > 1)
         {
 
-            elapsedTime = (System.nanoTime() -startTime) / 1000000;
+            elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
 
             if(elapsedTime > animationDelay)
             {
                 currentFrame++;
-                startTime = System.nanoTime();
 
                 if(currentFrame > frameCount)
                 {
