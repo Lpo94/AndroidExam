@@ -324,11 +324,11 @@ public class Player extends GameObject {
         switch (_playerNumber)
         {
             case 1:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_cow);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.cow_sheet);
                 break;
 
             case 2:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_dino);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.dino_sheet);
                 break;
 
             case 3:
@@ -336,7 +336,7 @@ public class Player extends GameObject {
                 break;
 
             case 4:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_parrot);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.parrot_sheet);
                 break;
         }
 
