@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return gameThreadThread;
     }
 
-    public static GameView Instance(Context context)
+    public static GameView getInstance(Context context)
     {
         if(instance == null)
         {
@@ -224,6 +224,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public void newGame()
     {
+            StaticValues.allPlayers = new ArrayList<>();
             StaticValues.colliders = new ArrayList<>();
             StaticValues.gameObjects = new ArrayList<>();
             StaticValues.objectsToRemove = new ArrayList<>();

@@ -54,7 +54,6 @@ public class StaticValues {
     public static boolean endgame;
 
     // Longs
-
     public static long currentTime;
 
 
