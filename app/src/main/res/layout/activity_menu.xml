@@ -36,8 +36,5 @@
         android:layout_marginTop="51dp"
         android:background="@drawable/buttons"
         android:onClick="Exit"
-        android:text="Exit Game"
-        android:layout_marginTop="51dp"
-        android:layout_below="@+id/HTP_button"
-        android:layout_centerHorizontal="true" />
+        android:text="Exit Game" />
 </RelativeLayout>

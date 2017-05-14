@@ -16,9 +16,8 @@ import android.widget.Button;
 
 public class Menu extends Fragment {
 
-    public Button StartButton, HowTo, Exit;
+    public Button StartButton, HowTo, Exit,list, connection, visible, send, discover;
     public View view;
-    HowTo howTo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,6 +25,18 @@ public class Menu extends Fragment {
         StartButton = (Button) view.findViewById(R.id.Start_button);
         HowTo = (Button) view.findViewById(R.id.HTP_button);
         Exit = (Button) view.findViewById(R.id.Exit_button);
+/*        list = (Button) view.findViewById(R.id.btnlist);
+        connection = (Button) view.findViewById(R.id.btnStartConnection);
+        visible = (Button) view.findViewById(R.id.btnvisible);
+        send = (Button) view.findViewById(R.id.btnSend);
+        discover = (Button) view.findViewById(R.id.Discover);
+
+        list.setVisibility(view.INVISIBLE);
+        connection.setVisibility(view.INVISIBLE);
+        visible.setVisibility(view.INVISIBLE);
+        send.setVisibility(view.INVISIBLE);
+        discover.setVisibility(view.INVISIBLE);*/
+
 
         StartButton.setOnClickListener(
             new View.OnClickListener()

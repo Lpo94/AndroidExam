@@ -158,13 +158,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     public void list(View v){
-/*        Fragment fragment;
-        fragment = new Menu();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment6, fragment);
-        ft.commit();*/
-        /*devicesArray = BA.getBondedDevices();
+        devicesArray = BA.getBondedDevices();
         if (devicesArray.size() > 0) {
             for (BluetoothDevice bt : devicesArray)
             {
@@ -175,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         final ArrayAdapter adapter = new  ArrayAdapter(this,android.R.layout.simple_list_item_1, deviceList);
 
-        lv.setAdapter(adapter);*/
+        lv.setAdapter(adapter);
     }
 
 

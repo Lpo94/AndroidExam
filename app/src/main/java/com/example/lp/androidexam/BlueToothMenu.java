@@ -56,6 +56,7 @@ public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blue_tooth_menu);
 
+
         BA = BluetoothAdapter.getDefaultAdapter();
         deviceList = new ArrayList();
         pairedDevices = new ArrayList();

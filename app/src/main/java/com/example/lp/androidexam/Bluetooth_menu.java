@@ -13,9 +13,8 @@ import android.support.v4.app.Fragment;
  */
 
 public class Bluetooth_menu extends Fragment {
-    public Button Server, Connect, Pair, Back;
+    public Button Server, Connect, Pair, Back, visListe, listView, update, discover, scan, _back;
     public View view;
-    HowTo howTo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -24,6 +23,19 @@ public class Bluetooth_menu extends Fragment {
         Connect = (Button) view.findViewById(R.id.Connect_button);
         Pair = (Button) view.findViewById(R.id.Pair_button);
         Back = (Button) view.findViewById(R.id.BackM_button);
+        visListe = (Button) view.findViewById(R.id.btnVisListe);
+        listView = (Button) view.findViewById(R.id.btnListview);
+        update = (Button) view.findViewById(R.id.btnUpdate);
+        scan = (Button) view.findViewById(R.id.btnScan);
+        discover = (Button) view.findViewById(R.id.btnDiscover);
+        _back = (Button) view.findViewById(R.id.btnBack);
+
+        visListe.setVisibility(view.INVISIBLE);
+        listView.setVisibility(view.INVISIBLE);
+        update.setVisibility(view.INVISIBLE);
+        discover.setVisibility(view.INVISIBLE);
+        scan.setVisibility(view.INVISIBLE);
+        _back.setVisibility(view.INVISIBLE);
 
         Server.setOnClickListener(
                 new View.OnClickListener()
@@ -68,51 +80,65 @@ public class Bluetooth_menu extends Fragment {
                     }
                 }
         );
-        return view;
-    }
 
-    public void Show()
-    {
-        view.setVisibility(View.VISIBLE);
+        _back.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        view = v;
+                        buttonClicked(v, "_back");
+                    }
+                }
+        );
+        return view;
     }
 
     public void buttonClicked(View v, String button)
     {
         switch (button) {
             case "Server":
-                StaticValues.fragment = new HowTo();
+/*                StaticValues.fragment = new Bluetooth_Server();
                 StaticValues.fm = getActivity().getSupportFragmentManager();
                 StaticValues.ft = StaticValues.fm.beginTransaction();
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
+                _back.setVisibility(view.VISIBLE);
                 break;
 
             case "Connect":
-                StaticValues.fragment = new HowTo();
+/*                StaticValues.fragment = new Bluetooth_Server();
                 StaticValues.fm = getActivity().getSupportFragmentManager();
                 StaticValues.ft = StaticValues.fm.beginTransaction();
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
+                visListe.setVisibility(view.VISIBLE);
+                listView.setVisibility(view.VISIBLE);
+                update.setVisibility(view.VISIBLE);
+                _back.setVisibility(view.VISIBLE);
                 break;
 
             case "Pair":
-                StaticValues.fragment = new HowTo();
+/*                StaticValues.fragment = new Bluetooth_Server();
                 StaticValues.fm = getActivity().getSupportFragmentManager();
                 StaticValues.ft = StaticValues.fm.beginTransaction();
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
+                discover.setVisibility(view.VISIBLE);
+                scan.setVisibility(view.VISIBLE);
+                _back.setVisibility(view.VISIBLE);
                 break;
 
             case "Back":
@@ -125,6 +151,19 @@ public class Bluetooth_menu extends Fragment {
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
+                break;
+
+            case "_back":
+                Server.setVisibility(view.VISIBLE);
+                Connect.setVisibility(view.VISIBLE);
+                Pair.setVisibility(view.VISIBLE);
+                Back.setVisibility(view.VISIBLE);
+                visListe.setVisibility(view.INVISIBLE);
+                listView.setVisibility(view.INVISIBLE);
+                update.setVisibility(view.INVISIBLE);
+                discover.setVisibility(view.INVISIBLE);
+                scan.setVisibility(view.INVISIBLE);
+                _back.setVisibility(view.INVISIBLE);
                 break;
 
             default:
