@@ -1,11 +1,14 @@
 package com.example.lp.androidexam;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -18,19 +21,18 @@ public class Goal extends GameObject {
     public ArrayList<Player> finishedPlayers;
     GameView gv;
 
-    public Goal(Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
+    public Goal(Point _pos)
     {
         finishedPlayers = new ArrayList<>();
-        gv = GameView.Instance(StaticValues.staticContext);
+  /*      gv = GameView.getInstance(StaticValues.staticContext); Sæt den her til null så vi ik riskierer at få flere overlappende spil */ // KASPER HER!!
 
         pos = _pos;
-        rowsInSheet = _rows;
-        columnsInSheet = _columns;
+        rowsInSheet = 1;
+        columnsInSheet = 1;
         bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.goal);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(_animationSpeed);
-        frameCount = _frameCount;
+        frameCount = 1;
     }
 
 
@@ -38,17 +40,31 @@ public class Goal extends GameObject {
     {
         finishedPlayers.add(_player);
 
+        Log.w("finishedplayers size: ", String.valueOf(finishedPlayers.size()));
+        Log.w("allPlayers size: ", String.valueOf(StaticValues.allPlayers.size()));
+
         if(finishedPlayers.size() == StaticValues.allPlayers.size())
         {
             // game over flyt til score skærm når reset virker
             // Flyt til menu
-            // all gameobjects = null skal jeg bruge den toRemove?
-            // lav en lsite med alle obejkter der ikke er gameobjeter så de samme med go kan removes fra listen
+      /*      gv = null; // Er det her nok?*/ // KASPER HER!!
+/*            Intent backToMenu = new Intent(StaticValues.staticContext, MainActivity.class);
+            StaticValues.staticContext.startActivity(backToMenu);*/
+// evt brug shared preferences her istedet for bundle til at vidergive datane
 
-            gv = null;
-            gv.getGameThreadThread().setRunning(false);
-
-            // Launch menuen
+            Intent endScreen = new Intent(StaticValues.staticContext, EndScreenActivity.class);
+            Bundle customParameter = new Bundle();
+            customParameter.putStringArray("finishedPlayers", new String[]
+                    {
+                            String.valueOf(finishedPlayers.get(0).getPlayerNumber()),
+                            String.valueOf(finishedPlayers.get(1).getPlayerNumber()),
+                            String.valueOf(finishedPlayers.get(2).getPlayerNumber()),
+                            String.valueOf(finishedPlayers.get(3).getPlayerNumber()),
+                    });
+            endScreen.putExtras(customParameter);
+            StaticValues.staticContext.startActivity(endScreen);
+    /*        finish(); */
         }
+
     }
 }

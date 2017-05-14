@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
             StaticValues.SCREEN_WIDTH = dm.widthPixels;
             StaticValues.SCREEN_HEIGHT = dm.heightPixels;
 
-            setContentView(GameView.Instance(this));
+            setContentView(GameView.getInstance(this));
 
     }
 

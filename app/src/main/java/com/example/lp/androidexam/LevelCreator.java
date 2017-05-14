@@ -102,11 +102,19 @@ public class LevelCreator {
                         case "A":
                             Player player = new Player(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
                             StaticValues.globalPlayer = player;
+                            StaticValues.allPlayers.add(player);
+
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
 
-                            PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
-                            StaticValues.tempObjects.add(test);
+                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
+                            testLevel.add(testFireballPUP);
+
+                            PowerUp testSpeedPUP = new PowerUp(new Point(400, 50), PowerUp.PowerUpType.speed);
+                            testLevel.add(testSpeedPUP);
+
+                            Goal testGoal = new Goal(new Point(3000, 50));
+                            testLevel.add(testGoal);
 
 
                             break;
@@ -132,13 +140,9 @@ public class LevelCreator {
                             break;
 
                         case "D":
-                            if (_i == 7) {
-                                PowerupSpeed powerspeed = new PowerupSpeed(new Point(StaticValues.gridWidth * x, StaticValues.gridHeight * y), 1, 4, R.drawable.powerupcoin, 100, 2);
-                                testLevel.add(powerspeed);
-                            } else if (_i == 8) {
-                                PowerupSpeed powerspeed = new PowerupSpeed(new Point(StaticValues.gridWidth * x, StaticValues.gridHeight * y), 1, 4, R.drawable.powerupcoin, 100, 2);
-                                testLevel.add(powerspeed);
-                            }
+
+                                PowerUp testSpeedPUP2 = new PowerUp(new Point(700, 500), PowerUp.PowerUpType.speed);
+                                StaticValues.tempObjects.add(testSpeedPUP2);
                             break;
                         case"E":
                             if(groundCheckAroundMe(x, "E") != -1) {
@@ -146,6 +150,11 @@ public class LevelCreator {
                             Platform platform = new Platform(new Point(StaticValues.gridWidth * (xPos-multiX), StaticValues.gridHeight * yPos), new Rect(0, 0, StaticValues.gridWidth*multiX, StaticValues.gridHeight), false);
                             testLevel.add(platform);
                             }
+                            break;
+
+                        case "f":
+                            PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
+                            StaticValues.tempObjects.add(testFireballPUP2);
                             break;
 
                         case "n":
