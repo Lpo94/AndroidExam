@@ -105,8 +105,8 @@ public class LevelCreator {
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
 
-                            PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
-                            StaticValues.tempObjects.add(test);
+/*                            PowerupFireball test = new PowerupFireball(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                            StaticValues.tempObjects.add(test);*/
 
 
                             break;
@@ -132,13 +132,13 @@ public class LevelCreator {
                             break;
 
                         case "D":
-                            if (_i == 7) {
+/*                            if (_i == 7) {
                                 PowerupSpeed powerspeed = new PowerupSpeed(new Point(StaticValues.gridWidth * x, StaticValues.gridHeight * y), 1, 4, R.drawable.powerupcoin, 100, 2);
                                 testLevel.add(powerspeed);
                             } else if (_i == 8) {
                                 PowerupSpeed powerspeed = new PowerupSpeed(new Point(StaticValues.gridWidth * x, StaticValues.gridHeight * y), 1, 4, R.drawable.powerupcoin, 100, 2);
                                 testLevel.add(powerspeed);
-                            }
+                            }*/
                             break;
                         case"E":
                             if(groundCheckAroundMe(x, "E") != -1) {

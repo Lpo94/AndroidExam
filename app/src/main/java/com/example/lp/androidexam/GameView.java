@@ -232,6 +232,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
+
+
     public void moveObjectX(int x)
     {
         for(GameObject go: StaticValues.tempObjects)

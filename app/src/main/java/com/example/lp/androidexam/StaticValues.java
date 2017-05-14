@@ -1,6 +1,9 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,12 @@ public class StaticValues {
     public static ArrayList<GameObject> tempObjects;
 
     public static ArrayList<GameObject> objectsToRemove;
+
+    public static Fragment fragment;
+
+    public static FragmentManager fm;
+
+    public static FragmentTransaction ft;
 
 
     // Ints

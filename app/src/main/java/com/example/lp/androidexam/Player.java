@@ -71,11 +71,11 @@ public class Player extends GameObject {
         oldPoint = pos;
 
         // Add så animationDelay falder når man har speedboost for at simulere sprint
-        if(canMove && newPoint == oldPoint && !isStunned)
+        if(canMove && direction == 0 && !isStunned)
         {
             curAnim = Animations.idle;
         }
-        if(canMove && newPoint != oldPoint)
+        if(canMove && direction != 0)
         {
             curAnim = Animations.walking;
         }
