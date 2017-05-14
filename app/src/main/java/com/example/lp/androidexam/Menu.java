@@ -48,14 +48,9 @@ public class Menu extends Fragment {
                     }
                 }
         );
-        //view.setVisibility(View.INVISIBLE);
         return view;
     }
 
-    public void Show()
-    {
-        view.setVisibility(View.VISIBLE);
-    }
 
     public void buttonClicked(View v, String button)
     {
