@@ -29,17 +29,9 @@ public class LevelCreator {
 
     private int xPos = 1;
     private int yPos = 1;
-    private int _i;
 
-    private boolean placement = false;
-
-
-    String object;
-    String line;
-    String[] split;
     AssetManager mngr;
     InputStream is;
-    int lineNumber = 0;
     BufferedReader br;
     String map[][];
     String[] ary;
@@ -155,6 +147,9 @@ public class LevelCreator {
                         case "f":
                             PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
                             StaticValues.tempObjects.add(testFireballPUP2);
+                            break;
+
+                        case "X":
                             break;
 
                         case "n":

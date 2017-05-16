@@ -24,7 +24,7 @@ public class HowTo extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_how_to, container, false);
+        view = inflater.inflate(R.layout.how_to, container, false);
         Back = (Button) view.findViewById(R.id.Back_Button);
         Next = (Button) view.findViewById(R.id.Next_button);
         Prev = (Button) view.findViewById(R.id.Previous_button);
