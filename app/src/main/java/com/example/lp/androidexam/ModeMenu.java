@@ -1,5 +1,6 @@
 package com.example.lp.androidexam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -29,8 +30,10 @@ public class ModeMenu extends Fragment {
         singleplayer.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {
+                        ((MainActivity)getActivity()).startGame(GameState.SinglePlayer);
                         view = v;
                         buttonClicked(v, "singleplayer");
+
                     }
                 }
         );
@@ -53,6 +56,7 @@ public class ModeMenu extends Fragment {
             case "singlePlayer":
                 singleplayer.setVisibility(view.INVISIBLE);
                 bluetooth.setVisibility(view.INVISIBLE);
+
                 break;
 
             case "bluetooth":

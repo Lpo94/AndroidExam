@@ -120,11 +120,11 @@ public class Player extends GameObject {
             if(direction != 0) {
                 switch (direction) {
                     case -1:
-                        GameView.getInstance(null).moveObjectX((int)(speed * StaticValues.deltaTime));
+                        GameView.moveObjectX((int)(speed * StaticValues.deltaTime));
 //                        pos.x -= speed * StaticValues.deltaTime;
                         break;
                     case 1:
-                        GameView.getInstance(null).moveObjectX((int)-(speed * StaticValues.deltaTime));
+                        GameView.moveObjectX((int)-(speed * StaticValues.deltaTime));
 //                        pos.x += speed * StaticValues.deltaTime;
                         break;
                 }
@@ -147,13 +147,13 @@ public class Player extends GameObject {
 
             if(falling && !jumping)
             {
-                GameView.getInstance(null).moveObjectY((int)(StaticValues.WORLD_GRAVITY * StaticValues.deltaTime));
+                GameView.moveObjectY((int)(StaticValues.WORLD_GRAVITY * StaticValues.deltaTime));
 //                pos.y += StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }
 
             if(jumping)
             {
-                GameView.getInstance(null).moveObjectY((int)+(velocity * StaticValues.deltaTime));
+                GameView.moveObjectY((int)+(velocity * StaticValues.deltaTime));
 //                pos.y -= velocity * StaticValues.deltaTime;
                 velocity -= StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
             }

@@ -9,63 +9,45 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+
 import java.util.ArrayList;
 
 /**
- * Created by LP on 19-04-2017.
+ * Created by Lars-Peter on 16/05/2017.
  */
 
-public class GameView extends SurfaceView implements SurfaceHolder.Callback{
+public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread gameThreadThread;
     private GestureDetector gestureDetector;
     private long frameTime;
     private LevelCreator levelCreator;
-    private static GameView instance;
     private SoundManager soundManager;
-    MainActivity mainActivity;
 
-    public static int globalxSpeed = 1;
 
-    public GameThread getGameThreadThread()
-    {
+    public GameThread getGameThreadThread() {
         return gameThreadThread;
     }
 
-    public static GameView getInstance(Context context)
-    {
-        if(instance == null)
-        {
-            instance = new GameView(context);
-        }
 
-            return instance;
-    }
-
-    private GameView(Context context)
-    {
+    public GameView(Context context) {
         super(context);
-            getHolder().addCallback(this);
-            gameThreadThread = new GameThread(getHolder(), this);
-            setFocusable(true);
-            StaticValues.staticContext = context;
-            gestureDetector = new GestureDetector(context, new GestureListener());
-            gestureDetector.setIsLongpressEnabled(true);
-            soundManager = SoundManager.getInstance();
-            soundManager.loadSounds(context);
-            newGame();
+        getHolder().addCallback(this);
+        gameThreadThread = new GameThread(getHolder(), this);
+        setFocusable(true);
+        StaticValues.staticContext = context;
+        gestureDetector = new GestureDetector(context, new GestureListener());
+        gestureDetector.setIsLongpressEnabled(true);
+        soundManager = SoundManager.getInstance();
+        soundManager.loadSounds(context);
+        newGame();
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-            gameThreadThread = new GameThread(getHolder(), this);
-            gameThreadThread.setRunning(true);
-            gameThreadThread.start();
+        gameThreadThread = new GameThread(getHolder(), this);
+        gameThreadThread.setRunning(true);
+        gameThreadThread.start();
 
     }
 
@@ -75,17 +57,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder)
-    {
-        while(true)
-        {
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        while (true) {
             boolean retry = true;
 
-            while(retry) {
+            while (retry) {
                 try {
                     gameThreadThread.setRunning(false);
                     gameThreadThread.join();
-                } catch (Exception e) {e.printStackTrace();}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 retry = false;
             }
         }
@@ -93,40 +75,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void draw(Canvas _canvas)
-    {
+    public void draw(Canvas _canvas) {
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
         // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
-        Bitmap  powerScreenDefeault = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen1);
-        Bitmap  powerScreenSpeed = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen2);
+        Bitmap powerScreenDefeault = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen1);
+        Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
 //        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
 
-        for(GameObject go: StaticValues.tempObjects)
-                {
+        for (GameObject go : StaticValues.tempObjects) {
             go.draw(_canvas);
         }
-        if(StaticValues.globalPlayer != null)
-        {
+        if (StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.draw(_canvas);
         }
-        if (PowerUpClick.Clickable == true)
-        {
-            if(StaticValues.globalPlayer.canShoot)
-            {
+        if (PowerUpClick.Clickable == true) {
+            if (StaticValues.globalPlayer.canShoot) {
 //                _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
             }
 
-            if(StaticValues.globalPlayer.canSprint)
-            {
-                _canvas.drawBitmap(powerScreenSpeed,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+            if (StaticValues.globalPlayer.canSprint) {
+                _canvas.drawBitmap(powerScreenSpeed, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
             }
             powerScreenDefeault.recycle();
         }
-        if (PowerUpClick.Clickable == false)
-        {
-            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH/2 -50, 150, null);
+        if (PowerUpClick.Clickable == false) {
+            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
             powerScreenSpeed.recycle();
         }
 
@@ -134,27 +109,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int x = (int)event.getX();
-        int y = (int)event.getY();
-        if(StaticValues.endgame == false)
-        {
-            switch (event.getAction())
-            {
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+        if (StaticValues.endgame == false) {
+            switch (event.getAction()) {
 
                 case MotionEvent.ACTION_DOWN:
-                    if (gestureDetector.onTouchEvent(event))
-                    {
-                        if (StaticValues.globalPlayer != null)
-                        {
-                            if (x < StaticValues.SCREEN_WIDTH / 2)
-                            {
+                    if (gestureDetector.onTouchEvent(event)) {
+                        if (StaticValues.globalPlayer != null) {
+                            if (x < StaticValues.SCREEN_WIDTH / 2) {
                                 StaticValues.globalPlayer.setDirection(-1);
-                            } else if (x > StaticValues.SCREEN_WIDTH / 2)
-                            {
+                            } else if (x > StaticValues.SCREEN_WIDTH / 2) {
                                 StaticValues.globalPlayer.setDirection(1);
                             }
-                            if( x > StaticValues.SCREEN_WIDTH/2 -50 && x < StaticValues.SCREEN_WIDTH/2 +250 && y > 150 && y < 450 && PowerUpClick.Clickable == true)
-                            {
+                            if (x > StaticValues.SCREEN_WIDTH / 2 - 50 && x < StaticValues.SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 && PowerUpClick.Clickable == true) {
                                 StaticValues.globalPlayer.speed += 0.5;
                                 StaticValues.globalPlayer.usePowerup();
                                 PowerUpClick.Clickable = false;
@@ -170,11 +138,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                     StaticValues.globalPlayer.setDirection(0);
                     break;
             }
-        }
-        else if(StaticValues.endgame == true)
-        {
-            if(event.getAction() == MotionEvent.ACTION_UP)
-            {
+        } else if (StaticValues.endgame == true) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
 
             }
         }
@@ -182,25 +147,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return gestureDetector.onTouchEvent(event);
     }
 
-    public void update()
-    {
+    public void update() {
         StaticValues.tempObjects = StaticValues.gameObjects;
         StaticValues.currentTime = System.currentTimeMillis();
 
-        StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
+        StaticValues.deltaTime = (int) (System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
 
-        for(GameObject go: StaticValues.tempObjects)
-        {
+        for (GameObject go : StaticValues.tempObjects) {
             go.update();
         }
 
 
-        if(StaticValues.globalPlayer != null) {
+        if (StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.update();
-            for(GameObject go: StaticValues.tempObjects)
-            {
+            for (GameObject go : StaticValues.tempObjects) {
                 StaticValues.globalPlayer.onCollisionStay(go);
                 StaticValues.globalPlayer.onCollisionEnter(go);
 
@@ -209,10 +171,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         }
 
-        for(GameObject go: StaticValues.objectsToRemove)
-        {
-            if(StaticValues.gameObjects.contains(go))
-            {
+        for (GameObject go : StaticValues.objectsToRemove) {
+            if (StaticValues.gameObjects.contains(go)) {
                 StaticValues.gameObjects.remove(go);
             }
         }
@@ -222,31 +182,25 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
-    public void newGame()
-    {
-            StaticValues.allPlayers = new ArrayList<>();
-            StaticValues.colliders = new ArrayList<>();
-            StaticValues.gameObjects = new ArrayList<>();
-            StaticValues.objectsToRemove = new ArrayList<>();
-            StaticValues.tempObjects = new ArrayList<>();
-            levelCreator = new LevelCreator(0, getContext());
+    public void newGame() {
+        StaticValues.allPlayers = new ArrayList<>();
+        StaticValues.colliders = new ArrayList<>();
+        StaticValues.gameObjects = new ArrayList<>();
+        StaticValues.objectsToRemove = new ArrayList<>();
+        StaticValues.tempObjects = new ArrayList<>();
+        levelCreator = new LevelCreator(0, getContext());
 
     }
 
 
-
-    public void moveObjectX(int x)
-    {
-        for(GameObject go: StaticValues.tempObjects)
-        {
+    public static void moveObjectX(int x) {
+        for (GameObject go : StaticValues.tempObjects) {
             go.pos.x = go.pos.x + x;
         }
     }
 
-    public void moveObjectY(int y)
-    {
-        for(GameObject go: StaticValues.tempObjects)
-        {
+    public static void moveObjectY(int y) {
+        for (GameObject go : StaticValues.tempObjects) {
             go.pos.y = go.pos.y + y;
         }
     }

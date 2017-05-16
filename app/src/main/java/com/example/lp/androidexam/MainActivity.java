@@ -186,15 +186,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startGame(GameState _gameState){
-        StaticValues.gameState = _gameState;
-
-        switch(_gameState)
-        {
-            case SinglePlayer:
-//                setContentView(new GameView(this));
-                break;
-
-        }
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
 
     }
 

@@ -25,12 +25,6 @@ public class Bluetooth_Server extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bluetooth_server, container, false);
-        /*visListe = (Button) view.findViewById(R.id.btnVisListe);
-        listView = (Button) view.findViewById(R.id.btnListview);
-        update = (Button) view.findViewById(R.id.btnUpdate);
-        scan = (Button) view.findViewById(R.id.btnScan);
-        discover = (Button) view.findViewById(R.id.btnDiscover);
-        back = (Button) view.findViewById(R.id.btnBack);*/
 
         visListe.setVisibility(View.INVISIBLE);
         listView.setVisibility(View.INVISIBLE);

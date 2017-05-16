@@ -19,11 +19,6 @@ public class EndScreenActivity extends AppCompatActivity {
 
     private ArrayList<String> listedPlayers;
 
-/*    private String first;
-    private String second;
-    private String third;
-    private String fourth;*/
-
     private EditText firstText;
     private EditText secondText;
     private EditText thirdText;
