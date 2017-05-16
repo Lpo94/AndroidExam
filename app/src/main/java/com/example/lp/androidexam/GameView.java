@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -79,6 +80,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(_canvas);
         _canvas.drawColor(Color.WHITE);
 
+
         // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
         Bitmap powerScreenDefeault = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen1);
         Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
@@ -89,6 +91,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         if (StaticValues.globalPlayer != null) {
             StaticValues.globalPlayer.draw(_canvas);
+        }
+
+        if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+        {
+            StaticValues.btPlayer.draw(_canvas);
         }
         if (PowerUpClick.Clickable == true) {
             if (StaticValues.globalPlayer.canShoot) {
@@ -176,9 +183,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 StaticValues.gameObjects.remove(go);
             }
         }
+        if(StaticValues.gameState == GameState.BluetoothMultiplayer) {
+            StaticValues.btPlayer.update();
+        }
 
         StaticValues.objectsToRemove.clear();
-
+        sendPlayers();
 
     }
 
@@ -204,4 +214,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             go.pos.y = go.pos.y + y;
         }
     }
+
+    public void sendPlayers()
+    {
+
+        String data = StaticValues.btPlayer.getPos().x + "|" + StaticValues.btPlayer.getPos().y;
+        byte[] bytes = data.getBytes(Charset.defaultCharset());
+        StaticValues.mBTService.write(bytes);
+    }
+
+
 }

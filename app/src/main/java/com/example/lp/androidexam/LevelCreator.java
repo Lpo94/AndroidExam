@@ -93,8 +93,15 @@ public class LevelCreator {
                     switch (ary[x]) {
                         case "A":
                             Player player = new Player(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+
+                            if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+                            {
+                                StaticValues.btPlayer = new MultiplayerObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                            }
                             StaticValues.globalPlayer = player;
-                            StaticValues.allPlayers.add(player);
+                           // StaticValues.allPlayers.add(player);
+
+
 
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);

@@ -21,7 +21,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity{
 
-    private BTService mBTService;
 
 
     @Override
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        mBTService = new BTService(this);
+        StaticValues.mBTService = new BTService(this);
 
 
         if(StaticValues.baggroundMusic == null) {
@@ -126,7 +125,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void startBTConenction(BluetoothDevice device, UUID uuid)
     {
-        mBTService.startClient(device,uuid);
+        StaticValues.mBTService.startClient(device,uuid);
     }
 
     @Override
@@ -171,6 +170,8 @@ public class MainActivity extends AppCompatActivity{
                 StaticValues.connectedDeviceAdress = StaticValues.connectedDevice.getAddress();
 
                 Toast.makeText(context, "Connection Succes with " +StaticValues.connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+
+                startGame(GameState.BluetoothMultiplayer);
             }
 
 
@@ -186,6 +187,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startGame(GameState _gameState){
+        StaticValues.gameState = _gameState;
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
 

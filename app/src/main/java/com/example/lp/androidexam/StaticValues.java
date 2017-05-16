@@ -18,6 +18,7 @@ import java.util.UUID;
 public class StaticValues {
     //Player
     public static Player globalPlayer;
+    public static MultiplayerObject btPlayer;
     public static ArrayList<Player> allPlayers;
 
     //Lists
@@ -70,6 +71,8 @@ public class StaticValues {
 
 
     // Bluetooth
+
+    public static BTService mBTService;
 
     public static BluetoothAdapter BA;
 

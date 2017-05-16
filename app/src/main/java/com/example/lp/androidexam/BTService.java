@@ -257,7 +257,9 @@ public class BTService {
                     bytes = mmInStream.read(buffer);
                     String incomingMessage = new String(buffer, 0, bytes);
 
-                    Intent incomingMessageIntent = new Intent("IncomingMessage");
+
+
+                    Intent incomingMessageIntent = new Intent("mBTPlayerUpdate");
                     incomingMessageIntent.putExtra("theMessage", incomingMessage);
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
 
