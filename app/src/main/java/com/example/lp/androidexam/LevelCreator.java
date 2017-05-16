@@ -109,8 +109,8 @@ public class LevelCreator {
                             PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
                             testLevel.add(testFireballPUP);
 
-                            PowerUp testSpeedPUP = new PowerUp(new Point(400, 50), PowerUp.PowerUpType.speed);
-                            testLevel.add(testSpeedPUP);
+//                            PowerUp testSpeedPUP = new PowerUp(new Point(400, 50), PowerUp.PowerUpType.speed);
+//                            testLevel.add(testSpeedPUP);
 
                             Goal testGoal = new Goal(new Point(3000, 50));
                             testLevel.add(testGoal);
