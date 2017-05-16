@@ -18,7 +18,7 @@ import android.widget.Button;
 
 public class Menu extends Fragment {
 
-    public Button StartButton, HowTo, Exit,list, connection, visible, send, discover;
+    public Button StartButton, HowTo, Exit;
     public View view;
     private Context context;
     static MediaPlayer music;
