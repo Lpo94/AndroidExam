@@ -321,7 +321,6 @@ public class Player extends GameObject {
     private void setPlayerSprite(int _playerNumber)
     {
 
-
         switch (_playerNumber)
         {
             case 1:

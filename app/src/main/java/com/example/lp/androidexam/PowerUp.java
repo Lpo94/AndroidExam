@@ -41,7 +41,7 @@ public class PowerUp extends GameObject
                 break;
 
             case speed:
-                setBitmap(R.drawable.pickup_speed);
+//                setBitmap(R.drawable.pickup_speed);
                 setRowsInSheet(1);
                 setColumnsInSheet(4);
                 setbitmapHeight();

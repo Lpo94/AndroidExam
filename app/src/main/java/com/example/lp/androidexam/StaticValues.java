@@ -1,5 +1,7 @@
 package com.example.lp.androidexam;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
@@ -7,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by LP on 19-04-2017.
@@ -62,5 +65,18 @@ public class StaticValues {
 
     // Smaller things such as Contexts and similar
     public static Context staticContext;
+
+    public static GameState gameState;
+
+
+    // Bluetooth
+
+    public static BluetoothAdapter BA;
+
+    public static BluetoothDevice connectedDevice;
+
+    public static String connectedDeviceAdress;
+
+    public static final UUID MY_UUID_INSECURE =UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
 }

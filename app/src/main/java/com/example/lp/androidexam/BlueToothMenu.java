@@ -33,7 +33,7 @@ import java.util.logging.LogRecord;
 
 import static android.content.ContentValues.TAG;
 
-public class BlueToothMenu extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class    BlueToothMenu extends AppCompatActivity implements AdapterView.OnItemClickListener {
     private BluetoothAdapter BA;
     private Button btnSend, btnStartConnection;
     private TextView incomingMessages;

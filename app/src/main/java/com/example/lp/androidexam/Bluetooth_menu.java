@@ -1,38 +1,92 @@
 package com.example.lp.androidexam;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v4.app.Fragment;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created by Shark on 14-05-2017.
  */
 
 public class Bluetooth_menu extends Fragment {
-    public Button Server, Connect, Pair, Back, visListe, listView, update, discover, scan, _back;
+    public Button Server, ConnectToServer,Connect, Pair, Back, visListe, discover, scan, _back;
+    public ListView lvDevices;
     public View view;
+
+    private ArrayList deviceList;
+    private ArrayAdapter deviceAdapter;
+    private Set<BluetoothDevice> devicesArray;
+
+    IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+    BroadcastReceiver mReciever1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.bluetooth_menu, container, false);
+        deviceList = new ArrayList();
+
+        mReciever1 = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                    // Discovery has found a device. Get the BluetoothDevice
+                    // object and its info from the Intent.
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    String deviceName = device.getName();
+                    String deviceHardwareAddress = device.getAddress(); // MAC address
+
+                    if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+                        deviceAdapter.add(device.getName() + "\n" + device.getAddress());
+                    }
+                }
+            }
+        };
+
+        getContext().registerReceiver(mReciever1,filter);
+
+        StaticValues.BA = BluetoothAdapter.getDefaultAdapter();
+
+
         Server = (Button) view.findViewById(R.id.Server_button);
-        Connect = (Button) view.findViewById(R.id.Connect_button);
-        Pair = (Button) view.findViewById(R.id.Pair_button);
         Back = (Button) view.findViewById(R.id.BackM_button);
+
+        ConnectToServer = (Button) view.findViewById(R.id.Connect_button);
+
         visListe = (Button) view.findViewById(R.id.btnVisListe);
-        listView = (Button) view.findViewById(R.id.btnListview);
-        update = (Button) view.findViewById(R.id.btnUpdate);
+        Connect = (Button)view.findViewById(R.id.btnConnect);
+
+        Pair = (Button) view.findViewById(R.id.Pair_button);
         scan = (Button) view.findViewById(R.id.btnScan);
         discover = (Button) view.findViewById(R.id.btnDiscover);
         _back = (Button) view.findViewById(R.id.btnBack);
 
+        lvDevices = (ListView) view.findViewById(R.id.deviceListView);
+
         visListe.setVisibility(view.INVISIBLE);
-        listView.setVisibility(view.INVISIBLE);
-        update.setVisibility(view.INVISIBLE);
+        lvDevices.setVisibility(view.INVISIBLE);
+        Connect.setVisibility(view.INVISIBLE);
         discover.setVisibility(view.INVISIBLE);
         scan.setVisibility(view.INVISIBLE);
         _back.setVisibility(view.INVISIBLE);
@@ -48,13 +102,14 @@ public class Bluetooth_menu extends Fragment {
                 }
         );
 
-        Connect.setOnClickListener(
+        ConnectToServer.setOnClickListener(
                 new View.OnClickListener()
                 {
-                    public void onClick(View v)
+                    public void onClick(View _view)
                     {
-                        view = v;
+                        view = _view;
                         buttonClicked(view, "Connect");
+                        deviceList.clear();
                     }
                 }
         );
@@ -64,6 +119,7 @@ public class Bluetooth_menu extends Fragment {
                 {
                     public void onClick(View v)
                     {
+                        deviceList.clear();
                         view = v;
                         buttonClicked(v, "Pair");
                     }
@@ -91,7 +147,98 @@ public class Bluetooth_menu extends Fragment {
                     }
                 }
         );
+
+        Connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StaticValues.connectedDevice = StaticValues.BA.getRemoteDevice(StaticValues.connectedDeviceAdress);
+                ((MainActivity)getActivity()).startBTConenction(StaticValues.connectedDevice,StaticValues.MY_UUID_INSECURE);
+            }
+        });
+
+        scan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(StaticValues.BA.isDiscovering())
+                {
+                    StaticValues.BA.cancelDiscovery();
+                }
+
+                deviceList.clear();
+
+                StaticValues.BA.startDiscovery();
+                deviceAdapter = new  ArrayAdapter(getContext(),android.R.layout.simple_list_item_1, deviceList);
+
+                lvDevices.setAdapter(deviceAdapter);
+            }
+        });
+
+        discover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                startActivityForResult(getVisible, 0);
+            }
+        });
+
+        visListe.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        deviceList.clear();
+                        devicesArray = StaticValues.BA.getBondedDevices();
+                        if (devicesArray.size() > 0) {
+                            for (BluetoothDevice bt : devicesArray)
+                            {
+                                deviceList.add(bt.getName() + "\n" + bt.getAddress());
+                            }
+                            Toast.makeText(getContext(), "Showing Paired Devices", Toast.LENGTH_SHORT).show();
+                        }
+
+                        deviceAdapter = new  ArrayAdapter(getContext(),android.R.layout.simple_list_item_1, deviceList);
+
+                        lvDevices.setAdapter(deviceAdapter);
+                    }
+                }
+        );
+
+        AdapterView.OnItemClickListener arrayListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(StaticValues.BA.isDiscovering())
+                {
+                    StaticValues.BA.cancelDiscovery();
+                }
+                String info = ((TextView) view).getText().toString();
+                StaticValues.connectedDeviceAdress = info.substring(info.length() - 17);
+
+                BluetoothDevice tempDevice = StaticValues.BA.getRemoteDevice(StaticValues.connectedDeviceAdress);
+
+                if(tempDevice.getBondState() != BluetoothDevice.BOND_BONDED)
+                {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        tempDevice.createBond();
+                    }
+
+                    else
+                    {
+                        Toast.makeText(getContext(), "Your Device Doesn't support this Feature, Connect Manually", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        };
+
+        lvDevices.setOnItemClickListener(arrayListener);
+
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getContext().unregisterReceiver(mReciever1);
     }
 
     public void buttonClicked(View v, String button)
@@ -99,7 +246,7 @@ public class Bluetooth_menu extends Fragment {
         switch (button) {
             case "Server":
                 Server.setVisibility(view.INVISIBLE);
-                Connect.setVisibility(view.INVISIBLE);
+                ConnectToServer.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
                 _back.setVisibility(view.VISIBLE);
@@ -107,21 +254,24 @@ public class Bluetooth_menu extends Fragment {
 
             case "Connect":
                 Server.setVisibility(view.INVISIBLE);
-                Connect.setVisibility(view.INVISIBLE);
+                ConnectToServer.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
                 visListe.setVisibility(view.VISIBLE);
-                listView.setVisibility(view.VISIBLE);
-                update.setVisibility(view.VISIBLE);
+                lvDevices.setVisibility(view.VISIBLE);
+                Connect.setVisibility(view.VISIBLE);
                 _back.setVisibility(view.VISIBLE);
+                Connect.setVisibility(view.VISIBLE);
                 break;
 
             case "Pair":
                 Server.setVisibility(view.INVISIBLE);
+                ConnectToServer.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
                 discover.setVisibility(view.VISIBLE);
+                lvDevices.setVisibility(view.VISIBLE);
                 scan.setVisibility(view.VISIBLE);
                 _back.setVisibility(view.VISIBLE);
                 break;
@@ -133,19 +283,18 @@ public class Bluetooth_menu extends Fragment {
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
                 StaticValues.ft.commit();
                 Server.setVisibility(view.INVISIBLE);
-                Connect.setVisibility(view.INVISIBLE);
+                ConnectToServer.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
                 Back.setVisibility(view.INVISIBLE);
                 break;
 
             case "_back":
                 Server.setVisibility(view.VISIBLE);
-                Connect.setVisibility(view.VISIBLE);
+                ConnectToServer.setVisibility(view.VISIBLE);
                 Pair.setVisibility(view.VISIBLE);
                 Back.setVisibility(view.VISIBLE);
                 visListe.setVisibility(view.INVISIBLE);
-                listView.setVisibility(view.INVISIBLE);
-                update.setVisibility(view.INVISIBLE);
+                lvDevices.setVisibility(view.INVISIBLE);
                 discover.setVisibility(view.INVISIBLE);
                 scan.setVisibility(view.INVISIBLE);
                 _back.setVisibility(view.INVISIBLE);

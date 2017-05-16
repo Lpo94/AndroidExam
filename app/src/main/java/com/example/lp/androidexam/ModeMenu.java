@@ -40,6 +40,7 @@ public class ModeMenu extends Fragment {
                     public void onClick(View v) {
                         view = v;
                         buttonClicked(view, "bluetooth");
+
                     }
                 }
         );
