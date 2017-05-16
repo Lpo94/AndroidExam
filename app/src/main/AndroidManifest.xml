@@ -26,7 +26,6 @@
             android:name=".HowTo"
             android:screenOrientation="landscape" />
         <activity android:name=".BlueToothMenu" />
-        <activity android:name=".Bluetoothv2" />
         <activity android:name=".EndScreenActivity">
             android:screenOrientation="landscape" /></activity>
     </application>

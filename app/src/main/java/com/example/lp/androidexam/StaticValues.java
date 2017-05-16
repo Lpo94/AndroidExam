@@ -1,6 +1,7 @@
 package com.example.lp.androidexam;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,6 +31,8 @@ public class StaticValues {
     public static FragmentManager fm;
 
     public static FragmentTransaction ft;
+
+    public static MediaPlayer baggroundMusic;
 
 
     // Ints

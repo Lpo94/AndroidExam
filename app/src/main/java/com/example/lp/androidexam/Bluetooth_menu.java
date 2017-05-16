@@ -51,9 +51,9 @@ public class Bluetooth_menu extends Fragment {
         Connect.setOnClickListener(
                 new View.OnClickListener()
                 {
-                    public void onClick(View _view)
+                    public void onClick(View v)
                     {
-                        view = _view;
+                        view = v;
                         buttonClicked(view, "Connect");
                     }
                 }
@@ -98,11 +98,6 @@ public class Bluetooth_menu extends Fragment {
     {
         switch (button) {
             case "Server":
-/*                StaticValues.fragment = new Bluetooth_Server();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
@@ -111,11 +106,6 @@ public class Bluetooth_menu extends Fragment {
                 break;
 
             case "Connect":
-/*                StaticValues.fragment = new Bluetooth_Server();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
@@ -127,11 +117,6 @@ public class Bluetooth_menu extends Fragment {
                 break;
 
             case "Pair":
-/*                StaticValues.fragment = new Bluetooth_Server();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();*/
                 Server.setVisibility(view.INVISIBLE);
                 Connect.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);
@@ -142,7 +127,7 @@ public class Bluetooth_menu extends Fragment {
                 break;
 
             case "Back":
-                StaticValues.fragment = new Menu();
+                StaticValues.fragment = new ModeMenu();
                 StaticValues.fm = getActivity().getSupportFragmentManager();
                 StaticValues.ft = StaticValues.fm.beginTransaction();
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);

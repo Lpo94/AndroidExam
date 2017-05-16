@@ -1,7 +1,9 @@
 package com.example.lp.androidexam;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ public class Menu extends Fragment {
 
     public Button StartButton, HowTo, Exit,list, connection, visible, send, discover;
     public View view;
+    private Context context;
+    static MediaPlayer music;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,7 +71,12 @@ public class Menu extends Fragment {
     {
         switch (button) {
             case "Start":
-                StaticValues.fragment = new Bluetooth_menu();
+                StaticValues.baggroundMusic.stop();
+                StaticValues.baggroundMusic = MediaPlayer.create(getContext(), R.raw.ingame);
+                StaticValues.baggroundMusic.setLooping(true);
+                StaticValues.baggroundMusic.setVolume(0.1f, 0.1f);
+                StaticValues.baggroundMusic.start();
+                StaticValues.fragment = new ModeMenu();
                 StaticValues.fm = getActivity().getSupportFragmentManager();
                 StaticValues.ft = StaticValues.fm.beginTransaction();
                 StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);

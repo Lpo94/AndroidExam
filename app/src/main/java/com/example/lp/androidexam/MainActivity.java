@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import org.w3c.dom.Text;
 
 import java.nio.charset.Charset;
@@ -38,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
+//implements AdapterView.OnItemClickListener
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ArrayList pairedDevices;
     private ArrayAdapter<String> newDeviceAdapter;
     private String messageBoard = "";
+    private Context context;
 
     private BluetoothDevice mDevice;
     private String mDeviceAdress;
@@ -59,9 +63,44 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ListView lv;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        StaticValues.baggroundMusic.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StaticValues.baggroundMusic.start();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+/*        super.onCreate(savedInstanceState);
+        super.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        Constants.SCREEN_WIDTH = dm.widthPixels;
+        Constants.SCREEN_HEIGHT = dm.heightPixels;
+
+        setContentView(new GameView(this));*/
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(StaticValues.baggroundMusic == null) {
+            StaticValues.baggroundMusic = MediaPlayer.create(this, R.raw.menu);
+            StaticValues.baggroundMusic.setLooping(true);
+            StaticValues.baggroundMusic.setVolume(0.1f, 0.1f);
+            StaticValues.baggroundMusic.start();
+        }
 
         BA = BluetoothAdapter.getDefaultAdapter();
         deviceList = new ArrayList();
