@@ -16,7 +16,7 @@ import android.support.v4.app.Fragment;
 
 public class ModeMenu extends Fragment {
 
-    Button singleplayer, bluetooth;
+    Button singleplayer, bluetooth, back;
     View view;
 
     @Nullable
@@ -26,6 +26,7 @@ public class ModeMenu extends Fragment {
 
         singleplayer = (Button) view.findViewById(R.id.btnSingleP);
         bluetooth = (Button) view.findViewById(R.id.btnBluetooth);
+        back = (Button) view.findViewById(R.id.btnBack);
 
         singleplayer.setOnClickListener(
                 new View.OnClickListener() {
@@ -48,6 +49,16 @@ public class ModeMenu extends Fragment {
                 }
         );
 
+        back.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        view = v;
+                        buttonClicked(view, "back");
+
+                    }
+                }
+        );
+
         return view;
     }
 
@@ -56,7 +67,7 @@ public class ModeMenu extends Fragment {
             case "singlePlayer":
                 singleplayer.setVisibility(view.INVISIBLE);
                 bluetooth.setVisibility(view.INVISIBLE);
-
+                back.setVisibility(view.INVISIBLE);
                 break;
 
             case "bluetooth":
@@ -67,6 +78,17 @@ public class ModeMenu extends Fragment {
                 StaticValues.ft.commit();
                 singleplayer.setVisibility(view.INVISIBLE);
                 bluetooth.setVisibility(view.INVISIBLE);
+                back.setVisibility(view.INVISIBLE);
+                break;
+            case"back":
+                StaticValues.fragment = new Menu();
+                StaticValues.fm = getActivity().getSupportFragmentManager();
+                StaticValues.ft = StaticValues.fm.beginTransaction();
+                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
+                StaticValues.ft.commit();
+                singleplayer.setVisibility(view.INVISIBLE);
+                bluetooth.setVisibility(view.INVISIBLE);
+                back.setVisibility(view.INVISIBLE);
                 break;
             default:
                 break;
