@@ -22,6 +22,7 @@ public class Player extends GameObject {
     private float defaultVelocity;
     private int direction = 0;
     private Vibrator vibrator = (Vibrator)StaticValues.staticContext.getSystemService(StaticValues.staticContext.VIBRATOR_SERVICE);
+    private PowerUpClick powerupBtn;
     // Animation
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
@@ -53,6 +54,7 @@ public class Player extends GameObject {
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
         currentPowerup = new PowerUp(new Point(0, 0), PowerUp.PowerUpType.none);
+        powerupBtn = PowerUpClick.getInstance();
     }
 
     @Override
@@ -260,13 +262,13 @@ public class Player extends GameObject {
                     if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball)
                     {
                         currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
-                        PowerUpClick.Clickable = true;
+                        powerupBtn.clickable = true;
                     }
 
                     if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed)
                     {
                         currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
-                        PowerUpClick.Clickable = true;
+                        powerupBtn.clickable = true;
                     }
                 }
             }
