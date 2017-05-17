@@ -32,6 +32,9 @@ public abstract class GameObject {
     protected long animationDelay;
     protected int frameCount;
     protected long elapsedTime;
+    protected long startTime;
+    protected int sourceY = 0;;
+    protected int sourceX;
 
     public GameObject()
     {
@@ -46,29 +49,6 @@ public abstract class GameObject {
     {
         pos = _pos;
     }
-    public void setBitmap(int _bitmapId)
-    {
-        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),_bitmapId);
-    }
-    public void setRowsInSheet(int _rows)
-    {
-        rowsInSheet = _rows;
-    }
-    public void setColumnsInSheet(int _columns)
-    {
-        columnsInSheet = _columns;
-    }
-    public void setbitmapHeight()
-    {
-       bitmapHeight = bitmap.getHeight() / rowsInSheet;
-    }
-    public void setbitmapWidth() { bitmapWidth = bitmap.getWidth() / columnsInSheet;}
-    public void setAnimationDelay(long _delay)
-    {
-        animationDelay = _delay;
-    }
-    public void setFrameCount(int _frameCount) {frameCount = _frameCount;}
-
 
 
     public Rect getRect()
@@ -77,17 +57,17 @@ public abstract class GameObject {
     }
 
 
-
     public void update()
     {
         if(frameCount > 1)
         {
 
-            elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
+        elapsedTime = (System.nanoTime() - startTime) / 1000000;
 
             if(elapsedTime > animationDelay)
             {
                 currentFrame++;
+                startTime = System.nanoTime();
 
                 if(currentFrame > frameCount)
                 {
@@ -107,8 +87,7 @@ public abstract class GameObject {
     {
         if(bitmap != null)
         {
-            int sourceY = direction * bitmapHeight;
-            int sourceX = currentFrame * bitmapWidth;
+            sourceX = currentFrame * bitmapWidth;
 
             Rect sourceRect = new Rect(sourceX, sourceY, sourceX + bitmapWidth, sourceY + bitmapHeight);
             rect = new Rect(pos.x, pos.y, pos.x + bitmapWidth, pos.y + bitmapHeight);

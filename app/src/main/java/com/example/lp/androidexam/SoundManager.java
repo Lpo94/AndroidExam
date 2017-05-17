@@ -16,16 +16,18 @@ import java.io.IOException;
 
 public class SoundManager implements Runnable
 {
-    private static final SoundManager instance = new SoundManager();
+    private static SoundManager instance;
     private SoundPool soundPool;
-
     private int shoot = -1;
 
     public static SoundManager getInstance()
     {
+        if(instance == null)
+        {
+            instance = new SoundManager();
+        }
         return instance;
     }
-
     private SoundManager()
     {
         super();

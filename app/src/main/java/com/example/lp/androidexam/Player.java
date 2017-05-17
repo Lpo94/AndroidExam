@@ -1,15 +1,10 @@
 package com.example.lp.androidexam;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Matrix;
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Vibrator;
 
 /**
  * Created by LP on 19-04-2017.
@@ -26,11 +21,11 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
-    MainActivity mainActivity;
+    private Vibrator vibrator = (Vibrator)StaticValues.staticContext.getSystemService(StaticValues.staticContext.VIBRATOR_SERVICE);
+    private PowerUpClick powerupBtn;
     // Animation
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
-    private Point newPoint, oldPoint;
     private boolean isStunned; // skal sættes hvis stunned sakl være længere tid en stun animationen for at få den til at loope.
     private boolean startingStun; // skal sættes det øjeblik spilleren bliver stunned, den kører selv automatisk videre til stunned efter.
     private long stunDelay;
@@ -57,11 +52,10 @@ public class Player extends GameObject {
 
         canMove = false;
         falling = true;
-
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
-
         currentPowerup = new PowerUp(new Point(0, 0), PowerUp.PowerUpType.none);
+        powerupBtn = PowerUpClick.getInstance();
     }
 
     @Override
@@ -69,30 +63,7 @@ public class Player extends GameObject {
     {
         manageAnimationStates();
 
-        oldPoint = pos;
-
-        // Add så animationDelay falder når man har speedboost for at simulere sprint
-        if(canMove && direction == 0 && !isStunned)
-        {
-            curAnim = Animations.idle;
-        }
-        if(canMove && direction != 0)
-        {
-            curAnim = Animations.walking;
-        }
-
-        newPoint = pos;
-
-        if(startingStun)
-        {
-            stunTimer();
-            canMove = false;
-            canShoot = false;
-            canSprint = false;
-        }
-
         if(isSprinting) sprint();
-
 
         if(rect != null)
         {
@@ -122,11 +93,13 @@ public class Player extends GameObject {
                 switch (direction) {
                     case -1:
                         GameView.moveObjectX((int)(speed * StaticValues.Instance().deltaTime));
-//                        pos.x -= speed * StaticValues.Instance().deltaTime;
+//                        pos.x -= speed * StaticValues.deltaTime;
+                        sourceY = bitmapHeight;
                         break;
                     case 1:
                         GameView.moveObjectX((int)-(speed * StaticValues.Instance().deltaTime));
 //                        pos.x += speed * StaticValues.Instance().deltaTime;
+                        sourceY = 0;
                         break;
                 }
             }
@@ -135,6 +108,7 @@ public class Player extends GameObject {
             if(isObjectSolid(new Point(pos.x,valueCheck)))
             {
                 falling = false;
+
                 if(velocity < 0) {
                     jumping = false;
                     velocity = defaultVelocity ;
@@ -169,11 +143,37 @@ public class Player extends GameObject {
 
     private void manageAnimationStates()
     {
-        elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
+        // Add så animationDelay falder når man har speedboost for at simulere sprint
+        if(canMove && direction == 0 && !isStunned)
+        {
+            curAnim = Animations.idle;
+        }
+        if(canMove && direction != 0)
+        {
+            curAnim = Animations.walking;
+        }
+        if(startingStun || isStunned)
+        {
+            if(startingStun)
+            {
+                curAnim = Animations.falling;
+            }
+            if(isStunned)
+            {
+                curAnim = Animations.stunned;
+            }
+
+            canMove = false;
+            stunTimer();
+        }
+
+
+        elapsedTime = (System.nanoTime() - startTime) / 1000000;
 
         if(elapsedTime > animationDelay)
         {
             currentFrame++;
+            startTime = System.nanoTime();
 
             switch (curAnim)
             {
@@ -193,8 +193,7 @@ public class Player extends GameObject {
                     {
                         startingStun = false;
                         isStunned = true;
-                        curAnim = Animations.stunned;
-                        stunDelay = System.nanoTime() + 3000;
+                        stunDelay = StaticValues.currentTime + 3000;
                     }
                     break;
 
@@ -210,21 +209,23 @@ public class Player extends GameObject {
 
     private void stunTimer()
     {
-
-        if(StaticValues.Instance().currentTime > stunDelay)
+        if(StaticValues.currentTime > stunDelay)
         {
             isStunned = false;
+            canMove = true;
         }
     }
 
     public void sprint()
     {
         speed = 2;
+        animationDelay = 25;
 
         if(StaticValues.Instance().currentTime > sprintTimer)
         {
             isSprinting = false;
             speed = 0.5f;
+            animationDelay = 75;
         }
     }
 
@@ -234,11 +235,6 @@ public class Player extends GameObject {
 
         if(canMove)
         {
-            if(_other instanceof FireObject)
-            {
-                colour = new Color().BLUE;
-            }
-
             if(_other instanceof Mud)
             {
                 speed = 1;
@@ -252,26 +248,34 @@ public class Player extends GameObject {
 
             }
 
-            if(_other instanceof Fireball)
+            if(_other instanceof Fireball && ((Fireball)_other).owner != this)
             {
-                if(((Fireball)_other).owner != this)
-                {
-                    startingStun = true;
-                }
+                startingStun = true;
+                vibrator.vibrate(500);
+            }
+
+            if(_other instanceof FireObject)
+            {
+                startingStun = true;
+                vibrator.vibrate(500);
+                ((FireObject)_other).removeThis();
             }
 
             if(_other instanceof PowerUp)
             {
-                if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball && ((PowerUp) _other).canPlayerCollect(this))
+                if(((PowerUp)_other).canCollect(this))
                 {
-                    currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
-                    PowerUpClick.Clickable = true;
-                }
+                    if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball)
+                    {
+                        currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
+                        powerupBtn.clickable = true;
+                    }
 
-                if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed && ((PowerUp) _other).canPlayerCollect(this))
-                {
-                    currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
-                    PowerUpClick.Clickable = true;
+                    if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed)
+                    {
+                        currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
+                        powerupBtn.clickable = true;
+                    }
                 }
             }
         }
@@ -331,31 +335,31 @@ public class Player extends GameObject {
 
     private void setPlayerSprite(int _playerNumber)
     {
-
         switch (_playerNumber)
         {
             case 1:
-                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.giraf_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_giraf);
+
                 break;
 
             case 2:
-                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.dino_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_dino);
                 break;
 
             case 3:
-                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.parrot_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_parrot);
                 break;
 
             case 4:
-                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.cow_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_cow);
                 break;
         }
 
-        rowsInSheet = 1;
+        rowsInSheet = 2;
         columnsInSheet = 14;
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(100);
+        animationDelay = 50;
         frameCount = 14;
     }
 
@@ -363,6 +367,8 @@ public class Player extends GameObject {
     {
         currentPowerup.use(this);
     }
+
+
 
 
 //go.getRect().contains(r)

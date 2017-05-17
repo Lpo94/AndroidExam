@@ -35,7 +35,7 @@ public class Fireball extends GameObject
         soundManager = SoundManager.getInstance();
         soundManager.playSound("shoot");
 
-        removeDelay = (System.nanoTime()) + 2000000000;
+        removeDelay = (System.currentTimeMillis()) + 8000;
         curAnim = Animations.fadeIn;
         setSpeed(50);
     }
@@ -46,7 +46,8 @@ public class Fireball extends GameObject
         lifeTimer();
         if(curAnim == Animations.continous) pos.x += projectileSpeed;
 
-        elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
+        elapsedTime = (System.nanoTime() - startTime) / 1000000;
+
         if(rect != null)
         {
             rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2, pos.x+rect.width()/2,pos.y+rect.height()/2);
@@ -55,6 +56,7 @@ public class Fireball extends GameObject
         if(elapsedTime > animationDelay)
         {
             currentFrame++;
+            startTime = System.nanoTime();
 
             switch (curAnim)
             {
@@ -84,7 +86,7 @@ public class Fireball extends GameObject
 
     private void lifeTimer()
     {
-        removeTimer = (System.nanoTime()) - 2000000000;
+        removeTimer = (System.currentTimeMillis()) - 8000;
 
         if(removeTimer > removeDelay)
         {

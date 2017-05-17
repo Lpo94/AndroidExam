@@ -1,5 +1,7 @@
 package com.example.lp.androidexam;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Point;
 
 import java.util.ArrayList;
@@ -8,9 +10,9 @@ import java.util.ArrayList;
  * Created by SharkGaming on 09/05/2017.
  */
 
-public class PowerUp extends GameObject
+public class PowerUp extends GameObject implements iCollectable
 {
-    public ArrayList<Player> collectedBy;
+    public ArrayList<Player> hasCollected;
     public static boolean Clickable = false;
     public enum PowerUpType { fireball, speed, none}
     private PowerUpType type = PowerUpType.none;
@@ -18,40 +20,78 @@ public class PowerUp extends GameObject
 
     public PowerUp(Point _pos, PowerUpType _type)
     {
-        collectedBy = new ArrayList<>();
+        hasCollected = new ArrayList<>();
         isSolid = false;
         setPos(_pos);
         setType(_type);
     }
 
-    public void setType(PowerUpType _type)
+    private void setType(PowerUpType _type)
     {
         type = _type;
 
         switch (type)
         {
             case fireball:
-                setBitmap(R.drawable.pickup_fireball);
-                setRowsInSheet(1);
-                setColumnsInSheet(8);
-                setbitmapHeight();
-                setbitmapWidth();
-                setAnimationDelay(10000);
-                setFrameCount(7);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_fireball);
+                rowsInSheet = 1;
+                columnsInSheet = 8;
+                bitmapHeight = bitmap.getHeight() / rowsInSheet;
+                bitmapWidth = bitmap.getWidth() / columnsInSheet;
+                animationDelay = 50;
+                frameCount = 7;
                 break;
 
             case speed:
-//                setBitmap(R.drawable.pickup_speed);
-                setRowsInSheet(1);
-                setColumnsInSheet(4);
-                setbitmapHeight();
-                setbitmapWidth();
-                setAnimationDelay(10000);
-                setFrameCount(3);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_speed);
+                rowsInSheet = 1;
+                columnsInSheet = 4;
+                bitmapHeight = bitmap.getHeight() / rowsInSheet;
+                bitmapWidth = bitmap.getWidth() / columnsInSheet;
+                animationDelay = 200;
+                frameCount = 3;
                 break;
 
             case none:
                 break;
+        }
+    }
+
+
+    @Override
+    public boolean canCollect(Player _player)
+    {
+        if(hasCollected.contains(_player))
+        {
+            return false;
+        }
+        else
+        {
+            collect(_player);
+            return true;
+        }
+    }
+
+    @Override
+    public void collect(Player _player)
+    {
+        hasCollected.add(_player);
+
+        if(this.getType() == PowerUpType.fireball)
+        {
+            _player.canShoot = true;
+            _player.canSprint = false;
+        }
+
+        if(this.getType() == PowerUpType.speed)
+        {
+            _player.canShoot = false;
+            _player.canSprint = true;
+        }
+
+        if(hasCollected.size() > 3)
+        {
+            removeThis();
         }
     }
 
@@ -79,40 +119,5 @@ public class PowerUp extends GameObject
     private void removeThis()
     {
         StaticValues.Instance().tempObjects.remove(this);
-    }
-
-    public boolean canPlayerCollect(Player _player)
-    {
-        if(collectedBy.contains(_player))
-        {
-            return false;
-        }
-        else
-        {
-            addToPlayer(_player);
-            return true;
-        }
-    }
-
-    private void addToPlayer(Player _player)
-    {
-        collectedBy.add(_player);
-
-        if(this.getType() == PowerUpType.fireball)
-        {
-         _player.canShoot = true;
-         _player.canSprint = false;
-        }
-
-        if(this.getType() == PowerUpType.speed)
-        {
-            _player.canShoot = false;
-            _player.canSprint = true;
-        }
-
-        if(collectedBy.size() > 3)
-        {
-            removeThis();
-        }
     }
 }

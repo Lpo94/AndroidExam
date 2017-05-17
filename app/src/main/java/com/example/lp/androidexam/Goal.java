@@ -16,15 +16,16 @@ import java.util.ArrayList;
  * Created by Shark on 01-05-2017.
  */
 
-public class Goal extends GameObject {
+public class Goal extends GameObject implements iCollectable
+{
 
-    public ArrayList<Player> finishedPlayers;
+    public ArrayList<Player> hasCollected;
     GameView gv;
 
     public Goal(Point _pos)
     {
-        finishedPlayers = new ArrayList<>();
-  /*      gv = GameView.getInstance(StaticValues.Instance().staticContext); Sæt den her til null så vi ik riskierer at få flere overlappende spil */ // KASPER HER!!
+        hasCollected = new ArrayList<>();
+  /*      gv = GameView.getInstance(StaticValues.staticContext); Sæt den her til null så vi ik riskierer at få flere overlappende spil */ // KASPER HER!!
 
         pos = _pos;
         rowsInSheet = 1;
@@ -35,15 +36,21 @@ public class Goal extends GameObject {
         frameCount = 1;
     }
 
-
-    public void addPlayerToList(Player _player)
+    @Override
+    public boolean canCollect(Player _player)
     {
-        finishedPlayers.add(_player);
+        return true;
+    }
 
-        Log.w("finishedplayers size: ", String.valueOf(finishedPlayers.size()));
-        Log.w("allPlayers size: ", String.valueOf(StaticValues.Instance().allPlayers.size()));
+    @Override
+    public void collect(Player _player)
+    {
+        hasCollected.add(_player);
 
-        if(finishedPlayers.size() == StaticValues.Instance().allPlayers.size())
+        Log.w("finishedplayers size: ", String.valueOf(hasCollected.size()));
+        Log.w("allPlayers size: ", String.valueOf(StaticValues.allPlayers.size()));
+
+        if(hasCollected.size() == StaticValues.allPlayers.size())
         {
             // game over flyt til score skærm når reset virker
             // Flyt til menu
@@ -56,15 +63,14 @@ public class Goal extends GameObject {
             Bundle customParameter = new Bundle();
             customParameter.putStringArray("finishedPlayers", new String[]
                     {
-                            String.valueOf(finishedPlayers.get(0).getPlayerNumber()),
-                            String.valueOf(finishedPlayers.get(1).getPlayerNumber()),
-                            String.valueOf(finishedPlayers.get(2).getPlayerNumber()),
-                            String.valueOf(finishedPlayers.get(3).getPlayerNumber()),
+                            String.valueOf(hasCollected.get(0).getPlayerNumber()),
+                            String.valueOf(hasCollected.get(1).getPlayerNumber()),
+                            String.valueOf(hasCollected.get(2).getPlayerNumber()),
+                            String.valueOf(hasCollected.get(3).getPlayerNumber()),
                     });
             endScreen.putExtras(customParameter);
             StaticValues.Instance().staticContext.startActivity(endScreen);
     /*        finish(); */
         }
-
     }
 }

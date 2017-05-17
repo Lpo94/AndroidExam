@@ -105,7 +105,7 @@ public class LevelCreator {
 
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
-
+/*
 /*                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
                             testLevel.add(testFireballPUP);*/
 
@@ -115,10 +115,12 @@ public class LevelCreator {
 /*                            Goal testGoal = new Goal(new Point(3000, 50));
                             testLevel.add(testGoal);*/
 
+                 /*           FireObject testfireObject = new FireObject(new Point(800, 50));
+                            testLevel.add(testfireObject);*/
 
                             break;
                         case "B":
-                            Mud mud = new Mud(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos), 1, 12, 5);
+                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
                             testLevel.add(mud);
 /*                                if (_i == 3) {
                                     xPos = 10500;
@@ -167,7 +169,7 @@ public class LevelCreator {
                             break;
 
                         case "M":
-                            FireObject fire = new FireObject(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos), 1,12, R.drawable.fire, 150, 11);
+                            FireObject fire = new FireObject(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
                             testLevel.add(fire);
                             break;
 

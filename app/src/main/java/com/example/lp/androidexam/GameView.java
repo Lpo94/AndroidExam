@@ -11,7 +11,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private long frameTime;
     private LevelCreator levelCreator;
     private SoundManager soundManager;
+    private PowerUpClick powerupBtn;
     private boolean gameFinished = false;
 
 
@@ -42,6 +42,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gestureDetector.setIsLongpressEnabled(true);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds(context);
+        powerupBtn = PowerUpClick.getInstance();
         newGame();
     }
 
@@ -131,7 +132,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                                 StaticValues.Instance().globalPlayer.setDirection(1);
                             }
                             if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 && PowerUpClick.Clickable == true) {
-                                StaticValues.Instance().globalPlayer.speed += 0.5;
+
                                 StaticValues.Instance().globalPlayer.usePowerup();
                                 PowerUpClick.Clickable = false;
                             }

@@ -10,14 +10,14 @@ import android.graphics.Point;
 public class MultiplayerObject extends GameObject    {
     public MultiplayerObject(Point _pos)
     {
-        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.giraf_sheet);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_giraf);
 
         pos = _pos;
         rowsInSheet = 1;
         columnsInSheet = 14;
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(100);
+        animationDelay = 100;
         frameCount = 14;
 
 
