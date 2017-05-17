@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -259,9 +260,10 @@ public class BTService {
 
 
 
-                    Intent incomingMessageIntent = new Intent("mBTPlayerUpdate");
-                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
-                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
+//                    Intent incomingMessageIntent = new Intent("mBTPlayerUpdate");
+//                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
+//                    LocalBroadcastManager.getInstance(StaticValues.staticContext).sendBroadcast(incomingMessageIntent);
+
 
                     Log.d(TAG, "InputStream: " + incomingMessage);
                 } catch (IOException e) {
@@ -273,8 +275,8 @@ public class BTService {
 
         //Call this from the main activity to send data to the remote device
         public void write(byte[] bytes) {
-            String text = new String(bytes, Charset.defaultCharset());
-            Log.d(TAG, "write: Writing to outputstream: " + text);
+//            String text = new String(bytes, Charset.defaultCharset());
+//            Log.d(TAG, "write: Writing to outputstream: " + text);
             try {
                 mmOutStream.write(bytes);
             } catch (IOException e) {

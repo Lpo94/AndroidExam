@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity{
         StaticValues.BA = BluetoothAdapter.getDefaultAdapter();
 
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(msgReciever,new IntentFilter("IncomingMessage"));
-
 
 //        btnStartConnection.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -94,6 +92,7 @@ public class MainActivity extends AppCompatActivity{
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         registerReceiver(mReceiver, filter);
 
@@ -112,16 +111,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    BroadcastReceiver msgReciever = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-//            String text = intent.getStringExtra("theMessage");
-//            messages.append(text + "\n");
-//
-//            messageBoard += messages;
-//            incomingMessages.setText(messageBoard);
-        }
-    };
+
 
     public void startBTConenction(BluetoothDevice device, UUID uuid)
     {
@@ -173,6 +163,11 @@ public class MainActivity extends AppCompatActivity{
 
                 startGame(GameState.BluetoothMultiplayer);
             }
+
+            else if(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action))
+                {
+                    Toast.makeText(context, "Disconnected Request with " +StaticValues.connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+                }
 
 
 

@@ -42,7 +42,7 @@ public class LevelCreator {
 
         try {
             mngr = StaticValues.staticContext.getAssets();
-            is = mngr.open("map1.txt");
+            is = mngr.open("map3.txt");
 
             if ( is != null ) {
 
@@ -99,21 +99,21 @@ public class LevelCreator {
                                 StaticValues.btPlayer = new MultiplayerObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
                             }
                             StaticValues.globalPlayer = player;
-                           // StaticValues.allPlayers.add(player);
+                            StaticValues.allPlayers.add(player);
 
 
 
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
 
-                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
-                            testLevel.add(testFireballPUP);
+/*                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
+                            testLevel.add(testFireballPUP);*/
 
 //                            PowerUp testSpeedPUP = new PowerUp(new Point(400, 50), PowerUp.PowerUpType.speed);
 //                            testLevel.add(testSpeedPUP);
 
-                            Goal testGoal = new Goal(new Point(3000, 50));
-                            testLevel.add(testGoal);
+/*                            Goal testGoal = new Goal(new Point(3000, 50));
+                            testLevel.add(testGoal);*/
 
 
                             break;
@@ -151,9 +151,14 @@ public class LevelCreator {
                             }
                             break;
 
-                        case "f":
-                            PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
-                            StaticValues.tempObjects.add(testFireballPUP2);
+                        case "F":
+                            if(groundCheckAroundMe(x, "F") != -1) {
+                                int multiX = groundCheckAroundMe(x, "F");
+                                Platform platform = new Platform(new Point(StaticValues.gridWidth * (xPos-multiX), StaticValues.gridHeight * yPos), new Rect(0, 0, StaticValues.gridWidth*multiX, StaticValues.gridHeight), true);
+                                testLevel.add(platform);
+                            }
+/*                            PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
+                            StaticValues.tempObjects.add(testFireballPUP2);*/
                             break;
 
                         case "X":

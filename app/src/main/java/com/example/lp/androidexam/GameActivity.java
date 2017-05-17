@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -18,8 +19,20 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+        {
+
+            StaticValues.mBTService = new BTService(this);
+
+            StaticValues.mBTService.startClient(StaticValues.connectedDevice,StaticValues.MY_UUID_INSECURE);
+
+        }
+
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        StaticValues.staticContext = this;
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -37,10 +50,14 @@ public class GameActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String text = intent.getStringExtra("theMessage");
                 String[] textSplit = text.split("|");
-                int xPos = Integer.parseInt(textSplit[0]);
-                int yPos = Integer.parseInt(textSplit[0]);
-                StaticValues.btPlayer.getPos().x = xPos;
-                StaticValues.btPlayer.getPos().y = yPos;
+                if(textSplit.length > 0) {
+                    int xPos = Integer.parseInt(textSplit[0]);
+                    int yPos = Integer.parseInt(textSplit[0]);
+                }
+//                StaticValues.btPlayer.getPos().x = xPos;
+//                StaticValues.btPlayer.getPos().y = yPos;
+
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 //
 //            messageBoard += messages;
 //            incomingMessages.setText(messageBoard);
@@ -49,5 +66,6 @@ public class GameActivity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(msgReciever,new IntentFilter("mBTPlayerUpdate"));
 
+        setContentView(new GameView(this));
     }
 }

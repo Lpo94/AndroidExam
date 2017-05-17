@@ -9,6 +9,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -142,6 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     break;
 
                 case MotionEvent.ACTION_UP:
+                    sendPlayers();
                     StaticValues.globalPlayer.setDirection(0);
                     break;
             }
@@ -155,6 +157,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
+
+
         StaticValues.tempObjects = StaticValues.gameObjects;
         StaticValues.currentTime = System.currentTimeMillis();
 
@@ -178,6 +182,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         }
 
+
         for (GameObject go : StaticValues.objectsToRemove) {
             if (StaticValues.gameObjects.contains(go)) {
                 StaticValues.gameObjects.remove(go);
@@ -188,7 +193,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         StaticValues.objectsToRemove.clear();
-        sendPlayers();
+
 
     }
 
@@ -219,8 +224,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     {
 
         String data = StaticValues.btPlayer.getPos().x + "|" + StaticValues.btPlayer.getPos().y;
-        byte[] bytes = data.getBytes(Charset.defaultCharset());
-        StaticValues.mBTService.write(bytes);
+        StaticValues.mBTService.write(data.getBytes(Charset.defaultCharset()));
     }
 
 
