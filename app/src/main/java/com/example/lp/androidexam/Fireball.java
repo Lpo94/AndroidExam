@@ -26,7 +26,7 @@ public class Fireball extends GameObject
 
         rowsInSheet = 1;
         columnsInSheet = 28;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.fireball);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.fireball);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         animationDelay = 100;
@@ -46,7 +46,7 @@ public class Fireball extends GameObject
         lifeTimer();
         if(curAnim == Animations.continous) pos.x += projectileSpeed;
 
-        elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
+        elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
         if(rect != null)
         {
             rect.set(pos.x-rect.width()/2,pos.y -rect.height()/2, pos.x+rect.width()/2,pos.y+rect.height()/2);
@@ -99,7 +99,7 @@ public class Fireball extends GameObject
 
     private void removeThis()
     {
-        StaticValues.tempObjects.remove(this);
+        StaticValues.Instance().tempObjects.remove(this);
     }
 
 }

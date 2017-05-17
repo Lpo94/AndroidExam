@@ -61,12 +61,12 @@ public class PowerUp extends GameObject
         {
             case fireball:
                 Fireball fireball = new Fireball(_player);
-                StaticValues.tempObjects.add(fireball);
+                StaticValues.Instance().tempObjects.add(fireball);
                 type = PowerUpType.none;
                 break;
 
             case speed:
-                _player.sprintTimer = StaticValues.currentTime + 5000;
+                _player.sprintTimer = StaticValues.Instance().currentTime + 5000;
                 _player.sprint();
                 type = PowerUpType.none;
                 break;
@@ -78,7 +78,7 @@ public class PowerUp extends GameObject
 
     private void removeThis()
     {
-        StaticValues.tempObjects.remove(this);
+        StaticValues.Instance().tempObjects.remove(this);
     }
 
     public boolean canPlayerCollect(Player _player)

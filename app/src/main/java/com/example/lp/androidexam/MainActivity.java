@@ -26,19 +26,20 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onPause() {
         super.onPause();
-        StaticValues.baggroundMusic.pause();
+        StaticValues.Instance().baggroundMusic.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        StaticValues.baggroundMusic.start();
+        StaticValues.Instance().baggroundMusic.start();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        StaticValues.Instance().staticContext = this;
 
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -46,23 +47,23 @@ public class MainActivity extends AppCompatActivity{
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        StaticValues.SCREEN_WIDTH = dm.widthPixels;
-        StaticValues.SCREEN_HEIGHT = dm.heightPixels;
+        StaticValues.Instance().SCREEN_WIDTH = dm.widthPixels;
+        StaticValues.Instance().SCREEN_HEIGHT = dm.heightPixels;
 
 
 
 
-        StaticValues.mBTService = new BTService(this);
 
 
-        if(StaticValues.baggroundMusic == null) {
-            StaticValues.baggroundMusic = MediaPlayer.create(this, R.raw.menu);
-            StaticValues.baggroundMusic.setLooping(true);
-            StaticValues.baggroundMusic.setVolume(0.1f, 0.1f);
-            StaticValues.baggroundMusic.start();
+
+        if(StaticValues.Instance().baggroundMusic == null) {
+            StaticValues.Instance().baggroundMusic = MediaPlayer.create(this, R.raw.menu);
+            StaticValues.Instance().baggroundMusic.setLooping(true);
+            StaticValues.Instance().baggroundMusic.setVolume(0.1f, 0.1f);
+            StaticValues.Instance().baggroundMusic.start();
         }
 
-        StaticValues.BA = BluetoothAdapter.getDefaultAdapter();
+         StaticValues.Instance().BA = BluetoothAdapter.getDefaultAdapter();
 
 
 
@@ -98,16 +99,20 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        if(StaticValues.BA == null)
+        if(StaticValues.Instance().BA == null)
         {
             Toast.makeText(this, "No Bluetooth Detected", Toast.LENGTH_SHORT).show();
             // Implenter så man ryger tilbage til menu
         }
-        else if(!StaticValues.BA.isEnabled())
+        else if(!StaticValues.Instance().BA.isEnabled())
         {
             Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnOn, 1);
             Toast.makeText(getApplicationContext(), "Turned on",Toast.LENGTH_LONG).show();
+        }
+        else{
+            StaticValues.Instance().mBTService = new BTService(this);
+
         }
     }
 
@@ -115,7 +120,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void startBTConenction(BluetoothDevice device, UUID uuid)
     {
-        StaticValues.mBTService.startClient(device,uuid);
+        StaticValues.Instance().mBTService.startClient(device,uuid);
     }
 
     @Override
@@ -146,7 +151,7 @@ public class MainActivity extends AppCompatActivity{
             }
             else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action))
             {
-                if(StaticValues.BA.getState() == StaticValues.BA.STATE_OFF)
+                if(StaticValues.Instance().BA.getState() == StaticValues.Instance().BA.STATE_OFF)
                 {
                     Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(turnOn, 1);
@@ -156,17 +161,17 @@ public class MainActivity extends AppCompatActivity{
             {
 
 
-                StaticValues.connectedDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                StaticValues.connectedDeviceAdress = StaticValues.connectedDevice.getAddress();
+                StaticValues.Instance().connectedDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                StaticValues.Instance().connectedDeviceAdress = StaticValues.Instance().connectedDevice.getAddress();
 
-                Toast.makeText(context, "Connection Succes with " +StaticValues.connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Connection Succes with " +StaticValues.Instance().connectedDevice.getName(), Toast.LENGTH_SHORT).show();
 
                 startGame(GameState.BluetoothMultiplayer);
             }
 
             else if(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action))
                 {
-                    Toast.makeText(context, "Disconnected Request with " +StaticValues.connectedDevice.getName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Disconnected Request with " +StaticValues.Instance().connectedDevice.getName(), Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -182,9 +187,10 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startGame(GameState _gameState){
-        StaticValues.gameState = _gameState;
+        StaticValues.Instance().gameState = _gameState;
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+        finish();
 
     }
 

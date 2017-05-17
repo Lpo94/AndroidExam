@@ -16,70 +16,92 @@ import java.util.UUID;
  */
 
 public class StaticValues {
+    private static StaticValues instance;
+
+    public static StaticValues Instance(){
+        if(instance == null)
+        {
+            instance = new StaticValues();
+        }
+        return instance;
+    }
+
+
+    private StaticValues()
+    {
+
+    }
+
+    public void resetInstance()
+    {
+        instance = null;
+    }
+
+
     //Player
-    public static Player globalPlayer;
-    public static MultiplayerObject btPlayer;
-    public static ArrayList<Player> allPlayers;
+    public Player globalPlayer;
+    public MultiplayerObject btPlayer;
+    public ArrayList<Player> allPlayers;
 
     //Lists
-    public static ArrayList<GameObject> colliders;
+    public ArrayList<GameObject> colliders;
 
-    public static ArrayList<GameObject> gameObjects;
+    public ArrayList<GameObject> gameObjects;
 
-    public static ArrayList<GameObject> tempObjects;
+    public ArrayList<GameObject> tempObjects;
 
-    public static ArrayList<GameObject> objectsToRemove;
+    public ArrayList<GameObject> objectsToRemove;
 
-    public static Fragment fragment;
+    public Fragment fragment;
 
-    public static FragmentManager fm;
+    public FragmentManager fm;
 
-    public static FragmentTransaction ft;
+    public FragmentTransaction ft;
 
-    public static MediaPlayer baggroundMusic;
+    public MediaPlayer baggroundMusic;
 
 
     // Ints
-    public static int SCREEN_WIDTH;
+    public int SCREEN_WIDTH;
 
-    public static int SCREEN_HEIGHT;
+    public int SCREEN_HEIGHT;
 
-    public static int deltaTime;
+    public int deltaTime;
 
-    public static int gridWidth = 60;
+    public int gridWidth = 60;
 
-    public static int gridHeight = 60;
+    public int gridHeight = 60;
 
     //Floats
-    public static float WORLD_SPEED;
+    public float WORLD_SPEED;
 
-    public static float WORLD_GRAVITY = 0.02f;
+    public float WORLD_GRAVITY = 0.02f;
 
     // boolean
-    public static boolean gameRunning = false;
+    public boolean gameFinished = false;
 
-    public static boolean endgame;
+    public boolean endgame;
 
     // Longs
-    public static long currentTime;
+    public long currentTime;
 
 
     // Smaller things such as Contexts and similar
-    public static Context staticContext;
+    public Context staticContext;
 
-    public static GameState gameState;
+    public GameState gameState;
 
 
     // Bluetooth
 
-    public static BTService mBTService;
+    public BTService mBTService;
 
-    public static BluetoothAdapter BA;
+    public BluetoothAdapter BA;
 
-    public static BluetoothDevice connectedDevice;
+    public BluetoothDevice connectedDevice;
 
-    public static String connectedDeviceAdress;
+    public String connectedDeviceAdress;
 
-    public static final UUID MY_UUID_INSECURE =UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+    public final UUID MY_UUID_INSECURE =UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
 
 }

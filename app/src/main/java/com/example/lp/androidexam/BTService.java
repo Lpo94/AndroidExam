@@ -195,6 +195,24 @@ public class BTService {
         }
     }
 
+    public synchronized void stopService() {
+        Log.d(TAG, "start");
+
+        // Cancel any thread attempting to make a connection
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
+        }
+        if (mInsecureAcceptThread != null) {
+            mInsecureAcceptThread.cancel();
+            mInsecureAcceptThread = null;
+        }
+        if(mConnectedThread != null)
+        {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+    }
     /**
      AcceptThread starts and sits waiting for a connection.
      Then ConnectThread starts and attempts to make a connection with the other devices AcceptThread.
@@ -262,7 +280,7 @@ public class BTService {
 
 //                    Intent incomingMessageIntent = new Intent("mBTPlayerUpdate");
 //                    incomingMessageIntent.putExtra("theMessage", incomingMessage);
-//                    LocalBroadcastManager.getInstance(StaticValues.staticContext).sendBroadcast(incomingMessageIntent);
+//                    LocalBroadcastManager.getInstance(StaticValues.Instance().staticContext).sendBroadcast(incomingMessageIntent);
 
 
                     Log.d(TAG, "InputStream: " + incomingMessage);

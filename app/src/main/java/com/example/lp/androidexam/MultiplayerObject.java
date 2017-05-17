@@ -10,7 +10,7 @@ import android.graphics.Point;
 public class MultiplayerObject extends GameObject    {
     public MultiplayerObject(Point _pos)
     {
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.giraf_sheet);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.giraf_sheet);
 
         pos = _pos;
         rowsInSheet = 1;

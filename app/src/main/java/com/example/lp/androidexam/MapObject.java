@@ -22,7 +22,7 @@ public class MapObject extends GameObject
         columnsInSheet = 5;
         frameCount = 1;
         type = _type;
-        bitmap =BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.map_objects);
+        bitmap =BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.map_objects);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
 

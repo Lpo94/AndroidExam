@@ -117,11 +117,11 @@ public class Bluetooth_Server extends Fragment {
 
                 break;
             case "back":
-                StaticValues.fragment = new Bluetooth_menu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new Bluetooth_menu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 back.setVisibility(view.INVISIBLE);
 
             default:

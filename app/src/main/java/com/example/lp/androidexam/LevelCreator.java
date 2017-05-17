@@ -41,7 +41,7 @@ public class LevelCreator {
         String ret = "";
 
         try {
-            mngr = StaticValues.staticContext.getAssets();
+            mngr = StaticValues.Instance().staticContext.getAssets();
             is = mngr.open("map3.txt");
 
             if ( is != null ) {
@@ -69,18 +69,18 @@ public class LevelCreator {
         return ret;
     }
 
-    public LevelCreator(int LevelIndex, Context _context)
+    public LevelCreator(int LevelIndex)
     {
 //        staticContext = _context;
-        if(StaticValues.gameObjects.size() != 0) {
-            StaticValues.gameObjects.clear();
+        if(StaticValues.Instance().gameObjects.size() != 0) {
+            StaticValues.Instance().gameObjects.clear();
         }
 
         if(currentLevel.size() != 0) {
             currentLevel.clear();
         }
 
-        String testString = readFromFile(StaticValues.staticContext);
+        String testString = readFromFile(StaticValues.Instance().staticContext);
         ary = testString.split("");
         mapLength = ary.length;
 
@@ -92,18 +92,18 @@ public class LevelCreator {
                 for(int x = 1; x <= mapLength-1;x++) {
                     switch (ary[x]) {
                         case "A":
-                            Player player = new Player(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                            Player player = new Player(new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 2));
 
-                            if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+                            if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
                             {
-                                StaticValues.btPlayer = new MultiplayerObject(new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2));
+                                StaticValues.Instance().btPlayer = new MultiplayerObject(new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 2));
                             }
-                            StaticValues.globalPlayer = player;
-                            StaticValues.allPlayers.add(player);
+                            StaticValues.Instance().globalPlayer = player;
+                            StaticValues.Instance().allPlayers.add(player);
 
 
 
-                            RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
+                            RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
 
 /*                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
@@ -118,7 +118,7 @@ public class LevelCreator {
 
                             break;
                         case "B":
-                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1, 12, 5);
+                            Mud mud = new Mud(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos), 1, 12, 5);
                             testLevel.add(mud);
 /*                                if (_i == 3) {
                                     xPos = 10500;
@@ -133,7 +133,7 @@ public class LevelCreator {
                         case "C":
                             if(groundCheckAroundMe(x, "C") != -1) {
                                 int multiX = groundCheckAroundMe(x, "C");
-                                Ground ground = new Ground(new Point(StaticValues.gridWidth * (xPos-multiX), StaticValues.gridHeight * yPos), new Rect(0, 0, StaticValues.gridWidth*multiX, StaticValues.gridHeight));
+                                Ground ground = new Ground(new Point(StaticValues.Instance().gridWidth * (xPos-multiX), StaticValues.Instance().gridHeight * yPos), new Rect(0, 0, StaticValues.Instance().gridWidth*multiX, StaticValues.Instance().gridHeight));
                                 testLevel.add(ground);
                             }
                             break;
@@ -141,12 +141,12 @@ public class LevelCreator {
                         case "D":
 
                                 PowerUp testSpeedPUP2 = new PowerUp(new Point(700, 500), PowerUp.PowerUpType.speed);
-                                StaticValues.tempObjects.add(testSpeedPUP2);
+                                StaticValues.Instance().tempObjects.add(testSpeedPUP2);
                             break;
                         case"E":
                             if(groundCheckAroundMe(x, "E") != -1) {
                             int multiX = groundCheckAroundMe(x, "E");
-                            Platform platform = new Platform(new Point(StaticValues.gridWidth * (xPos-multiX), StaticValues.gridHeight * yPos), new Rect(0, 0, StaticValues.gridWidth*multiX, StaticValues.gridHeight), false);
+                            Platform platform = new Platform(new Point(StaticValues.Instance().gridWidth * (xPos-multiX), StaticValues.Instance().gridHeight * yPos), new Rect(0, 0, StaticValues.Instance().gridWidth*multiX, StaticValues.Instance().gridHeight), false);
                             testLevel.add(platform);
                             }
                             break;
@@ -154,25 +154,25 @@ public class LevelCreator {
                         case "F":
                             if(groundCheckAroundMe(x, "F") != -1) {
                                 int multiX = groundCheckAroundMe(x, "F");
-                                Platform platform = new Platform(new Point(StaticValues.gridWidth * (xPos-multiX), StaticValues.gridHeight * yPos), new Rect(0, 0, StaticValues.gridWidth*multiX, StaticValues.gridHeight), true);
+                                Platform platform = new Platform(new Point(StaticValues.Instance().gridWidth * (xPos-multiX), StaticValues.Instance().gridHeight * yPos), new Rect(0, 0, StaticValues.Instance().gridWidth*multiX, StaticValues.Instance().gridHeight), true);
                                 testLevel.add(platform);
                             }
 /*                            PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
-                            StaticValues.tempObjects.add(testFireballPUP2);*/
+                            StaticValues.Instance().tempObjects.add(testFireballPUP2);*/
                             break;
 
                         case "G":
-                            Goal testGoal = new Goal(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
+                            Goal testGoal = new Goal(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos));
                             testLevel.add(testGoal);
                             break;
 
                         case "M":
-                            FireObject fire = new FireObject(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1,12, R.drawable.fire, 150, 11);
+                            FireObject fire = new FireObject(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos), 1,12, R.drawable.fire, 150, 11);
                             testLevel.add(fire);
                             break;
 
                         case "P":
-                            PowerUp testFireballPUP = new PowerUp(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), PowerUp.PowerUpType.fireball);
+                            PowerUp testFireballPUP = new PowerUp(new Point(StaticValues.Instance().gridWidth * xPos, StaticValues.Instance().gridHeight * yPos), PowerUp.PowerUpType.fireball);
                             testLevel.add(testFireballPUP);
                             break;
 
@@ -195,7 +195,7 @@ public class LevelCreator {
 
         for(GameObject go: currentLevel)
         {
-            StaticValues.gameObjects.add(go);
+            StaticValues.Instance().gameObjects.add(go);
         }
     }
 

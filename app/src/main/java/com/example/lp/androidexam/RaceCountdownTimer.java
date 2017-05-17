@@ -18,7 +18,7 @@ public class RaceCountdownTimer extends GameObject
         pos = _pos;
         rowsInSheet = _rows;
         columnsInSheet = _columns;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),_bitmapId);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         setAnimationDelay(_animationSpeed);
@@ -31,17 +31,17 @@ public class RaceCountdownTimer extends GameObject
         if(frameCount > 1)
         {
 
-            long elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 100000;
+            long elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 100000;
 
             if(elapsedTime > animationDelay)
             {
                 currentFrame++;
-                StaticValues.currentTime = System.nanoTime();
+                StaticValues.Instance().currentTime = System.nanoTime();
 
                 if(currentFrame > frameCount)
                 {
                     player.setCanmove(true);
-                    StaticValues.gameObjects.remove(this);
+                    StaticValues.Instance().gameObjects.remove(this);
                 }
             }
         }

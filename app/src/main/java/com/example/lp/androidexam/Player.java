@@ -51,9 +51,10 @@ public class Player extends GameObject {
         super();
         pos = _pos;
         rect = new Rect(100,100,200,200);
-        speed = 0.5f;
+        speed = 0.8f;
         defaultVelocity = velocity;
         colour = new Color().GREEN;
+
         canMove = false;
         falling = true;
 
@@ -120,16 +121,16 @@ public class Player extends GameObject {
             if(direction != 0) {
                 switch (direction) {
                     case -1:
-                        GameView.moveObjectX((int)(speed * StaticValues.deltaTime));
-//                        pos.x -= speed * StaticValues.deltaTime;
+                        GameView.moveObjectX((int)(speed * StaticValues.Instance().deltaTime));
+//                        pos.x -= speed * StaticValues.Instance().deltaTime;
                         break;
                     case 1:
-                        GameView.moveObjectX((int)-(speed * StaticValues.deltaTime));
-//                        pos.x += speed * StaticValues.deltaTime;
+                        GameView.moveObjectX((int)-(speed * StaticValues.Instance().deltaTime));
+//                        pos.x += speed * StaticValues.Instance().deltaTime;
                         break;
                 }
             }
-            int valueCheck = Math.round(rect.bottom + StaticValues.WORLD_GRAVITY * StaticValues.deltaTime);
+            int valueCheck = Math.round(rect.bottom + StaticValues.Instance().WORLD_GRAVITY * StaticValues.Instance().deltaTime);
 
             if(isObjectSolid(new Point(pos.x,valueCheck)))
             {
@@ -147,15 +148,20 @@ public class Player extends GameObject {
 
             if(falling && !jumping)
             {
-                GameView.moveObjectY((int)(StaticValues.WORLD_GRAVITY * StaticValues.deltaTime));
-//                pos.y += StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
+                GameView.moveObjectY((int)(StaticValues.Instance().WORLD_GRAVITY * StaticValues.Instance().deltaTime));
+//                pos.y += StaticValues.Instance().WORLD_GRAVITY * StaticValues.Instance().deltaTime;
             }
 
             if(jumping)
             {
-                GameView.moveObjectY((int)+(velocity * StaticValues.deltaTime));
-//                pos.y -= velocity * StaticValues.deltaTime;
-                velocity -= StaticValues.WORLD_GRAVITY * StaticValues.deltaTime;
+                GameView.moveObjectY((int)+(velocity * StaticValues.Instance().deltaTime));
+//                pos.y -= velocity * StaticValues.Instance().deltaTime;
+                velocity -= StaticValues.Instance().WORLD_GRAVITY * StaticValues.Instance().deltaTime;
+
+                if(velocity <= -2)
+                {
+                    velocity = -2;
+                }
             }
         }
 
@@ -163,7 +169,7 @@ public class Player extends GameObject {
 
     private void manageAnimationStates()
     {
-        elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
+        elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
 
         if(elapsedTime > animationDelay)
         {
@@ -205,7 +211,7 @@ public class Player extends GameObject {
     private void stunTimer()
     {
 
-        if(StaticValues.currentTime > stunDelay)
+        if(StaticValues.Instance().currentTime > stunDelay)
         {
             isStunned = false;
         }
@@ -215,7 +221,7 @@ public class Player extends GameObject {
     {
         speed = 2;
 
-        if(StaticValues.currentTime > sprintTimer)
+        if(StaticValues.Instance().currentTime > sprintTimer)
         {
             isSprinting = false;
             speed = 0.5f;
@@ -242,8 +248,8 @@ public class Player extends GameObject {
 
             if(_other instanceof Goal)
             {
-                canMove = false;
-                ((Goal) _other).addPlayerToList(this);
+                StaticValues.Instance().gameFinished = true;
+
             }
 
             if(_other instanceof Fireball)
@@ -287,14 +293,19 @@ public class Player extends GameObject {
 
     private boolean isObjectSolid(Point _p)
     {
-        for(GameObject go: StaticValues.tempObjects)
+        for(GameObject go: StaticValues.Instance().tempObjects)
         {
             if(go.isSolid)
             {
                 if (go.getRect() != null)
                 {
-                    Rect r = new Rect(_p.x, _p.y, _p.x + 100, _p.y + 100);
+                    Rect r = new Rect(_p.x, _p.y, _p.x + 50, _p.y-100);
+                    r.set(rect);
                     if (Rect.intersects(go.getRect(),r))
+                    {
+                        return true;
+                    }
+                    else if(go.getRect().contains(r))
                     {
                         return true;
                     }
@@ -324,19 +335,19 @@ public class Player extends GameObject {
         switch (_playerNumber)
         {
             case 1:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.giraf_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.giraf_sheet);
                 break;
 
             case 2:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.dino_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.dino_sheet);
                 break;
 
             case 3:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.parrot_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.parrot_sheet);
                 break;
 
             case 4:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.cow_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.cow_sheet);
                 break;
         }
 

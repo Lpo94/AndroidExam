@@ -66,7 +66,7 @@ public class Bluetooth_menu extends Fragment {
 
         getContext().registerReceiver(mReciever1,filter);
 
-        StaticValues.BA = BluetoothAdapter.getDefaultAdapter();
+        StaticValues.Instance().BA = BluetoothAdapter.getDefaultAdapter();
 
 
         Server = (Button) view.findViewById(R.id.Server_button);
@@ -151,22 +151,22 @@ public class Bluetooth_menu extends Fragment {
         Connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StaticValues.connectedDevice = StaticValues.BA.getRemoteDevice(StaticValues.connectedDeviceAdress);
-                ((MainActivity)getActivity()).startBTConenction(StaticValues.connectedDevice,StaticValues.MY_UUID_INSECURE);
+                StaticValues.Instance().connectedDevice = StaticValues.Instance().BA.getRemoteDevice(StaticValues.Instance().connectedDeviceAdress);
+                ((MainActivity)getActivity()).startBTConenction(StaticValues.Instance().connectedDevice,StaticValues.Instance().MY_UUID_INSECURE);
             }
         });
 
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(StaticValues.BA.isDiscovering())
+                if(StaticValues.Instance().BA.isDiscovering())
                 {
-                    StaticValues.BA.cancelDiscovery();
+                    StaticValues.Instance().BA.cancelDiscovery();
                 }
 
                 deviceList.clear();
 
-                StaticValues.BA.startDiscovery();
+                StaticValues.Instance().BA.startDiscovery();
                 deviceAdapter = new  ArrayAdapter(getContext(),android.R.layout.simple_list_item_1, deviceList);
 
                 lvDevices.setAdapter(deviceAdapter);
@@ -187,7 +187,7 @@ public class Bluetooth_menu extends Fragment {
                     public void onClick(View v)
                     {
                         deviceList.clear();
-                        devicesArray = StaticValues.BA.getBondedDevices();
+                        devicesArray = StaticValues.Instance().BA.getBondedDevices();
                         if (devicesArray.size() > 0) {
                             for (BluetoothDevice bt : devicesArray)
                             {
@@ -206,14 +206,14 @@ public class Bluetooth_menu extends Fragment {
         AdapterView.OnItemClickListener arrayListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(StaticValues.BA.isDiscovering())
+                if(StaticValues.Instance().BA.isDiscovering())
                 {
-                    StaticValues.BA.cancelDiscovery();
+                    StaticValues.Instance().BA.cancelDiscovery();
                 }
                 String info = ((TextView) view).getText().toString();
-                StaticValues.connectedDeviceAdress = info.substring(info.length() - 17);
+                StaticValues.Instance().connectedDeviceAdress = info.substring(info.length() - 17);
 
-                BluetoothDevice tempDevice = StaticValues.BA.getRemoteDevice(StaticValues.connectedDeviceAdress);
+                BluetoothDevice tempDevice = StaticValues.Instance().BA.getRemoteDevice(StaticValues.Instance().connectedDeviceAdress);
 
                 if(tempDevice.getBondState() != BluetoothDevice.BOND_BONDED)
                 {
@@ -277,11 +277,11 @@ public class Bluetooth_menu extends Fragment {
                 break;
 
             case "Back":
-                StaticValues.fragment = new ModeMenu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new ModeMenu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 Server.setVisibility(view.INVISIBLE);
                 ConnectToServer.setVisibility(view.INVISIBLE);
                 Pair.setVisibility(view.INVISIBLE);

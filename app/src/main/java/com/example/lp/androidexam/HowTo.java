@@ -56,11 +56,11 @@ public class HowTo extends Fragment {
     {
         switch (button) {
             case "Back":
-                StaticValues.fragment = new Menu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new Menu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 Back.setVisibility(view.INVISIBLE);
                 Next.setVisibility(view.INVISIBLE);
                 Prev.setVisibility(view.INVISIBLE);

@@ -14,7 +14,7 @@ public class PowerUpClick extends GameObject
         pos = _pos;
         rowsInSheet = _rows;
         columnsInSheet = _columns;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),_bitmapId);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         setAnimationDelay(_animationSpeed);

@@ -1,6 +1,8 @@
 package com.example.lp.androidexam;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,16 +22,14 @@ import java.util.ArrayList;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private GameThread gameThreadThread;
+    public static GameThread gameThreadThread;
     private GestureDetector gestureDetector;
     private long frameTime;
     private LevelCreator levelCreator;
     private SoundManager soundManager;
+    private boolean gameFinished = false;
 
 
-    public GameThread getGameThreadThread() {
-        return gameThreadThread;
-    }
 
 
     public GameView(Context context) {
@@ -37,7 +37,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         getHolder().addCallback(this);
         gameThreadThread = new GameThread(getHolder(), this);
         setFocusable(true);
-        StaticValues.staticContext = context;
+        StaticValues.Instance().staticContext = context;
         gestureDetector = new GestureDetector(context, new GestureListener());
         gestureDetector.setIsLongpressEnabled(true);
         soundManager = SoundManager.getInstance();
@@ -87,29 +87,29 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
 //        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
 
-        for (GameObject go : StaticValues.tempObjects) {
+        for (GameObject go : StaticValues.Instance().tempObjects) {
             go.draw(_canvas);
         }
-        if (StaticValues.globalPlayer != null) {
-            StaticValues.globalPlayer.draw(_canvas);
+        if (StaticValues.Instance().globalPlayer != null) {
+            StaticValues.Instance().globalPlayer.draw(_canvas);
         }
 
-        if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
         {
-            StaticValues.btPlayer.draw(_canvas);
+            StaticValues.Instance().btPlayer.draw(_canvas);
         }
-        if (PowerUpClick.Clickable == true) {
-            if (StaticValues.globalPlayer.canShoot) {
-//                _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+        if (PowerUpClick.Clickable) {
+            if (StaticValues.Instance().globalPlayer.canShoot) {
+//                _canvas.drawBitmap(powerScreenFireball,StaticValues.Instance().SCREEN_WIDTH/2 -50 ,150,null);
             }
 
-            if (StaticValues.globalPlayer.canSprint) {
-                _canvas.drawBitmap(powerScreenSpeed, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
+            if (StaticValues.Instance().globalPlayer.canSprint) {
+                _canvas.drawBitmap(powerScreenSpeed, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
             }
             powerScreenDefeault.recycle();
         }
-        if (PowerUpClick.Clickable == false) {
-            _canvas.drawBitmap(powerScreenDefeault, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
+        if (!PowerUpClick.Clickable) {
+            _canvas.drawBitmap(powerScreenDefeault, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
             powerScreenSpeed.recycle();
         }
 
@@ -119,20 +119,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent(MotionEvent event) {
         int x = (int) event.getX();
         int y = (int) event.getY();
-        if (StaticValues.endgame == false) {
+        if (!StaticValues.Instance().endgame) {
             switch (event.getAction()) {
 
                 case MotionEvent.ACTION_DOWN:
                     if (gestureDetector.onTouchEvent(event)) {
-                        if (StaticValues.globalPlayer != null) {
-                            if (x < StaticValues.SCREEN_WIDTH / 2) {
-                                StaticValues.globalPlayer.setDirection(-1);
-                            } else if (x > StaticValues.SCREEN_WIDTH / 2) {
-                                StaticValues.globalPlayer.setDirection(1);
+                        if (StaticValues.Instance().globalPlayer != null) {
+                            if (x < StaticValues.Instance().SCREEN_WIDTH / 2) {
+                                StaticValues.Instance().globalPlayer.setDirection(-1);
+                            } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2) {
+                                StaticValues.Instance().globalPlayer.setDirection(1);
                             }
-                            if (x > StaticValues.SCREEN_WIDTH / 2 - 50 && x < StaticValues.SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 && PowerUpClick.Clickable == true) {
-                                StaticValues.globalPlayer.speed += 0.5;
-                                StaticValues.globalPlayer.usePowerup();
+                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 && PowerUpClick.Clickable == true) {
+                                StaticValues.Instance().globalPlayer.speed += 0.5;
+                                StaticValues.Instance().globalPlayer.usePowerup();
                                 PowerUpClick.Clickable = false;
                             }
                         }
@@ -144,10 +144,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                 case MotionEvent.ACTION_UP:
 
-                    StaticValues.globalPlayer.setDirection(0);
+                    StaticValues.Instance().globalPlayer.setDirection(0);
                     break;
             }
-        } else if (StaticValues.endgame == true) {
+        } else if (StaticValues.Instance().endgame) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
 
             }
@@ -158,64 +158,72 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
 
+        if(gameFinished)
+        {
+            endGame();
+            Toast.makeText(getContext(), "Game Finished", Toast.LENGTH_SHORT).show();
+        }
 
-        StaticValues.tempObjects = StaticValues.gameObjects;
-        StaticValues.currentTime = System.currentTimeMillis();
 
-        StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
+        StaticValues.Instance().tempObjects = StaticValues.Instance().gameObjects;
+        StaticValues.Instance().currentTime = System.currentTimeMillis();
+
+        StaticValues.Instance().deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
 
-        for (GameObject go : StaticValues.tempObjects) {
+        for (GameObject go : StaticValues.Instance().tempObjects) {
             go.update();
         }
 
 
-        if (StaticValues.globalPlayer != null) {
-            StaticValues.globalPlayer.update();
-            for (GameObject go : StaticValues.tempObjects) {
-                StaticValues.globalPlayer.onCollisionStay(go);
-                StaticValues.globalPlayer.onCollisionEnter(go);
+        if (StaticValues.Instance().globalPlayer != null) {
+            StaticValues.Instance().globalPlayer.update();
+            for (GameObject go : StaticValues.Instance().tempObjects) {
+                StaticValues.Instance().globalPlayer.onCollisionStay(go);
+                StaticValues.Instance().globalPlayer.onCollisionEnter(go);
 
             }
-            StaticValues.globalPlayer.onCollisionExit();
+            StaticValues.Instance().globalPlayer.onCollisionExit();
 
         }
 
 
 
 
-        for (GameObject go : StaticValues.objectsToRemove) {
-            if (StaticValues.gameObjects.contains(go)) {
-                StaticValues.gameObjects.remove(go);
+
+
+        for (GameObject go : StaticValues.Instance().objectsToRemove) {
+            if (StaticValues.Instance().gameObjects.contains(go)) {
+                StaticValues.Instance().gameObjects.remove(go);
             }
         }
-        if(StaticValues.gameState == GameState.BluetoothMultiplayer) {
-            StaticValues.btPlayer.update();
+        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer) {
+            StaticValues.Instance().btPlayer.update();
         }
 
-        StaticValues.objectsToRemove.clear();
+        StaticValues.Instance().objectsToRemove.clear();
     }
 
     public void newGame() {
-        StaticValues.allPlayers = new ArrayList<>();
-        StaticValues.colliders = new ArrayList<>();
-        StaticValues.gameObjects = new ArrayList<>();
-        StaticValues.objectsToRemove = new ArrayList<>();
-        StaticValues.tempObjects = new ArrayList<>();
-        levelCreator = new LevelCreator(0, getContext());
+        StaticValues.Instance().allPlayers = new ArrayList<>();
+        StaticValues.Instance().colliders = new ArrayList<>();
+        StaticValues.Instance().gameObjects = new ArrayList<>();
+        StaticValues.Instance().objectsToRemove = new ArrayList<>();
+        StaticValues.Instance().tempObjects = new ArrayList<>();
+        levelCreator = new LevelCreator(0);
 
     }
 
 
     public static void moveObjectX(int x) {
-        for (GameObject go : StaticValues.tempObjects) {
+        for (GameObject go : StaticValues.Instance().tempObjects) {
             go.pos.x = go.pos.x + x;
         }
     }
 
     public static void moveObjectY(int y) {
-        for (GameObject go : StaticValues.tempObjects) {
+        for (GameObject go : StaticValues.Instance().tempObjects) {
             go.pos.y = go.pos.y + y;
         }
     }
@@ -223,9 +231,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void sendPlayers()
     {
 
-        String data = StaticValues.btPlayer.getPos().x + "|" + StaticValues.btPlayer.getPos().y;
-        StaticValues.mBTService.write(data.getBytes(Charset.defaultCharset()));
+        String data = StaticValues.Instance().btPlayer.getPos().x + "|" + StaticValues.Instance().btPlayer.getPos().y;
+        StaticValues.Instance().mBTService.write(data.getBytes(Charset.defaultCharset()));
     }
+
+    public void endGame()
+    {
+        gameThreadThread.setRunning(false);
+        gameThreadThread = null;
+        StaticValues.Instance().mBTService.stopService();
+        StaticValues.Instance().mBTService = null;
+
+        StaticValues.Instance().resetInstance();
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        getContext().startActivity(intent);
+    }
+
 
 
 }

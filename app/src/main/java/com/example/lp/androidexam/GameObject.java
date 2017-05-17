@@ -37,6 +37,7 @@ public abstract class GameObject {
     {
         colliders = new ArrayList<>();
     }
+
     public Point getPos()
     {
         return pos;
@@ -47,7 +48,7 @@ public abstract class GameObject {
     }
     public void setBitmap(int _bitmapId)
     {
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),_bitmapId);
     }
     public void setRowsInSheet(int _rows)
     {
@@ -82,7 +83,7 @@ public abstract class GameObject {
         if(frameCount > 1)
         {
 
-            elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
+            elapsedTime = (System.nanoTime() -StaticValues.Instance().currentTime) / 1000000;
 
             if(elapsedTime > animationDelay)
             {

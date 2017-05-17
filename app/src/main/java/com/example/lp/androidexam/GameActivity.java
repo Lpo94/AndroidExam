@@ -20,25 +20,25 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-        if(StaticValues.gameState == GameState.BluetoothMultiplayer)
+        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
         {
 
-            StaticValues.mBTService = new BTService(this);
+            StaticValues.Instance().mBTService = new BTService(this);
 
-            StaticValues.mBTService.startClient(StaticValues.connectedDevice,StaticValues.MY_UUID_INSECURE);
+            StaticValues.Instance().mBTService.startClient(StaticValues.Instance().connectedDevice,StaticValues.Instance().MY_UUID_INSECURE);
 
         }
 
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        StaticValues.staticContext = this;
+        StaticValues.Instance().staticContext = this;
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        StaticValues.SCREEN_WIDTH = dm.widthPixels;
-        StaticValues.SCREEN_HEIGHT = dm.heightPixels;
+        StaticValues.Instance().SCREEN_WIDTH = dm.widthPixels;
+        StaticValues.Instance().SCREEN_HEIGHT = dm.heightPixels;
 
 
         setContentView(new GameView(this));
@@ -54,8 +54,8 @@ public class GameActivity extends AppCompatActivity {
                     int xPos = Integer.parseInt(textSplit[0]);
                     int yPos = Integer.parseInt(textSplit[0]);
                 }
-//                StaticValues.btPlayer.getPos().x = xPos;
-//                StaticValues.btPlayer.getPos().y = yPos;
+//                StaticValues.Instance().btPlayer.getPos().x = xPos;
+//                StaticValues.Instance().btPlayer.getPos().y = yPos;
 
                 Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
 //
@@ -67,5 +67,21 @@ public class GameActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(msgReciever,new IntentFilter("mBTPlayerUpdate"));
 
         setContentView(new GameView(this));
+    }
+
+
+    public void endGame()
+    {
+        GameView.gameThreadThread.setRunning(false);
+        GameView.gameThreadThread = null;
+        StaticValues.Instance().mBTService.stopService();
+        StaticValues.Instance().mBTService = null;
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        StaticValues.Instance().staticContext.startActivity(intent);
+        finish();
+
+
     }
 }

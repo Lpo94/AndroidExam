@@ -24,12 +24,12 @@ public class Goal extends GameObject {
     public Goal(Point _pos)
     {
         finishedPlayers = new ArrayList<>();
-  /*      gv = GameView.getInstance(StaticValues.staticContext); Sæt den her til null så vi ik riskierer at få flere overlappende spil */ // KASPER HER!!
+  /*      gv = GameView.getInstance(StaticValues.Instance().staticContext); Sæt den her til null så vi ik riskierer at få flere overlappende spil */ // KASPER HER!!
 
         pos = _pos;
         rowsInSheet = 1;
         columnsInSheet = 1;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.goal);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.goal);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         frameCount = 1;
@@ -41,18 +41,18 @@ public class Goal extends GameObject {
         finishedPlayers.add(_player);
 
         Log.w("finishedplayers size: ", String.valueOf(finishedPlayers.size()));
-        Log.w("allPlayers size: ", String.valueOf(StaticValues.allPlayers.size()));
+        Log.w("allPlayers size: ", String.valueOf(StaticValues.Instance().allPlayers.size()));
 
-        if(finishedPlayers.size() == StaticValues.allPlayers.size())
+        if(finishedPlayers.size() == StaticValues.Instance().allPlayers.size())
         {
             // game over flyt til score skærm når reset virker
             // Flyt til menu
       /*      gv = null; // Er det her nok?*/ // KASPER HER!!
-/*            Intent backToMenu = new Intent(StaticValues.staticContext, MainActivity.class);
-            StaticValues.staticContext.startActivity(backToMenu);*/
+/*            Intent backToMenu = new Intent(StaticValues.Instance().staticContext, MainActivity.class);
+            StaticValues.Instance().staticContext.startActivity(backToMenu);*/
 // evt brug shared preferences her istedet for bundle til at vidergive datane
 
-            Intent endScreen = new Intent(StaticValues.staticContext, EndScreenActivity.class);
+            Intent endScreen = new Intent(StaticValues.Instance().staticContext, EndScreenActivity.class);
             Bundle customParameter = new Bundle();
             customParameter.putStringArray("finishedPlayers", new String[]
                     {
@@ -62,7 +62,7 @@ public class Goal extends GameObject {
                             String.valueOf(finishedPlayers.get(3).getPlayerNumber()),
                     });
             endScreen.putExtras(customParameter);
-            StaticValues.staticContext.startActivity(endScreen);
+            StaticValues.Instance().staticContext.startActivity(endScreen);
     /*        finish(); */
         }
 

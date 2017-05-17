@@ -59,27 +59,27 @@ public class Menu extends Fragment {
     {
         switch (button) {
             case "Start":
-                StaticValues.baggroundMusic.stop();
-                StaticValues.baggroundMusic = MediaPlayer.create(getContext(), R.raw.ingame);
-                StaticValues.baggroundMusic.setLooping(true);
-                StaticValues.baggroundMusic.setVolume(0.1f, 0.1f);
-                StaticValues.baggroundMusic.start();
-                StaticValues.fragment = new ModeMenu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().baggroundMusic.stop();
+                StaticValues.Instance().baggroundMusic = MediaPlayer.create(getContext(), R.raw.ingame);
+                StaticValues.Instance().baggroundMusic.setLooping(true);
+                StaticValues.Instance().baggroundMusic.setVolume(0.1f, 0.1f);
+                StaticValues.Instance().baggroundMusic.start();
+                StaticValues.Instance().fragment = new ModeMenu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 StartButton.setVisibility(view.INVISIBLE);
                 HowTo.setVisibility(view.INVISIBLE);
                 Exit.setVisibility(view.INVISIBLE);
                 break;
 
             case "HowTo":
-                StaticValues.fragment = new HowTo();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new HowTo();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 StartButton.setVisibility(view.INVISIBLE);
                 HowTo.setVisibility(view.INVISIBLE);
                 Exit.setVisibility(view.INVISIBLE);

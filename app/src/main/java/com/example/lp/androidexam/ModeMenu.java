@@ -71,21 +71,21 @@ public class ModeMenu extends Fragment {
                 break;
 
             case "bluetooth":
-                StaticValues.fragment = new Bluetooth_menu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new Bluetooth_menu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 singleplayer.setVisibility(view.INVISIBLE);
                 bluetooth.setVisibility(view.INVISIBLE);
                 back.setVisibility(view.INVISIBLE);
                 break;
             case"back":
-                StaticValues.fragment = new Menu();
-                StaticValues.fm = getActivity().getSupportFragmentManager();
-                StaticValues.ft = StaticValues.fm.beginTransaction();
-                StaticValues.ft.replace(R.id.fragment7, StaticValues.fragment);
-                StaticValues.ft.commit();
+                StaticValues.Instance().fragment = new Menu();
+                StaticValues.Instance().fm = getActivity().getSupportFragmentManager();
+                StaticValues.Instance().ft = StaticValues.Instance().fm.beginTransaction();
+                StaticValues.Instance().ft.replace(R.id.fragment7, StaticValues.Instance().fragment);
+                StaticValues.Instance().ft.commit();
                 singleplayer.setVisibility(view.INVISIBLE);
                 bluetooth.setVisibility(view.INVISIBLE);
                 back.setVisibility(view.INVISIBLE);
