@@ -33,7 +33,7 @@ public class PowerUp extends GameObject implements iCollectable
         switch (type)
         {
             case fireball:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_fireball);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.pickup_fireball);
                 rowsInSheet = 1;
                 columnsInSheet = 8;
                 bitmapHeight = bitmap.getHeight() / rowsInSheet;
@@ -43,7 +43,7 @@ public class PowerUp extends GameObject implements iCollectable
                 break;
 
             case speed:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_speed);
+                bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.pickup_speed);
                 rowsInSheet = 1;
                 columnsInSheet = 4;
                 bitmapHeight = bitmap.getHeight() / rowsInSheet;

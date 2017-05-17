@@ -21,7 +21,7 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
-    private Vibrator vibrator = (Vibrator)StaticValues.staticContext.getSystemService(StaticValues.staticContext.VIBRATOR_SERVICE);
+    private Vibrator vibrator = (Vibrator)StaticValues.Instance().staticContext.getSystemService(StaticValues.Instance().staticContext.VIBRATOR_SERVICE);
     private PowerUpClick powerupBtn;
     // Animation
     private enum Animations { idle, walking, falling, stunned}
@@ -193,7 +193,7 @@ public class Player extends GameObject {
                     {
                         startingStun = false;
                         isStunned = true;
-                        stunDelay = StaticValues.currentTime + 3000;
+                        stunDelay = StaticValues.Instance().currentTime + 3000;
                     }
                     break;
 
@@ -209,7 +209,7 @@ public class Player extends GameObject {
 
     private void stunTimer()
     {
-        if(StaticValues.currentTime > stunDelay)
+        if(StaticValues.Instance().currentTime > stunDelay)
         {
             isStunned = false;
             canMove = true;

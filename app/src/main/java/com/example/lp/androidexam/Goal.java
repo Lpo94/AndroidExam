@@ -48,9 +48,9 @@ public class Goal extends GameObject implements iCollectable
         hasCollected.add(_player);
 
         Log.w("finishedplayers size: ", String.valueOf(hasCollected.size()));
-        Log.w("allPlayers size: ", String.valueOf(StaticValues.allPlayers.size()));
+        Log.w("allPlayers size: ", String.valueOf(StaticValues.Instance().allPlayers.size()));
 
-        if(hasCollected.size() == StaticValues.allPlayers.size())
+        if(hasCollected.size() == StaticValues.Instance().allPlayers.size())
         {
             // game over flyt til score skærm når reset virker
             // Flyt til menu

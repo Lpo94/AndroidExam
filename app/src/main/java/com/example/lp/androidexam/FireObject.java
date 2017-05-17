@@ -20,7 +20,7 @@ public class FireObject extends GameObject
         pos = _pos;
         rowsInSheet = 1;
         columnsInSheet = 3;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.fire);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.fire);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         animationDelay = 100;
