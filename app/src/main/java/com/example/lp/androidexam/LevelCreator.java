@@ -120,7 +120,7 @@ public class LevelCreator {
 
                             break;
                         case "B":
-                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1, 12, 5);
+                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
                             testLevel.add(mud);
 /*                                if (_i == 3) {
                                     xPos = 10500;
@@ -169,7 +169,7 @@ public class LevelCreator {
                             break;
 
                         case "M":
-                            FireObject fire = new FireObject(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1,12, R.drawable.fire, 150, 11);
+                            FireObject fire = new FireObject(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
                             testLevel.add(fire);
                             break;
 
