@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Vibrator;
 
 /**
  * Created by LP on 19-04-2017.
@@ -20,7 +21,7 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
-    MainActivity mainActivity;
+    private Vibrator vibrator = (Vibrator)StaticValues.staticContext.getSystemService(StaticValues.staticContext.VIBRATOR_SERVICE);
     // Animation
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
@@ -225,11 +226,6 @@ public class Player extends GameObject {
 
         if(canMove)
         {
-            if(_other instanceof FireObject)
-            {
-                colour = new Color().BLUE;
-            }
-
             if(_other instanceof Mud)
             {
                 speed = 1;
@@ -247,11 +243,13 @@ public class Player extends GameObject {
             if(_other instanceof Fireball && ((Fireball)_other).owner != this)
             {
                 startingStun = true;
+                vibrator.vibrate(500);
             }
 
             if(_other instanceof FireObject)
             {
                 startingStun = true;
+                vibrator.vibrate(500);
                 ((FireObject)_other).removeThis();
             }
 
