@@ -13,11 +13,9 @@ import java.util.ArrayList;
 public class FireObject extends GameObject
 {
 
-    public ArrayList<Player> collectedBy;
 
     public FireObject(Point _pos)
     {
-        collectedBy = new ArrayList<>();
         isSolid = false;
         pos = _pos;
         rowsInSheet = 1;
@@ -30,8 +28,8 @@ public class FireObject extends GameObject
 //        rect = new Rect(100,100,200,200);
     }
 
-    public void addPlayer(Player _player)
+    public void removeThis()
     {
-        collectedBy.add(_player);
+        StaticValues.tempObjects.remove(this);
     }
 }

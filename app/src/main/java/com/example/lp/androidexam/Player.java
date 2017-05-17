@@ -1,16 +1,9 @@
 package com.example.lp.androidexam;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Matrix;
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by LP on 19-04-2017.
@@ -248,38 +241,35 @@ public class Player extends GameObject {
             {
                 canMove = false;
                 curAnim = Animations.idle;
-                ((Goal) _other).addPlayerToList(this);
+                ((Goal) _other).collect(this);
             }
 
-            if(_other instanceof Fireball)
+            if(_other instanceof Fireball && ((Fireball)_other).owner != this)
             {
-                if(((Fireball)_other).owner != this)
-                {
-                    startingStun = true;
-                }
+                startingStun = true;
             }
 
             if(_other instanceof FireObject)
             {
-                if(!((FireObject)_other).collectedBy.contains(this))
-                {
-                    startingStun = true;
-                    ((FireObject)_other).addPlayer(this);
-                }
+                startingStun = true;
+                ((FireObject)_other).removeThis();
             }
 
             if(_other instanceof PowerUp)
             {
-                if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball && ((PowerUp) _other).canPlayerCollect(this))
+                if(((PowerUp)_other).canCollect(this))
                 {
-                    currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
-                    PowerUpClick.Clickable = true;
-                }
+                    if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball)
+                    {
+                        currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
+                        PowerUpClick.Clickable = true;
+                    }
 
-                if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed && ((PowerUp) _other).canPlayerCollect(this))
-                {
-                    currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
-                    PowerUpClick.Clickable = true;
+                    if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed)
+                    {
+                        currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
+                        PowerUpClick.Clickable = true;
+                    }
                 }
             }
         }

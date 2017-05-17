@@ -10,9 +10,9 @@ import java.util.ArrayList;
  * Created by SharkGaming on 09/05/2017.
  */
 
-public class PowerUp extends GameObject
+public class PowerUp extends GameObject implements iCollectable
 {
-    public ArrayList<Player> collectedBy;
+    public ArrayList<Player> hasCollected;
     public static boolean Clickable = false;
     public enum PowerUpType { fireball, speed, none}
     private PowerUpType type = PowerUpType.none;
@@ -20,13 +20,13 @@ public class PowerUp extends GameObject
 
     public PowerUp(Point _pos, PowerUpType _type)
     {
-        collectedBy = new ArrayList<>();
+        hasCollected = new ArrayList<>();
         isSolid = false;
         setPos(_pos);
         setType(_type);
     }
 
-    public void setType(PowerUpType _type)
+    private void setType(PowerUpType _type)
     {
         type = _type;
 
@@ -57,6 +57,44 @@ public class PowerUp extends GameObject
         }
     }
 
+
+    @Override
+    public boolean canCollect(Player _player)
+    {
+        if(hasCollected.contains(_player))
+        {
+            return false;
+        }
+        else
+        {
+            collect(_player);
+            return true;
+        }
+    }
+
+    @Override
+    public void collect(Player _player)
+    {
+        hasCollected.add(_player);
+
+        if(this.getType() == PowerUpType.fireball)
+        {
+            _player.canShoot = true;
+            _player.canSprint = false;
+        }
+
+        if(this.getType() == PowerUpType.speed)
+        {
+            _player.canShoot = false;
+            _player.canSprint = true;
+        }
+
+        if(hasCollected.size() > 3)
+        {
+            removeThis();
+        }
+    }
+
     public void use(Player _player)
     {
         switch (type)
@@ -82,40 +120,4 @@ public class PowerUp extends GameObject
     {
         StaticValues.tempObjects.remove(this);
     }
-
-    public boolean canPlayerCollect(Player _player)
-    {
-        if(collectedBy.contains(_player))
-        {
-            return false;
-        }
-        else
-        {
-            addToPlayer(_player);
-            return true;
-        }
-    }
-
-    private void addToPlayer(Player _player)
-    {
-        collectedBy.add(_player);
-
-        if(this.getType() == PowerUpType.fireball)
-        {
-         _player.canShoot = true;
-         _player.canSprint = false;
-        }
-
-        if(this.getType() == PowerUpType.speed)
-        {
-            _player.canShoot = false;
-            _player.canSprint = true;
-        }
-
-        if(collectedBy.size() > 3)
-        {
-            removeThis();
-        }
-    }
-
 }

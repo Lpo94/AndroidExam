@@ -85,7 +85,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
         Bitmap powerScreenDefeault = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen1);
         Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
-//        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
+        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
 
         for (GameObject go : StaticValues.tempObjects) {
             go.draw(_canvas);
@@ -98,9 +98,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         {
             StaticValues.btPlayer.draw(_canvas);
         }
-        if (PowerUpClick.Clickable == true) {
+        if (PowerUpClick.Clickable == true)
+        {
             if (StaticValues.globalPlayer.canShoot) {
-//                _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+              _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
             }
 
             if (StaticValues.globalPlayer.canSprint) {
