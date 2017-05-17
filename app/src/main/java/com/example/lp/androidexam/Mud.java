@@ -17,7 +17,7 @@ public class Mud extends GameObject {
         bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.mud);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(_animationSpeed);
+        animationDelay = _animationSpeed;
         frameCount = _frameCount;
     }
 }

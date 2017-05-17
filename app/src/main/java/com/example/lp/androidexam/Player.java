@@ -3,6 +3,7 @@ package com.example.lp.androidexam;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Matrix;
@@ -30,7 +31,6 @@ public class Player extends GameObject {
     // Animation
     private enum Animations { idle, walking, falling, stunned}
     private Animations curAnim;
-    private Point newPoint, oldPoint;
     private boolean isStunned; // skal sættes hvis stunned sakl være længere tid en stun animationen for at få den til at loope.
     private boolean startingStun; // skal sættes det øjeblik spilleren bliver stunned, den kører selv automatisk videre til stunned efter.
     private long stunDelay;
@@ -56,10 +56,8 @@ public class Player extends GameObject {
         colour = new Color().GREEN;
         canMove = false;
         falling = true;
-
         setPlayerSprite(getPlayerNumber());
         curAnim = Animations.idle;
-
         currentPowerup = new PowerUp(new Point(0, 0), PowerUp.PowerUpType.none);
     }
 
@@ -68,30 +66,7 @@ public class Player extends GameObject {
     {
         manageAnimationStates();
 
-        oldPoint = pos;
-
-        // Add så animationDelay falder når man har speedboost for at simulere sprint
-        if(canMove && direction == 0 && !isStunned)
-        {
-            curAnim = Animations.idle;
-        }
-        if(canMove && direction != 0)
-        {
-            curAnim = Animations.walking;
-        }
-
-        newPoint = pos;
-
-        if(startingStun)
-        {
-            stunTimer();
-            canMove = false;
-            canShoot = false;
-            canSprint = false;
-        }
-
         if(isSprinting) sprint();
-
 
         if(rect != null)
         {
@@ -122,10 +97,12 @@ public class Player extends GameObject {
                     case -1:
                         GameView.moveObjectX((int)(speed * StaticValues.deltaTime));
 //                        pos.x -= speed * StaticValues.deltaTime;
+                        sourceY = bitmapHeight;
                         break;
                     case 1:
                         GameView.moveObjectX((int)-(speed * StaticValues.deltaTime));
 //                        pos.x += speed * StaticValues.deltaTime;
+                        sourceY = 0;
                         break;
                 }
             }
@@ -163,11 +140,37 @@ public class Player extends GameObject {
 
     private void manageAnimationStates()
     {
-        elapsedTime = (System.nanoTime() -StaticValues.currentTime) / 1000000;
+        // Add så animationDelay falder når man har speedboost for at simulere sprint
+        if(canMove && direction == 0 && !isStunned)
+        {
+            curAnim = Animations.idle;
+        }
+        if(canMove && direction != 0)
+        {
+            curAnim = Animations.walking;
+        }
+        if(startingStun || isStunned)
+        {
+            if(startingStun)
+            {
+                curAnim = Animations.falling;
+            }
+            if(isStunned)
+            {
+                curAnim = Animations.stunned;
+            }
+
+            canMove = false;
+            stunTimer();
+        }
+
+
+        elapsedTime = (System.nanoTime() - startTime) / 1000000;
 
         if(elapsedTime > animationDelay)
         {
             currentFrame++;
+            startTime = System.nanoTime();
 
             switch (curAnim)
             {
@@ -187,8 +190,7 @@ public class Player extends GameObject {
                     {
                         startingStun = false;
                         isStunned = true;
-                        curAnim = Animations.stunned;
-                        stunDelay = System.nanoTime() + 3000;
+                        stunDelay = StaticValues.currentTime + 3000;
                     }
                     break;
 
@@ -204,21 +206,23 @@ public class Player extends GameObject {
 
     private void stunTimer()
     {
-
         if(StaticValues.currentTime > stunDelay)
         {
             isStunned = false;
+            canMove = true;
         }
     }
 
     public void sprint()
     {
         speed = 2;
+        animationDelay = 25;
 
         if(StaticValues.currentTime > sprintTimer)
         {
             isSprinting = false;
             speed = 0.5f;
+            animationDelay = 75;
         }
     }
 
@@ -243,6 +247,7 @@ public class Player extends GameObject {
             if(_other instanceof Goal)
             {
                 canMove = false;
+                curAnim = Animations.idle;
                 ((Goal) _other).addPlayerToList(this);
             }
 
@@ -251,6 +256,15 @@ public class Player extends GameObject {
                 if(((Fireball)_other).owner != this)
                 {
                     startingStun = true;
+                }
+            }
+
+            if(_other instanceof FireObject)
+            {
+                if(!((FireObject)_other).collectedBy.contains(this))
+                {
+                    startingStun = true;
+                    ((FireObject)_other).addPlayer(this);
                 }
             }
 
@@ -320,7 +334,6 @@ public class Player extends GameObject {
 
     private void setPlayerSprite(int _playerNumber)
     {
-
         switch (_playerNumber)
         {
             case 1:
@@ -340,11 +353,11 @@ public class Player extends GameObject {
                 break;
         }
 
-        rowsInSheet = 1;
+        rowsInSheet = 2;
         columnsInSheet = 14;
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(100);
+        animationDelay = 50;
         frameCount = 14;
     }
 
@@ -352,6 +365,8 @@ public class Player extends GameObject {
     {
         currentPowerup.use(this);
     }
+
+
 
 
 //go.getRect().contains(r)

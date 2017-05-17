@@ -105,7 +105,7 @@ public class LevelCreator {
 
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
                             testLevel.add(counter);
-
+/*
 /*                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
                             testLevel.add(testFireballPUP);*/
 
@@ -115,6 +115,8 @@ public class LevelCreator {
 /*                            Goal testGoal = new Goal(new Point(3000, 50));
                             testLevel.add(testGoal);*/
 
+                 /*           FireObject testfireObject = new FireObject(new Point(800, 50));
+                            testLevel.add(testfireObject);*/
 
                             break;
                         case "B":

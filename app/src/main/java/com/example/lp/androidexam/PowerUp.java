@@ -1,5 +1,7 @@
 package com.example.lp.androidexam;
 
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Point;
 
 import java.util.ArrayList;
@@ -31,23 +33,23 @@ public class PowerUp extends GameObject
         switch (type)
         {
             case fireball:
-                setBitmap(R.drawable.pickup_fireball);
-                setRowsInSheet(1);
-                setColumnsInSheet(8);
-                setbitmapHeight();
-                setbitmapWidth();
-                setAnimationDelay(10000);
-                setFrameCount(7);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_fireball);
+                rowsInSheet = 1;
+                columnsInSheet = 8;
+                bitmapHeight = bitmap.getHeight() / rowsInSheet;
+                bitmapWidth = bitmap.getWidth() / columnsInSheet;
+                animationDelay = 50;
+                frameCount = 7;
                 break;
 
             case speed:
-//                setBitmap(R.drawable.pickup_speed);
-                setRowsInSheet(1);
-                setColumnsInSheet(4);
-                setbitmapHeight();
-                setbitmapWidth();
-                setAnimationDelay(10000);
-                setFrameCount(3);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.pickup_speed);
+                rowsInSheet = 1;
+                columnsInSheet = 4;
+                bitmapHeight = bitmap.getHeight() / rowsInSheet;
+                bitmapWidth = bitmap.getWidth() / columnsInSheet;
+                animationDelay = 200;
+                frameCount = 3;
                 break;
 
             case none:
@@ -115,4 +117,5 @@ public class PowerUp extends GameObject
             removeThis();
         }
     }
+
 }

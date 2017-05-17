@@ -4,6 +4,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 /**
  * Created by SharkGaming on 20/04/2017.
  */
@@ -11,18 +13,25 @@ import android.graphics.Rect;
 public class FireObject extends GameObject
 {
 
+    public ArrayList<Player> collectedBy;
 
-    public FireObject(Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
+    public FireObject(Point _pos)
     {
+        collectedBy = new ArrayList<>();
+        isSolid = false;
         pos = _pos;
-        rowsInSheet = _rows;
-        columnsInSheet = _columns;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),_bitmapId);
+        rowsInSheet = 1;
+        columnsInSheet = 3;
+        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.fire);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(_animationSpeed);
-        frameCount = _frameCount;
+        animationDelay = 100;
+        frameCount = 2;
 //        rect = new Rect(100,100,200,200);
+    }
 
+    public void addPlayer(Player _player)
+    {
+        collectedBy.add(_player);
     }
 }
