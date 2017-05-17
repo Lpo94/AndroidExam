@@ -118,7 +118,7 @@ public class LevelCreator {
 
                             break;
                         case "B":
-                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1, 12, R.drawable.mud, 150, 11);
+                            Mud mud = new Mud(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1, 12, 5);
                             testLevel.add(mud);
 /*                                if (_i == 3) {
                                     xPos = 10500;
@@ -159,6 +159,21 @@ public class LevelCreator {
                             }
 /*                            PowerUp testFireballPUP2 = new PowerUp(new Point(500, 500), PowerUp.PowerUpType.fireball);
                             StaticValues.tempObjects.add(testFireballPUP2);*/
+                            break;
+
+                        case "G":
+                            Goal testGoal = new Goal(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos));
+                            testLevel.add(testGoal);
+                            break;
+
+                        case "M":
+                            FireObject fire = new FireObject(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), 1,12, R.drawable.fire, 150, 11);
+                            testLevel.add(fire);
+                            break;
+
+                        case "P":
+                            PowerUp testFireballPUP = new PowerUp(new Point(StaticValues.gridWidth * xPos, StaticValues.gridHeight * yPos), PowerUp.PowerUpType.fireball);
+                            testLevel.add(testFireballPUP);
                             break;
 
                         case "X":

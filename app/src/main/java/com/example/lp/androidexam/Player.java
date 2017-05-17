@@ -106,7 +106,7 @@ public class Player extends GameObject {
 
         else if(timer <= 0 && slowed == true)
         {
-            speed = 2;
+            speed = 0.5f;
             slowed = false;
         }
 

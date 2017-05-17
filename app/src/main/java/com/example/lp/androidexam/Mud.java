@@ -9,7 +9,7 @@ import android.graphics.Point;
 
 public class Mud extends GameObject {
 
-    public Mud(Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
+    public Mud(Point _pos, int _rows, int _columns, int _frameCount)
     {
         pos = _pos;
         rowsInSheet = _rows;
@@ -17,7 +17,6 @@ public class Mud extends GameObject {
         bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.mud);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(_animationSpeed);
         frameCount = _frameCount;
     }
 }
