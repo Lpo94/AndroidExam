@@ -17,7 +17,7 @@ public class MultiplayerObject extends GameObject    {
         columnsInSheet = 14;
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        setAnimationDelay(100);
+        animationDelay = 100;
         frameCount = 14;
 
 
