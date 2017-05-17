@@ -143,7 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                     break;
 
                 case MotionEvent.ACTION_UP:
-                    sendPlayers();
+
                     StaticValues.globalPlayer.setDirection(0);
                     break;
             }
@@ -162,7 +162,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         StaticValues.tempObjects = StaticValues.gameObjects;
         StaticValues.currentTime = System.currentTimeMillis();
 
-        StaticValues.deltaTime = (int) (System.currentTimeMillis() - frameTime);
+        StaticValues.deltaTime = (int)(System.currentTimeMillis() - frameTime);
         frameTime = System.currentTimeMillis();
 
 
@@ -183,6 +183,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 
+
+
         for (GameObject go : StaticValues.objectsToRemove) {
             if (StaticValues.gameObjects.contains(go)) {
                 StaticValues.gameObjects.remove(go);
@@ -193,8 +195,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         StaticValues.objectsToRemove.clear();
-
-
     }
 
     public void newGame() {
