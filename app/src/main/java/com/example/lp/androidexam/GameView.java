@@ -99,7 +99,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         {
             StaticValues.Instance().btPlayer.draw(_canvas);
         }
-        if (PowerUpClick.Clickable) {
+        if (PowerUpClick.getInstance().clickable) {
             if (StaticValues.Instance().globalPlayer.canShoot) {
 //                _canvas.drawBitmap(powerScreenFireball,StaticValues.Instance().SCREEN_WIDTH/2 -50 ,150,null);
             }
@@ -109,7 +109,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             }
             powerScreenDefeault.recycle();
         }
-        if (!PowerUpClick.Clickable) {
+        if (!PowerUpClick.getInstance().clickable) {
             _canvas.drawBitmap(powerScreenDefeault, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
             powerScreenSpeed.recycle();
         }
@@ -131,10 +131,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2) {
                                 StaticValues.Instance().globalPlayer.setDirection(1);
                             }
-                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 && PowerUpClick.Clickable == true) {
+                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 &&  PowerUpClick.getInstance().clickable) {
 
                                 StaticValues.Instance().globalPlayer.usePowerup();
-                                PowerUpClick.Clickable = false;
+                                PowerUpClick.getInstance().clickable = false;
                             }
                         }
                     }
@@ -162,7 +162,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         if(gameFinished)
         {
             endGame();
-            Toast.makeText(getContext(), "Game Finished", Toast.LENGTH_SHORT).show();
         }
 
 

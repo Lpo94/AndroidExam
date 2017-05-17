@@ -29,19 +29,19 @@ public class PowerUpClick extends GameObject
     {
         rowsInSheet = 1;
         columnsInSheet = 1;
-        bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(), R.drawable.powerupscreen1);
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(), R.drawable.powerupscreen1);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
         frameCount = 1;
         rect = new Rect(100,100,100,100); // denne nødvendig?? blir den ik auto sat?
-        powerScreenSpeed = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(), R.drawable.powerupscreen2);
-        powerScreenFireball = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.powerupscreen3);
+        powerScreenSpeed = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(), R.drawable.powerupscreen2);
+        powerScreenFireball = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.powerupscreen3);
     }
 
 
     public void update()
     {
-        pos = new Point(StaticValues.SCREEN_WIDTH / 2, StaticValues.SCREEN_HEIGHT / 2);
+        pos = new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 2);
     }
 
     @Override
@@ -49,21 +49,21 @@ public class PowerUpClick extends GameObject
     {
         if (clickable == true)
         {
-            if (StaticValues.globalPlayer.canShoot)
+            if (StaticValues.Instance().globalPlayer.canShoot)
             {
-                _canvas.drawBitmap(powerScreenFireball,StaticValues.SCREEN_WIDTH/2 -50 ,150,null);
+                _canvas.drawBitmap(powerScreenFireball,StaticValues.Instance().SCREEN_WIDTH/2 -50 ,150,null);
             }
 
-            if (StaticValues.globalPlayer.canSprint)
+            if (StaticValues.Instance().globalPlayer.canSprint)
             {
-                _canvas.drawBitmap(powerScreenSpeed, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
+                _canvas.drawBitmap(powerScreenSpeed, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
             }
 
             bitmap.recycle();
         }
         else
         {
-            _canvas.drawBitmap(bitmap, StaticValues.SCREEN_WIDTH / 2 - 50, 150, null);
+            _canvas.drawBitmap(bitmap, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
         }
     }
 }
