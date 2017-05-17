@@ -325,19 +325,19 @@ public class Player extends GameObject {
         switch (_playerNumber)
         {
             case 1:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.giraf_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_giraf);
                 break;
 
             case 2:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.dino_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_dino);
                 break;
 
             case 3:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.parrot_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_parrot);
                 break;
 
             case 4:
-                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.cow_sheet);
+                bitmap = BitmapFactory.decodeResource(StaticValues.staticContext.getResources(),R.drawable.player_cow);
                 break;
         }
 
