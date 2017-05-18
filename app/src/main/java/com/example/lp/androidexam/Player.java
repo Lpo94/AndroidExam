@@ -237,7 +237,7 @@ public class Player extends GameObject {
         {
             if(_other instanceof Mud)
             {
-                speed = 1;
+                speed = 0.3f;
                 slowed = true;
                 timer = 10;
             }

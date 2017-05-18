@@ -40,7 +40,6 @@ public abstract class GameObject {
     {
         colliders = new ArrayList<>();
     }
-
     public Point getPos()
     {
         return pos;

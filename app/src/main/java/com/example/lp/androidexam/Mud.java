@@ -21,5 +21,4 @@ public class Mud extends GameObject
         animationDelay = 150;
         frameCount = 11;
     }
-
 }
