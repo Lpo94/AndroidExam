@@ -89,6 +89,8 @@ public class LevelCreator {
         switch(LevelIndex)
         {
             case 0:
+
+
                 for(int x = 1; x <= mapLength-1;x++) {
                     switch (ary[x]) {
                         case "A":
@@ -103,7 +105,7 @@ public class LevelCreator {
 
 
 
-                            RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 5), 1, 6, R.drawable.countdown, 1000, 7);
+                            RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 5));
                             testLevel.add(counter);
                             break;
 

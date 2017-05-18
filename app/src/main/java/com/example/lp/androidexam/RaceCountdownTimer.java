@@ -12,17 +12,17 @@ public class RaceCountdownTimer extends GameObject
     // Player _player skal senere laves til at tage en liste med players så vi i multiplayer kan sørge for at dette sker for dem alle
     private Player player;
 
-    public RaceCountdownTimer(Player _player, Point _pos, int _rows, int _columns, int _bitmapId, long _animationSpeed, int _frameCount)
+    public RaceCountdownTimer(Player _player, Point _pos)
     {
         player = _player;
         pos = _pos;
-        rowsInSheet = _rows;
-        columnsInSheet = _columns;
-        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),_bitmapId);
+        rowsInSheet = 1;
+        columnsInSheet = 6;
+        bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.countdown);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        animationDelay = _animationSpeed;
-        frameCount = _frameCount;
+        animationDelay = 1000;
+        frameCount = 6;
     }
 
     @Override
@@ -30,7 +30,6 @@ public class RaceCountdownTimer extends GameObject
     {
         if(frameCount > 1)
         {
-
             elapsedTime = (System.nanoTime() - startTime) / 1000000;
 
             if(elapsedTime > animationDelay)
@@ -38,7 +37,7 @@ public class RaceCountdownTimer extends GameObject
                 currentFrame++;
                 startTime = System.nanoTime();
 
-                if(currentFrame > frameCount)
+                if(currentFrame >= frameCount)
                 {
                     player.setCanmove(true);
                     StaticValues.Instance().gameObjects.remove(this);

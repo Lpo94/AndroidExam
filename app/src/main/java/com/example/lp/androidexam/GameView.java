@@ -26,7 +26,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private long frameTime;
     private LevelCreator levelCreator;
     private SoundManager soundManager;
-    private PowerUpClick powerupBtn;
     private boolean gameFinished = false;
 
 
@@ -42,7 +41,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gestureDetector.setIsLongpressEnabled(true);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds(context);
-        powerupBtn = PowerUpClick.getInstance();
         newGame();
     }
 
@@ -77,64 +75,145 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    float xAxis = 0f;
+    float yAxis = 0f;
+
+    float lastXAxis = 0f;
+    float lastYAxis = 0f;
     @Override
-    public void draw(Canvas _canvas) {
-        super.draw(_canvas);
-        _canvas.drawColor(Color.WHITE);
+    public boolean onTouchEvent(MotionEvent event)
+    {
+       /* final int actionPeformed = event.getAction();
 
+        switch(actionPeformed){
+            case MotionEvent.ACTION_DOWN:{
+                final float x = event.getX();
+                final float y = event.getY();
 
-        // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
-        Bitmap powerScreenDefeault = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen1);
-        Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
-//        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
+                lastXAxis = x;
+                lastYAxis = y;
 
-        for (GameObject go : StaticValues.Instance().tempObjects) {
-            go.draw(_canvas);
-        }
-        if (StaticValues.Instance().globalPlayer != null) {
-            StaticValues.Instance().globalPlayer.draw(_canvas);
-        }
-
-        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
-        {
-            StaticValues.Instance().btPlayer.draw(_canvas);
-        }
-        if (PowerUpClick.getInstance().clickable) {
-            if (StaticValues.Instance().globalPlayer.canShoot) {
-//                _canvas.drawBitmap(powerScreenFireball,StaticValues.Instance().SCREEN_WIDTH/2 -50 ,150,null);
+                ed1.setText(Float.toString(lastXAxis));
+                ed2.setText(Float.toString(lastYAxis));
+                break;
             }
 
-            if (StaticValues.Instance().globalPlayer.canSprint) {
-                _canvas.drawBitmap(powerScreenSpeed, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
+            case MotionEvent.ACTION_MOVE:{
+                final float x = event.getX();
+                final float y = event.getY();
+
+                final float dx = x - lastXAxis;
+                final float dy = y - lastYAxis;
+
+                xAxis += dx;
+                yAxis += dy;
+
+                ed3.setText(Float.toString(xAxis));
+                ed4.setText(Float.toString(yAxis));
+                break;
             }
-            powerScreenDefeault.recycle();
         }
-        if (!PowerUpClick.getInstance().clickable) {
-            _canvas.drawBitmap(powerScreenDefeault, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
-            powerScreenSpeed.recycle();
-        }
+        return true;*/
 
-    }
+        ///////////////////////////////////////////////////////////////////////
+  /*      // get pointer index from the event object
+        int pointerIndex = event.getActionIndex();
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+        // get pointer ID
+        int pointerId = event.getPointerId(pointerIndex);
+
+        // get masked (not specific to a pointer) action
+        int maskedAction = event.getActionMasked();
+
         int x = (int) event.getX();
         int y = (int) event.getY();
-        if (!StaticValues.Instance().endgame) {
-            switch (event.getAction()) {
 
+
+        switch (maskedAction)
+        {
+            case MotionEvent.ACTION_DOWN:
+                if (gestureDetector.onTouchEvent(event))
+                {
+                    if (StaticValues.Instance().globalPlayer != null)
+                    {
+                        if (x < StaticValues.Instance().SCREEN_WIDTH / 2)
+                        {
+                            StaticValues.Instance().globalPlayer.setDirection(-1);
+                        } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2)
+                        {
+                            StaticValues.Instance().globalPlayer.setDirection(1);
+                        }
+                        if(     x < PowerUpClick.getInstance().pos.x + PowerUpClick.getInstance().bitmapWidth &&
+                                x >PowerUpClick.getInstance().pos.x &&
+                                y < PowerUpClick.getInstance().pos.y + PowerUpClick.getInstance().bitmapHeight &&
+                                y >PowerUpClick.getInstance().pos.y)
+                        {
+                            StaticValues.Instance().globalPlayer.usePowerup();
+                        }
+                    }
+                }
+            case MotionEvent.ACTION_POINTER_DOWN:
+                {
+                    if (gestureDetector.onTouchEvent(event))
+                    {
+                        if (StaticValues.Instance().globalPlayer != null)
+                        {
+                            if(     x < PowerUpClick.getInstance().pos.x + PowerUpClick.getInstance().bitmapWidth &&
+                                    x >PowerUpClick.getInstance().pos.x &&
+                                    y < PowerUpClick.getInstance().pos.y + PowerUpClick.getInstance().bitmapHeight &&
+                                    y >PowerUpClick.getInstance().pos.y)
+                            {
+                                StaticValues.Instance().globalPlayer.usePowerup();
+                            }
+                        }
+                    }
+                // TODO use data
+                break;
+            }
+            case MotionEvent.ACTION_MOVE:
+                { // a pointer was moved
+                // TODO use data
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+                StaticValues.Instance().globalPlayer.setDirection(0);
+            case MotionEvent.ACTION_POINTER_UP:
+                StaticValues.Instance().globalPlayer.setDirection(0);
+            case MotionEvent.ACTION_CANCEL:
+                {
+                // TODO use data
+                break;
+            }
+        }
+        invalidate();
+        return gestureDetector.onTouchEvent(event);*/
+
+///////////////////////////////////////////////////////////////////////
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        if (!StaticValues.Instance().endgame)
+        {
+            switch (event.getAction())
+            {
                 case MotionEvent.ACTION_DOWN:
-                    if (gestureDetector.onTouchEvent(event)) {
-                        if (StaticValues.Instance().globalPlayer != null) {
-                            if (x < StaticValues.Instance().SCREEN_WIDTH / 2) {
+                    if (gestureDetector.onTouchEvent(event))
+                    {
+                        if (StaticValues.Instance().globalPlayer != null)
+                        {
+                            if (x < StaticValues.Instance().SCREEN_WIDTH / 2)
+                            {
                                 StaticValues.Instance().globalPlayer.setDirection(-1);
-                            } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2) {
+                            } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2)
+                            {
                                 StaticValues.Instance().globalPlayer.setDirection(1);
                             }
-                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 &&  PowerUpClick.getInstance().clickable) {
-
+                            if(     x < PowerUpClick.getInstance().pos.x + PowerUpClick.getInstance().bitmapWidth &&
+                                    x >PowerUpClick.getInstance().pos.x &&
+                                    y < PowerUpClick.getInstance().pos.y + PowerUpClick.getInstance().bitmapHeight &&
+                                    y >PowerUpClick.getInstance().pos.y)
+                            {
                                 StaticValues.Instance().globalPlayer.usePowerup();
-                                PowerUpClick.getInstance().clickable = false;
                             }
                         }
                     }
@@ -147,10 +226,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
                     StaticValues.Instance().globalPlayer.setDirection(0);
                     break;
-            }
-        } else if (StaticValues.Instance().endgame) {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-
             }
         }
         //   return true;
@@ -179,6 +254,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         if (StaticValues.Instance().globalPlayer != null) {
             StaticValues.Instance().globalPlayer.update();
+            PowerUpClick.getInstance().update();
             for (GameObject go : StaticValues.Instance().tempObjects) {
                 StaticValues.Instance().globalPlayer.onCollisionStay(go);
                 StaticValues.Instance().globalPlayer.onCollisionEnter(go);
@@ -187,10 +263,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             StaticValues.Instance().globalPlayer.onCollisionExit();
 
         }
-
-
-
-
 
 
         for (GameObject go : StaticValues.Instance().objectsToRemove) {
@@ -203,6 +275,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         StaticValues.Instance().objectsToRemove.clear();
+    }
+
+    @Override
+    public void draw(Canvas _canvas) {
+        super.draw(_canvas);
+        _canvas.drawColor(Color.WHITE);
+
+
+        for (GameObject go : StaticValues.Instance().tempObjects) {
+            go.draw(_canvas);
+        }
+        if (StaticValues.Instance().globalPlayer != null) {
+            StaticValues.Instance().globalPlayer.draw(_canvas);
+        }
+        PowerUpClick.getInstance().draw(_canvas);
+        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
+        {
+            StaticValues.Instance().btPlayer.draw(_canvas);
+        }
+
     }
 
     public void newGame() {
@@ -241,7 +333,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gameThreadThread = null;
         StaticValues.Instance().mBTService.stopService();
         StaticValues.Instance().mBTService = null;
-
         StaticValues.Instance().resetInstance();
 
         Intent intent = new Intent(getContext(), MainActivity.class);
