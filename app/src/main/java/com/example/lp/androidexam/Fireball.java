@@ -35,9 +35,9 @@ public class Fireball extends GameObject
         soundManager = SoundManager.getInstance();
         soundManager.playSound("shoot");
 
-        removeDelay = (System.currentTimeMillis()) + 8000;
+        removeDelay = (System.currentTimeMillis()) + 10000;
         curAnim = Animations.fadeIn;
-        setSpeed(50);
+        projectileSpeed = 150;
     }
 
     @Override
@@ -93,11 +93,6 @@ public class Fireball extends GameObject
         {
             removeThis();
         }
-    }
-
-    private void setSpeed(int _value)
-    {
-        projectileSpeed = _value;
     }
 
     private void removeThis()
