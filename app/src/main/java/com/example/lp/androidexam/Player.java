@@ -268,13 +268,13 @@ public class Player extends GameObject {
                     if(((PowerUp)_other).getType() == PowerUp.PowerUpType.fireball)
                     {
                         currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.fireball);
-                        powerupBtn.clickable = true;
+                        powerupBtn.state = PowerUpClick.btnStates.fire;;
                     }
 
                     if(((PowerUp)_other).getType() == PowerUp.PowerUpType.speed)
                     {
                         currentPowerup = new PowerUp(pos, PowerUp.PowerUpType.speed);
-                        powerupBtn.clickable = true;
+                        powerupBtn.state = PowerUpClick.btnStates.speed;
                     }
                 }
             }
@@ -339,7 +339,6 @@ public class Player extends GameObject {
         {
             case 1:
                 bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.player_giraf);
-
                 break;
 
             case 2:
@@ -366,6 +365,7 @@ public class Player extends GameObject {
     public void usePowerup()
     {
         currentPowerup.use(this);
+        powerupBtn.state = PowerUpClick.btnStates.empty;
     }
 
 

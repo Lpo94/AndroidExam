@@ -26,7 +26,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private long frameTime;
     private LevelCreator levelCreator;
     private SoundManager soundManager;
-    private PowerUpClick powerupBtn;
     private boolean gameFinished = false;
 
 
@@ -42,7 +41,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         gestureDetector.setIsLongpressEnabled(true);
         soundManager = SoundManager.getInstance();
         soundManager.loadSounds(context);
-        powerupBtn = PowerUpClick.getInstance();
         newGame();
     }
 
@@ -77,44 +75,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    @Override
-    public void draw(Canvas _canvas) {
-        super.draw(_canvas);
-        _canvas.drawColor(Color.WHITE);
-
-
-        // De her bitmaps behøver da ikke blive sat hver frame gør de? - Kasper
-        Bitmap powerScreenDefeault = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen1);
-        Bitmap powerScreenSpeed = BitmapFactory.decodeResource(getResources(), R.drawable.powerupscreen2);
-//        Bitmap  powerScreenFireball = BitmapFactory.decodeResource(getResources(),R.drawable.powerupscreen3);
-
-        for (GameObject go : StaticValues.Instance().tempObjects) {
-            go.draw(_canvas);
-        }
-        if (StaticValues.Instance().globalPlayer != null) {
-            StaticValues.Instance().globalPlayer.draw(_canvas);
-        }
-
-        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
-        {
-            StaticValues.Instance().btPlayer.draw(_canvas);
-        }
-        if (PowerUpClick.getInstance().clickable) {
-            if (StaticValues.Instance().globalPlayer.canShoot) {
-//                _canvas.drawBitmap(powerScreenFireball,StaticValues.Instance().SCREEN_WIDTH/2 -50 ,150,null);
-            }
-
-            if (StaticValues.Instance().globalPlayer.canSprint) {
-                _canvas.drawBitmap(powerScreenSpeed, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
-            }
-            powerScreenDefeault.recycle();
-        }
-        if (!PowerUpClick.getInstance().clickable) {
-            _canvas.drawBitmap(powerScreenDefeault, StaticValues.Instance().SCREEN_WIDTH / 2 - 50, 150, null);
-            powerScreenSpeed.recycle();
-        }
-
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -131,10 +91,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                             } else if (x > StaticValues.Instance().SCREEN_WIDTH / 2) {
                                 StaticValues.Instance().globalPlayer.setDirection(1);
                             }
-                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450 &&  PowerUpClick.getInstance().clickable) {
-
+/*                            if (x > StaticValues.Instance().SCREEN_WIDTH / 2 - 50 && x < StaticValues.Instance().SCREEN_WIDTH / 2 + 250 && y > 150 && y < 450)*/
+                            if(     x < PowerUpClick.getInstance().pos.x + PowerUpClick.getInstance().bitmapWidth &&
+                                    x >PowerUpClick.getInstance().pos.x &&
+                                    y < PowerUpClick.getInstance().pos.y + PowerUpClick.getInstance().bitmapHeight &&
+                                    y >PowerUpClick.getInstance().pos.y)
+                            {
                                 StaticValues.Instance().globalPlayer.usePowerup();
-                                PowerUpClick.getInstance().clickable = false;
+                       /*         PowerUpClick.getInstance().clickable = false;*/
                             }
                         }
                     }
@@ -179,6 +143,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         if (StaticValues.Instance().globalPlayer != null) {
             StaticValues.Instance().globalPlayer.update();
+            PowerUpClick.getInstance().update();
             for (GameObject go : StaticValues.Instance().tempObjects) {
                 StaticValues.Instance().globalPlayer.onCollisionStay(go);
                 StaticValues.Instance().globalPlayer.onCollisionEnter(go);
@@ -187,10 +152,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             StaticValues.Instance().globalPlayer.onCollisionExit();
 
         }
-
-
-
-
 
 
         for (GameObject go : StaticValues.Instance().objectsToRemove) {
@@ -203,6 +164,26 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         StaticValues.Instance().objectsToRemove.clear();
+    }
+
+    @Override
+    public void draw(Canvas _canvas) {
+        super.draw(_canvas);
+        _canvas.drawColor(Color.WHITE);
+
+
+        for (GameObject go : StaticValues.Instance().tempObjects) {
+            go.draw(_canvas);
+        }
+        if (StaticValues.Instance().globalPlayer != null) {
+            StaticValues.Instance().globalPlayer.draw(_canvas);
+        }
+        PowerUpClick.getInstance().draw(_canvas);
+        if(StaticValues.Instance().gameState == GameState.BluetoothMultiplayer)
+        {
+            StaticValues.Instance().btPlayer.draw(_canvas);
+        }
+
     }
 
     public void newGame() {

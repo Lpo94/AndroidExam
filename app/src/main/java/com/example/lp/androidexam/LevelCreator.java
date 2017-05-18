@@ -89,6 +89,8 @@ public class LevelCreator {
         switch(LevelIndex)
         {
             case 0:
+
+
                 for(int x = 1; x <= mapLength-1;x++) {
                     switch (ary[x]) {
                         case "A":

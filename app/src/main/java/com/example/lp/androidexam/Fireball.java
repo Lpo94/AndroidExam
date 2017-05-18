@@ -29,7 +29,7 @@ public class Fireball extends GameObject
         bitmap = BitmapFactory.decodeResource(StaticValues.Instance().staticContext.getResources(),R.drawable.fireball);
         bitmapHeight = bitmap.getHeight() / rowsInSheet;
         bitmapWidth = bitmap.getWidth() / columnsInSheet;
-        animationDelay = 100;
+        animationDelay = 200;
         frameCount = 28;
 
         soundManager = SoundManager.getInstance();
