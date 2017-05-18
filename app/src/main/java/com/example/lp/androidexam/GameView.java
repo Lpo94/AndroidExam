@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -26,9 +27,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private long frameTime;
     private LevelCreator levelCreator;
     private SoundManager soundManager;
-    private boolean gameFinished = false;
-
-
 
 
     public GameView(Context context) {
@@ -59,20 +57,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        while (true) {
-            boolean retry = true;
+        boolean retry = true;
 
-            while (retry) {
-                try {
-                    gameThreadThread.setRunning(false);
-                    gameThreadThread.join();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                retry = false;
+        while (retry) {
+            try {
+                gameThreadThread.setRunning(false);
+                gameThreadThread.join();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            retry = false;
         }
-
     }
 
     float xAxis = 0f;
@@ -192,7 +187,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        if (!StaticValues.Instance().endgame)
+        if (!StaticValues.Instance().gameFinished)
         {
             switch (event.getAction())
             {
@@ -234,13 +229,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
 
-        if(gameFinished)
+        if(StaticValues.Instance().gameFinished)
         {
-            endGame();
+            gameThreadThread.setRunning(false);
         }
 
 
-        StaticValues.Instance().tempObjects = StaticValues.Instance().gameObjects;
+        StaticValues.Instance().tempObjects = new ArrayList<>(StaticValues.Instance().gameObjects);
         StaticValues.Instance().currentTime = System.currentTimeMillis();
 
         StaticValues.Instance().deltaTime = (int)(System.currentTimeMillis() - frameTime);
@@ -329,7 +324,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void endGame()
     {
-        gameThreadThread.setRunning(false);
+
+
         gameThreadThread = null;
         StaticValues.Instance().mBTService.stopService();
         StaticValues.Instance().mBTService = null;
@@ -337,7 +333,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         Intent intent = new Intent(getContext(), MainActivity.class);
         getContext().startActivity(intent);
+
+
     }
+
+    public void pause() {
+        try {
+            gameThreadThread.join();
+        } catch (InterruptedException e) {
+            Log.e("error", "failed to pause thread");
+        }
+    }
+
 
 
 

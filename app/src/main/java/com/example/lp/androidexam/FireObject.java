@@ -30,6 +30,6 @@ public class FireObject extends GameObject
 
     public void removeThis()
     {
-        StaticValues.Instance().tempObjects.remove(this);
+        StaticValues.Instance().gameObjects.remove(this);
     }
 }

@@ -37,7 +37,7 @@ public class Fireball extends GameObject
 
         removeDelay = (System.currentTimeMillis()) + 10000;
         curAnim = Animations.fadeIn;
-        projectileSpeed = 150;
+        projectileSpeed = 100;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Fireball extends GameObject
 
     private void removeThis()
     {
-        StaticValues.Instance().tempObjects.remove(this);
+        StaticValues.Instance().gameObjects.remove(this);
     }
 
 }

@@ -25,7 +25,6 @@ public class PowerUpClick extends GameObject
 
     private PowerUpClick()
     {
-        pos = new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 2 +200);
         state = btnStates.empty;
         rowsInSheet = 1;
         columnsInSheet = 3;
@@ -38,6 +37,7 @@ public class PowerUpClick extends GameObject
     @Override
     public void update()
     {
+        pos = new Point(StaticValues.Instance().SCREEN_WIDTH / 2 - (bitmapWidth/2), (StaticValues.Instance().SCREEN_HEIGHT / 5) * 4);
         switch (state)
         {
             case empty:

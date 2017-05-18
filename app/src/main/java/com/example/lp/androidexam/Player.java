@@ -46,7 +46,7 @@ public class Player extends GameObject {
         super();
         pos = _pos;
         rect = new Rect(100,100,200,200);
-        speed = 0.8f;
+        speed = 0.5f;
         defaultVelocity = velocity;
         colour = new Color().GREEN;
 
@@ -245,7 +245,6 @@ public class Player extends GameObject {
             if(_other instanceof Goal)
             {
                 StaticValues.Instance().gameFinished = true;
-
             }
 
             if(_other instanceof Fireball && ((Fireball)_other).owner != this)

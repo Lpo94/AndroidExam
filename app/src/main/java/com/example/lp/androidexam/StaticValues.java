@@ -80,8 +80,6 @@ public class StaticValues {
     // boolean
     public boolean gameFinished = false;
 
-    public boolean endgame;
-
     // Longs
     public long currentTime;
 

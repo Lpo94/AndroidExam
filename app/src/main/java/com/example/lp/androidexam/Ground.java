@@ -25,13 +25,6 @@ public class Ground extends GameObject {
     public void update() {
         super.update();
 
-        if(pos.x > 2000 && pos.y < 0 && StaticValues.Instance().endgame == false)
-        {
-            //player.canMove = false;
-            //StaticValues.Instance().gameObjects = StaticValues.Instance().objectsToRemove;
-            //mainActivity.back();
-            //StaticValues.Instance().globalPlayer = null;
-        }
     }
 
     @Override
