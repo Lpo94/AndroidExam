@@ -31,6 +31,7 @@ public class LevelCreator {
     AssetManager mngr;
     InputStream is;
     BufferedReader br;
+    String map[][];
     String[] ary;
 
     private String readFromFile(Context context) {
@@ -46,6 +47,8 @@ public class LevelCreator {
 
                 br = new BufferedReader(new InputStreamReader(is));
 
+//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
                 StringBuilder stringBuilder = new StringBuilder();
 
@@ -104,13 +107,24 @@ public class LevelCreator {
 
                             RaceCountdownTimer counter = new RaceCountdownTimer(player, new Point(StaticValues.Instance().SCREEN_WIDTH / 2, StaticValues.Instance().SCREEN_HEIGHT / 5));
                             testLevel.add(counter);
-                            break;
+/*
+/*                            PowerUp testFireballPUP = new PowerUp(new Point(500, 50), PowerUp.PowerUpType.fireball);
+                            testLevel.add(testFireballPUP);*/
 
+//                            PowerUp testSpeedPUP = new PowerUp(new Point(400, 50), PowerUp.PowerUpType.speed);
+//                            testLevel.add(testSpeedPUP);
+
+                           Goal testGoal2 = new Goal(new Point(1000, 100));
+                            testLevel.add(testGoal2);
+
+                 /*           FireObject testfireObject = new FireObject(new Point(800, 50));
+                            testLevel.add(testfireObject);*/
+
+                            break;
                         case "B":
                             Mud mud = new Mud(new Point(StaticValues.Instance().gridWidth * xPos,StaticValues.Instance().gridHeight * yPos));
                             testLevel.add(mud);
                             break;
-
                         case "C":
                             if(groundCheckAroundMe(x, "C") != -1) {
                                 int multiX = groundCheckAroundMe(x, "C");
@@ -119,6 +133,11 @@ public class LevelCreator {
                             }
                             break;
 
+                        case "D":
+
+                                PowerUp testSpeedPUP2 = new PowerUp(new Point(700, 500), PowerUp.PowerUpType.speed);
+                                StaticValues.Instance().gameObjects.add(testSpeedPUP2);
+                            break;
                         case"E":
                             if(groundCheckAroundMe(x, "E") != -1) {
                             int multiX = groundCheckAroundMe(x, "E");

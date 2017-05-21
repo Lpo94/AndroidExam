@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 public class GameActivity extends AppCompatActivity {
+    GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,8 @@ public class GameActivity extends AppCompatActivity {
         StaticValues.Instance().SCREEN_WIDTH = dm.widthPixels;
         StaticValues.Instance().SCREEN_HEIGHT = dm.heightPixels;
 
+        gameView = new GameView(this);
 
-        setContentView(new GameView(this));
 
 
 
@@ -70,6 +71,16 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameView.pause();
+        if(StaticValues.Instance().gameFinished){
+            finish();
+        }
+    }
+
+
     public void endGame()
     {
         GameView.gameThreadThread.setRunning(false);
@@ -81,7 +92,5 @@ public class GameActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         StaticValues.Instance().staticContext.startActivity(intent);
         finish();
-
-
     }
 }

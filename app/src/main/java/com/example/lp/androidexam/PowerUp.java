@@ -101,7 +101,7 @@ public class PowerUp extends GameObject implements iCollectable
         {
             case fireball:
                 Fireball fireball = new Fireball(_player);
-                StaticValues.Instance().tempObjects.add(fireball);
+                StaticValues.Instance().gameObjects.add(fireball);
                 type = PowerUpType.none;
                 break;
 
@@ -118,6 +118,6 @@ public class PowerUp extends GameObject implements iCollectable
 
     private void removeThis()
     {
-        StaticValues.Instance().tempObjects.remove(this);
+        StaticValues.Instance().gameObjects.remove(this);
     }
 }

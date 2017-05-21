@@ -89,5 +89,11 @@ public class GameThread extends Thread {
             }
 
         }
+
+
+        if(StaticValues.Instance().gameFinished)
+        {
+            gameView.endGame();
+        }
     }
 }
