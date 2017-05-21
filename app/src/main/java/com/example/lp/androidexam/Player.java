@@ -276,7 +276,7 @@ public class Player extends GameObject {
                 if((_other.getRect().top < rect.bottom && rect.left < _other.getRect().left) || (_other.getRect().top < rect.bottom && rect.right < _other.getRect().right))
                 {
                     GameView.moveObjectY(1);
-                    
+
                 }
             }
 
