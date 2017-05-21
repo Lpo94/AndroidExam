@@ -21,6 +21,7 @@ public class Player extends GameObject {
     private float velocity = 4;
     private float defaultVelocity;
     private int direction = 0;
+    private float move;
     private Vibrator vibrator = (Vibrator)StaticValues.Instance().staticContext.getSystemService(StaticValues.Instance().staticContext.VIBRATOR_SERVICE);
     private PowerUpClick powerupBtn;
     // Animation
@@ -245,7 +246,37 @@ public class Player extends GameObject {
             if(_other instanceof Goal)
             {
                 StaticValues.Instance().gameFinished = true;
+            }
 
+            if(_other instanceof Ground)
+            {
+                switch(direction)
+                {
+                    case -1:
+                        if(_other.getRect().right > (rect.left + 150) && _other.getRect().bottom > rect.bottom)
+                        {
+                            GameView.moveObjectX(-75);
+                            direction = 0;
+                        }
+                        break;
+                    case 0:
+                        break;
+                    case 1:
+                        if(_other.getRect().right > rect.right && _other.getRect().bottom > rect.bottom)
+                        {
+                            GameView.moveObjectX(75);
+                            direction = 0;
+                        }
+                        break;
+                }
+            }
+
+            if(_other instanceof Platform)
+            {
+                if((_other.getRect().top < rect.bottom && rect.left < _other.getRect().left) || (_other.getRect().top < rect.bottom && rect.right < _other.getRect().right))
+                {
+                    GameView.moveObjectY(1);
+                }
             }
 
             if(_other instanceof Fireball && ((Fireball)_other).owner != this)
@@ -303,11 +334,12 @@ public class Player extends GameObject {
             {
                 if (go.getRect() != null)
                 {
-                    Rect r = new Rect(_p.x, _p.y, _p.x + 50, _p.y-100);
-                    r.set(rect);
+                    Rect r = new Rect(_p.x, _p.y, _p.x + bitmapWidth, _p.y+100);
+
                     if (Rect.intersects(go.getRect(),r))
                     {
                         return true;
+
                     }
                     else if(go.getRect().contains(r))
                     {

@@ -17,7 +17,6 @@ public class Ground extends GameObject {
     {
         isSolid = true;
         rect = _rect;
-        //rect = new Rect(1000,100,20000,200);
         pos = _pos;
     }
 

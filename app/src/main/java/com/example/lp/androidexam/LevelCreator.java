@@ -23,9 +23,6 @@ import java.util.List;
 public class LevelCreator {
     private ArrayList<GameObject> currentLevel= new ArrayList<>();
     private ArrayList<GameObject> testLevel = new ArrayList<>();
-    private int x = 1;
-    private int y = 1;
-    private int _y;
     private int mapLength;
 
     private int xPos = 1;
@@ -117,7 +114,7 @@ public class LevelCreator {
                         case "C":
                             if(groundCheckAroundMe(x, "C") != -1) {
                                 int multiX = groundCheckAroundMe(x, "C");
-                                Ground ground = new Ground(new Point(StaticValues.Instance().gridWidth * (xPos-multiX), StaticValues.Instance().gridHeight * yPos), new Rect(0, 0, StaticValues.Instance().gridWidth*multiX, StaticValues.Instance().gridHeight));
+                                Ground ground = new Ground(new Point(StaticValues.Instance().gridWidth * (xPos-multiX), StaticValues.Instance().gridHeight * yPos), new Rect(1, 0, StaticValues.Instance().gridWidth*multiX, StaticValues.Instance().gridHeight));
                                 testLevel.add(ground);
                             }
                             break;
